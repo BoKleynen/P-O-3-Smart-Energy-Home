@@ -2,8 +2,8 @@ from . import Car
 
 
 class ElectricalCar(Car.Car):
-    def __init__(self, price, year, fuel_consumption):
-        super().__init__(price, year, fuel_consumption)
+    def __init__(self, price, year, fuel_consumption, fuel_capacity):
+        super().__init__(price, year, fuel_consumption, fuel_capacity)
     
     def get_subsidy(self):
         # year : (price < 31000, 31000 <= price <= 40999, 41000 <= price <= 60999, 61000 < price)
