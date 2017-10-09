@@ -13,7 +13,3 @@ class Battery:
 
     def get_charge(self):
         return self.charge
-    
-    def set_charge(self, charge):
-        self.charge = charge
-        

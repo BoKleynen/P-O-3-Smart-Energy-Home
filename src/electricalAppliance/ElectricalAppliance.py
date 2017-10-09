@@ -1,5 +1,7 @@
+from abc import ABCMeta
 
-class ElectricalAppliance:
+
+class ElectricalAppliance(metaclass=ABCMeta):
     def __init__(self, power):
         self.power = power
 
