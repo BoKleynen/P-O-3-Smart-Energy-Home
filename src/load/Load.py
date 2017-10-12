@@ -7,9 +7,8 @@ Base class for modelling all the loads in a house
 
 
 class Load(metaclass=ABCMeta):
-    def __init__(self, power):
-        self.power = power
-
-    def get_power(self):
-        return self.power
-
+    """
+    Power_consumption: power consumed per unit time in watts
+    """
+    def __init__(self, power_consumption):
+        self.power_consumption = power_consumption
