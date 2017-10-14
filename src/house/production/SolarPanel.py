@@ -8,10 +8,12 @@ class SolarPanel:
     def __init__(self, power_production, inclination, orientation):
         self.inclination = inclination
         self.orientation = orientation
-        self.house = None
     
     def get_inclination(self):
         return self.inclination
     
     def get_orientation(self):
         return self.orientation
+    
+    def get_produced_power(self):
+        pass
