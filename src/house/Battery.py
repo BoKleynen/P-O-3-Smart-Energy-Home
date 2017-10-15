@@ -1,3 +1,7 @@
+"""
+a class modelling a batter that can be used to store locally produced energy
+"""
+
 
 class Battery:
     def __init__(self, voltage, capacity, charge=0):

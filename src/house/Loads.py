@@ -13,18 +13,23 @@ class Load(metaclass=ABCMeta):
     def __init__(self, power_consumption):
         self.power_consumption = power_consumption
 
+
 """
-Model for loads that have a relatively constant drain throughout the day
+Model for loads that have a relatively constant drain throughout the day.
+
+e.g.: freezer, fridge, ...
 """
 
 
 class ContinuousLoad(Load):
     def __init__(self, power_consumption):
         super().__init__(power_consumption)
+   
         
 """
-Model for loads that can be freely moved throughout a day by and optimisation algorithm
-based on the forecasted weather
+Model for loads that can be freely moved throughout a day by and optimisation algorithm.
+
+e.g.: charging battery, dishwasher, washing machine , ...
 """
 
 
@@ -36,14 +41,17 @@ class StaggeredLoad(Load):
     def __init__(self, power_consumption, cycle_duration):
         super().__init__(power_consumption)
         self.cycle_duration = cycle_duration
+        self.duration_constraint = lambda start, end: end - start + self.cycle_duration
 
 
 """
 Model for loads that have a relatively fixed start time and duration
+
+e.g.: cooking, watching television, ...
 """
 
 
-class TimedLoad(Load.Load):
+class TimedLoad(Load):
     def __init__(self, power_consumption, start_time, duration):
         super().__init__(power_consumption)
         self.start_time = start_time

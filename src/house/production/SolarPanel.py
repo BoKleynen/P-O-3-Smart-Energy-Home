@@ -17,3 +17,4 @@ class SolarPanel:
     
     def get_produced_power(self):
         pass
+
