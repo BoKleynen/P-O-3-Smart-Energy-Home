@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.optimize import minimize
-from house import House
+from house.House import House
 from . import Environment
 
 
@@ -9,9 +9,8 @@ from . import Environment
 
 
 class Simulation:
-    def __init__(self, house, environment):
-        if isinstance(house, House.House):
-            self.house = house
+    def __init__(self, house: House, environment):
+        self.house = house
         
         if isinstance(environment, Environment.Environment):
             self.environment = environment

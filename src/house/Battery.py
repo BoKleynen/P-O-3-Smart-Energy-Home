@@ -4,16 +4,16 @@ a class modelling a batter that can be used to store locally produced energy
 
 
 class Battery:
-    def __init__(self, voltage, capacity, charge=0):
-        self.voltage = voltage
-        self.capacity = capacity
-        self.charge = charge
+    def __init__(self, voltage: float, capacity: float, charge: float=0):
+        self.voltage: float = voltage
+        self.capacity: float = capacity
+        self.charge: float = charge
         
-    def get_voltage(self):
+    def get_voltage(self) -> float:
         return self.voltage
     
-    def get_capacity(self):
+    def get_capacity(self) -> float:
         return self.capacity
 
-    def get_charge(self):
+    def get_charge(self) -> float:
         return self.charge
