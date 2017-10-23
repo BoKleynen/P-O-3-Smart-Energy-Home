@@ -1,8 +1,15 @@
 import scipy.integrate as integrate
+import scipy.optimize as opt
+import numpy as np
+import random
+import math
 from house.Loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
 from house.production.SolarPanel import SolarPanel
 from house.production.WindMill import Windmill
 from typing import Iterable, List
+
+
+DAY_SECONDS = 86400
 
 
 class House:
@@ -25,6 +32,7 @@ class House:
         self.nb_solar_panel: int = nb_solar_panel if self.solar_panel is not None else 0
         self.windmill: Windmill = windmill
         self.nb_windmill: int = nb_windmill if self.windmill is not None else 0
+        self.is_optimised = False
 
     """
     :return: True if and only if the house has a windmill associated with it
@@ -50,28 +58,44 @@ class House:
         return total_load
 
     """
+    :return the power consumed by all timed loads at a time t
+    """
+    def get_timed_load_power(self, t: float) -> float:
+        return math.fsum(
+            map(lambda load: load.power_consumption(t)
+                if load.start_duration <= t < load.start_duration + load.duration else 0, self.timed_load_list))
+
+    """
     :return: the total amount of power produced by the house at a given time
     """
-    def get_available_own_power(self, time, wind_speed: float):
-        wind_energy = 0
-        solar_energy = 0
-    
-        if self.has_windmill():
-            wind_energy = self.nb_windmill * self.windmill.get_produced_power(
-                    wind_speed[time])
-    
-        if self.has_solar_panel():
-            solar_energy = self.nb_solar_panel * self.solar_panel.get_produced_power()
-    
-        return wind_energy + solar_energy - self.get_total_continuous_load()
+    def get_produced_own_power(self, t: float) -> float:
+        return self.windmill.get_produced_power(t) + self.solar_panel.get_produced_power(t)
 
+    """
+    Optimises the start times of the staggered loads in this house
+    """
     def optimise(self):
-        cost = 0
+        init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
-        for load in self.timed_load_list:
-            cost += integrate.quad(lambda t: load.power_consumption(t) * price(t), load.start_time, load.start_time + load.duration)
+        def cost(t: List[float]) -> float:
+            _cost = 0.0
 
-        print(cost)
+            for i in range(len(self.staggered_load_list)):
+                _cost += integrate.quad(lambda _t: min(
+                    (self.get_timed_load_power(_t) +
+                     self.staggered_load_list[i].power_consumption(_t) -
+                     self.get_produced_own_power(_t)) * price(_t), 0.0), t[i],
+                                        t[i] + self.staggered_load_list[i].cycle_duration)
+
+            return _cost
+
+        cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i])}
+                for i in range(len(self.staggered_load_list)))
+
+        res = opt.minimize(cost, init_guesses, constraints=cons)
+
+        for i in range(len(res.x)):
+            self.staggered_load_list[i].set_start_time(res.x[i])
 
 
 def price(t):

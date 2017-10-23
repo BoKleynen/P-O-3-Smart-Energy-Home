@@ -15,6 +15,6 @@ class SolarPanel:
     def get_orientation(self):
         return self.orientation
     
-    def get_produced_power(self):
+    def get_produced_power(self, t: float) -> float:
         pass
 

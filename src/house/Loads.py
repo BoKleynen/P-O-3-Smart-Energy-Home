@@ -14,8 +14,8 @@ class Load(metaclass=ABCMeta):
     """
     Power_consumption: power consumed per unit time in watts
     """
-    def __init__(self, power_consumption: Callable[[int]]):
-        self.power_consumption = power_consumption
+    def __init__(self, power_consumption: Callable[float, float]):
+        self.power_consumption: Callable[float, float] = power_consumption
 
 
 """
@@ -26,7 +26,7 @@ e.g.: freezer, fridge, ...
 
 
 class ContinuousLoad(Load):
-    def __init__(self, power_consumption: Callable[[int]]):
+    def __init__(self, power_consumption: Callable[float, float]):
         super().__init__(power_consumption)
    
         
@@ -42,10 +42,13 @@ class StaggeredLoad(Load):
     power_consumption:
     cycle_duration: time needed to perform task once in seconds
     """
-    def __init__(self, power_consumption: Callable[[int]], cycle_duration):
+    def __init__(self, power_consumption: Callable[float, float], cycle_duration: float):
         super().__init__(power_consumption)
         self.cycle_duration = cycle_duration
-        self.duration_constraint = lambda start, end: end - start + self.cycle_duration
+        self.start_time: float = None
+
+    def set_start_time(self, t: float):
+        self.start_time = t
 
 
 """
@@ -56,7 +59,7 @@ e.g.: cooking, watching television, ...
 
 
 class TimedLoad(Load):
-    def __init__(self, power_consumption: Callable[[int]], start_time, duration):
-        super().__init__(power_consumption)
+    def __init__(self, power_consumption: Callable[float, float], start_time, duration):
+        super().__init__(lambda t: power_consumption(t-start_time) if start_time <= t <= start_time + duration else 0)
         self.start_time = start_time
         self.duration = duration
