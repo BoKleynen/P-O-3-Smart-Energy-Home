@@ -6,7 +6,7 @@ class Windmill:
         self.radius = radius
 
     @staticmethod
-    def power_production(wind_speed, area):
+    def power_production(wind_speed: float, area: float) -> float:
         return 0.163 * area * wind_speed
     
     def get_produced_power(self, t: float) -> float:

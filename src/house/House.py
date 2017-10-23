@@ -61,9 +61,7 @@ class House:
     :return the power consumed by all timed loads at a time t
     """
     def get_timed_load_power(self, t: float) -> float:
-        return math.fsum(
-            map(lambda load: load.power_consumption(t)
-                if load.start_duration <= t < load.start_duration + load.duration else 0, self.timed_load_list))
+        return math.fsum(map(lambda load: load.power_consumption(t), self.timed_load_list))
 
     """
     :return: the total amount of power produced by the house at a given time
@@ -74,7 +72,7 @@ class House:
     """
     Optimises the start times of the staggered loads in this house
     """
-    def optimise(self):
+    def optimise(self) -> None:
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
         def cost(t: List[float]) -> float:
@@ -83,9 +81,10 @@ class House:
             for i in range(len(self.staggered_load_list)):
                 _cost += integrate.quad(lambda _t: min(
                     (self.get_timed_load_power(_t) +
-                     self.staggered_load_list[i].power_consumption(_t) -
-                     self.get_produced_own_power(_t)) * price(_t), 0.0), t[i],
-                                        t[i] + self.staggered_load_list[i].cycle_duration)
+                     self.staggered_load_list[i].power_consumption(_t - t[i]) -
+                     self.get_produced_own_power(_t)) * price(_t),
+                    0.0),
+                                        t[i], t[i] + self.staggered_load_list[i].cycle_duration)
 
             return _cost
 

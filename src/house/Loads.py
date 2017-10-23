@@ -39,7 +39,11 @@ e.g.: charging battery, dishwasher, washing machine , ...
 
 class StaggeredLoad(Load):
     """
-    power_consumption:
+    power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
+        assumed to be zero outside of [self.start_time, self.start_time + self.cycle_duration].
+        The parameter of this function should always be expressed relative to the start time of this load.
+        This is due to the mutable nature of self.start_time of an instance of StaggeredLoad.
+
     cycle_duration: time needed to perform task once in seconds
     """
     def __init__(self, power_consumption: Callable[float, float], cycle_duration: float):
@@ -47,7 +51,7 @@ class StaggeredLoad(Load):
         self.cycle_duration = cycle_duration
         self.start_time: float = None
 
-    def set_start_time(self, t: float):
+    def set_start_time(self, t: float) -> None:
         self.start_time = t
 
 
@@ -59,7 +63,14 @@ e.g.: cooking, watching television, ...
 
 
 class TimedLoad(Load):
-    def __init__(self, power_consumption: Callable[float, float], start_time, duration):
-        super().__init__(lambda t: power_consumption(t-start_time) if start_time <= t <= start_time + duration else 0)
-        self.start_time = start_time
-        self.duration = duration
+    """
+        power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
+            assumed to be zero outside of [self.start_time, self.start_time + self.cycle_duration].
+            This is done automatically due to the immutable nature of self.start_time of an instance of TimedLoad
+
+        cycle_duration: time needed to perform task once in seconds
+    """
+    def __init__(self, power_consumption: Callable[float, float], start_time, cycle_duration):
+        super().__init__(lambda t: power_consumption(t-start_time) if start_time <= t <= start_time + cycle_duration else 0)
+        self.start_time: float = start_time
+        self.cycle_duration: float = cycle_duration
