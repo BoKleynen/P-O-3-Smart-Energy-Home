@@ -47,7 +47,7 @@ class House:
         return self.solar_panel is not None
     
     """
-    :return: The total amount of continuous power draw
+    return: The total amount of continuous power draw
     """
     def get_total_continuous_load(self) -> float:
         total_load = 0
@@ -57,20 +57,25 @@ class House:
 
         return total_load
 
-    """
-    :return the power consumed by all timed loads at a time t
-    """
-    def get_timed_load_power(self, t: float) -> float:
-        return math.fsum(map(lambda load: load.power_consumption(t), self.timed_load_list))
+    def get_staggered_load_power(self, t: float) -> float:
+        return math.fsum(map(lambda load: load.power_consumption(t - load.start_time)
+            if load.start_time <= t <= load.start_time + load.cycle_duration else 0, self.staggered_load_list))
 
     """
-    :return: the total amount of power produced by the house at a given time
+    return: the power consumed by all timed loads at a time t
+    """
+    def get_timed_load_power(self, t: float) -> float:
+        return math.fsum(map(lambda load: load.power_consumption(t - load.start_time)
+            if load.start_time <= t <= load.start_time + load.cycle_duration else 0, self.timed_load_list))
+
+    """
+    return: the total amount of power produced by the house at a given time
     """
     def get_produced_own_power(self, t: float) -> float:
         return self.windmill.get_produced_power(t) + self.solar_panel.get_produced_power(t)
 
     """
-    :return: the amount of self produced power available for staggered loads
+    return: the amount of self produced power available for staggered loads
     """
     def get_available_own_power(self, t: float) -> float:
         return max(self.get_produced_own_power(t) - self.get_timed_load_power(t), 0.0)
@@ -78,30 +83,25 @@ class House:
     """
     Optimises the start times of the staggered loads in this house
     """
-    def optimise(self) -> None:
+    # TODO: add support for some kind of database object, storing needed data
+    def optimise(self) -> List[float]:
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
         def staggered_cost(t: np.ndarray) -> float:
-            if len(t) != 2 * len(self.staggered_load_list):
+            if len(t) != len(self.staggered_load_list):
                 raise Exception("iterable length mismatch")
+            
+            for i in range(len(t)):
+                self.staggered_load_list[i].set_start_time(t[i])
 
-            _cost = 0.0
-
-            for i in range(len(self.staggered_load_list)):
-                _cost += integrate.quad(lambda _t: min(
-                    (self.staggered_load_list[i].power_consumption(_t - t[i]) -
-                     self.get_available_own_power(_t)) * price(_t), 0.0),
-                                        t[i], t[i] + self.staggered_load_list[i].cycle_duration)
-
-            return _cost
+            return integrate.quad(lambda _t: self.get_staggered_load_power(_t) * price(_t), 0.0, DAY_SECONDS)[0]
 
         cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i])}
                 for i in range(len(self.staggered_load_list)))
 
         res = opt.minimize(staggered_cost, init_guesses, constraints=cons)
 
-        for i in range(len(res.x)):
-            self.staggered_load_list[i].set_start_time(res.x[i])
+        return res.x
 
 
 def price(t):

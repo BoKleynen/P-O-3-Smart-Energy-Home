@@ -70,7 +70,7 @@ class TimedLoad(Load):
 
         cycle_duration: time needed to perform task once in seconds
     """
-    def __init__(self, power_consumption: Callable[float, float], start_time, cycle_duration):
+    def __init__(self, power_consumption: Callable[float, float], start_time: float, cycle_duration: float):
         super().__init__(lambda t: power_consumption(t-start_time) if start_time <= t <= start_time + cycle_duration else 0)
         self.start_time: float = start_time
         self.cycle_duration: float = cycle_duration
