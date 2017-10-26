@@ -1,9 +1,8 @@
-"""
-a class modelling a batter that can be used to store locally produced energy
-"""
-
-
 class Battery:
+    """
+    a class modelling a batter that can be used to store locally produced energy
+    """
+
     def __init__(self, voltage: float, capacity: float, charge: float=0):
         self.voltage: float = voltage
         self.capacity: float = capacity
