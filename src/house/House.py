@@ -56,12 +56,7 @@ class House:
 
         :return: The total amount of continuous power draw
         """
-        total_load = 0
-        
-        for load in self.continuous_load_list:
-            total_load += load.power_consumption
-
-        return total_load
+        return math.fsum(map(lambda load: load.power_consumption, self.continuous_load_list))
 
     def get_staggered_load_power(self, t: float, t_arr: np.ndarray) -> float:
         """
