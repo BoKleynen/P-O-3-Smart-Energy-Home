@@ -1,3 +1,4 @@
 
 \.idea/
-/data/
+src/house/__pycache__/
+src/house/production/__pycache__/

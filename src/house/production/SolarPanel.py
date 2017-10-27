@@ -8,7 +8,7 @@ class SolarPanel:
     power_production: a function approximating the power_consumption output of the solar panel
     """
     
-    def __init__(self, power_production: Callable[float, float], inclination: float, orientation: float):
+    def __init__(self, power_production: Callable[[float], float], inclination: float, orientation: float):
         self.inclination: float = inclination
         self.orientation: float = orientation
-        self.power_production: Callable[float, float] = power_production
+        self.power_production: Callable[[float], float] = power_production

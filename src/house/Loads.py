@@ -10,12 +10,12 @@ class Load(metaclass=ABCMeta):
     time in seconds and relative to 00:00 when expressing a time of the day
     """
 
-    def __init__(self, power_consumption: Callable[float, float]):
+    def __init__(self, power_consumption: Callable[[float], float]):
         """
 
         :param power_consumption:
         """
-        self.power_consumption: Callable[float, float] = power_consumption
+        self.power_consumption: Callable[[float], float] = power_consumption
 
 
 class ContinuousLoad(Load):
@@ -25,7 +25,7 @@ class ContinuousLoad(Load):
     e.g.: freezer, fridge, ...
     """
 
-    def __init__(self, power_consumption: Callable[float, float]):
+    def __init__(self, power_consumption: Callable[[float], float]):
         super().__init__(power_consumption)
 
 
@@ -36,7 +36,7 @@ class StaggeredLoad(Load):
     e.g.: charging battery, dishwasher, washing machine , ...
     """
 
-    def __init__(self, power_consumption: Callable[float, float], cycle_duration: float, due_time: float):
+    def __init__(self, power_consumption: Callable[[float], float], cycle_duration: float, due_time: float):
         """
 
         :param power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
@@ -62,7 +62,7 @@ class TimedLoad(Load):
     e.g.: cooking, watching television, ...
     """
 
-    def __init__(self, power_consumption: Callable[float, float], start_time: float, cycle_duration):
+    def __init__(self, power_consumption: Callable[[float], float], start_time: float, cycle_duration):
         """
 
         :param power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
