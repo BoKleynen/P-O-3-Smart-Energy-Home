@@ -51,14 +51,20 @@ class House:
         """
         return self.solar_panel is not None
 
-    def get_continuous_load_power(self) -> float:
+    def continuous_load_power(self) -> float:
         """
 
         :return: The total amount of continuous power draw
         """
-        return math.fsum(map(lambda load: load.power_consumption, self.continuous_load_list))
+        return \
+            math.fsum(
+                map(
+                    lambda load: load.power_consumption,
+                    self.continuous_load_list
+                )
+            )
 
-    def get_staggered_load_power(self, t: float, t_arr: np.ndarray) -> float:
+    def staggered_load_power(self, t: float, t_arr: np.ndarray) -> float:
         """
 
         :param t:
@@ -68,32 +74,46 @@ class House:
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
-        return math.fsum(map(lambda i: self.staggered_load_list[i].power_consumption(t - t_arr[i])
-            if t_arr[i] <= t <= t_arr[i] + self.staggered_load_list[i].cycle_duration else 0, range(len(t_arr))))
+        return \
+            math.fsum(
+                map(
+                    lambda i: self.staggered_load_list[i].power_consumption(t - t_arr[i])
+                    if t_arr[i] <= t < t_arr[i] + self.staggered_load_list[i].cycle_duration
+                    else 0,
+                    range(len(t_arr))
+                )
+            )
 
-    def get_timed_load_power(self, t: float) -> float:
+    def timed_load_power(self, t: float) -> float:
         """
         return: The power consumed by all timed loads at a time t
         """
-        return math.fsum(map(lambda load: load.power_consumption(t - load.start_time)
-                    if load.start_time <= t <= load.start_time + load.cycle_duration else 0, self.timed_load_list))
+        return \
+            math.fsum(
+                map(
+                    lambda load: load.power_consumption(t - load.start_time)
+                    if load.start_time <= t < load.start_time + load.cycle_duration
+                    else 0,
+                    self.timed_load_list
+                )
+            )
 
-    def get_produced_own_power(self, t: float) -> float:
+    def produced_own_power(self, t: float) -> float:
         """
 
         :param t:
         :return: The total amount of power produced by the house at a given time
         """
-        pass
-        # return self.windmill.get_produced_power(t) + self.solar_panel.get_produced_power(t)
+        return self.windmill.power_production(t) if self.has_windmill() else 0 \
+            + self.solar_panel.power_production(t) if self.has_solar_panel() else 0
 
-    def get_available_own_power(self, t: float) -> float:
+    def available_own_power(self, t: float) -> float:
         """
 
         :param t:
         :return: The amount of self produced power available for staggered loads at the given time t
         """
-        return max(self.get_produced_own_power(t) - self.get_timed_load_power(t), 0.0)
+        return max(self.produced_own_power(t) - self.timed_load_power(t), 0.0)
 
     # TODO: add support for some kind of database object, storing needed data like electricity price, wind speed, ...
     def optimise(self) -> List[float]:
@@ -112,8 +132,12 @@ class House:
             if len(t_arr) != len(self.staggered_load_list):
                 raise Exception("iterable length mismatch")
 
-            return integrate.quad(lambda t: max((self.get_staggered_load_power(t, t_arr) - self.get_available_own_power(t))
-                                                * price(t), 0.0), 0.0, DAY_SECONDS)[0]
+            return \
+                integrate.quad(
+                    lambda t: max(
+                        (self.staggered_load_power(t, t_arr) - self.available_own_power(t)) * price(t),
+                        0.0),
+                    0.0, DAY_SECONDS)[0]
 
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
@@ -130,6 +154,7 @@ class House:
         :param t_list:
         :return:
         """
+
         if len(t_list) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
@@ -145,5 +170,3 @@ def price(t):
     :return:
     """
     return 20 if 28800 < t <= 72000 else 10
-
-
