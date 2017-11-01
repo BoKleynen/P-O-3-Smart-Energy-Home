@@ -7,3 +7,7 @@ def time_range(start: time, end: time) -> Generator[time, time, None]:
     for i in range((end.hour*60 + end.minute) - (start.hour*60 + start.minute)):
         yield (start_datetime + timedelta(minutes=i)).time()
 
+
+def date_range(start: date, end: date):
+    for i in range ((end - start).days):
+        yield start + timedelta(days=i)

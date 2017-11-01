@@ -56,13 +56,12 @@ class House:
 
         :return: The total amount of continuous power draw
         """
-        return \
-            math.fsum(
-                map(
-                    lambda load: load.power_consumption,
-                    self.continuous_load_list
-                )
+        return math.fsum(
+            map(
+                lambda load: load.power_consumption,
+                self.continuous_load_list
             )
+        )
 
     def staggered_load_power(self, t: float, t_arr: np.ndarray) -> float:
         """
@@ -74,29 +73,25 @@ class House:
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
-        return \
-            math.fsum(
-                map(
-                    lambda i: self.staggered_load_list[i].power_consumption(t - t_arr[i])
-                    if t_arr[i] <= t < t_arr[i] + self.staggered_load_list[i].cycle_duration
-                    else 0,
-                    range(len(t_arr))
-                )
+        return math.fsum(
+            map(
+                lambda i: self.staggered_load_list[i].power_consumption(t - t_arr[i])
+                if t_arr[i] <= t < t_arr[i] + self.staggered_load_list[i].cycle_duration
+                else 0,
+                range(len(t_arr))
             )
+        )
 
     def timed_load_power(self, t: float) -> float:
         """
         return: The power consumed by all timed loads at a time t
         """
-        return \
-            math.fsum(
-                map(
-                    lambda load: load.power_consumption(t - load.start_time)
-                    if load.start_time <= t < load.start_time + load.cycle_duration
-                    else 0,
-                    self.timed_load_list
-                )
+        return math.fsum(
+            map(
+                lambda load: load.power_consumption(t),
+                self.timed_load_list
             )
+        )
 
     def produced_own_power(self, t: float) -> float:
         """
@@ -132,12 +127,11 @@ class House:
             if len(t_arr) != len(self.staggered_load_list):
                 raise Exception("iterable length mismatch")
 
-            return \
-                integrate.quad(
-                    lambda t: max(
-                        (self.staggered_load_power(t, t_arr) - self.available_own_power(t)) * price(t),
-                        0.0),
-                    0.0, DAY_SECONDS)[0]
+            return integrate.quad(
+                lambda t: max(
+                    (self.staggered_load_power(t, t_arr) - self.available_own_power(t)) * price(t),
+                    0.0),
+                0.0, DAY_SECONDS)[0]
 
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
@@ -159,7 +153,7 @@ class House:
             raise Exception("iterable length mismatch")
 
         for i in range(len(self.staggered_load_list)):
-            self.staggered_load_list[i].set_start_time(t_list[i])
+            self.staggered_load_list[i].start_time = t_list[i]
 
 
 def price(t):

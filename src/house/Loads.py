@@ -51,9 +51,6 @@ class StaggeredLoad(Load):
         self.start_time: float = None
         self.due_time: float = due_time
 
-    def set_start_time(self, t: float) -> None:
-        self.start_time = t
-
 
 class TimedLoad(Load):
     """
