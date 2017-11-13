@@ -142,18 +142,18 @@ class House:
 
         return res.x
 
-    def set_staggered_load_times(self, t_list) -> None:
+    def set_staggered_load_times(self, t_it) -> None:
         """
 
-        :param t_list:
+        :param t_it: iterable containing times at which the staggered loads have to start their job, has to be ordered
         :return:
         """
 
-        if len(t_list) != len(self.staggered_load_list):
+        if len(t_it) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
         for i in range(len(self.staggered_load_list)):
-            self.staggered_load_list[i].start_time = t_list[i]
+            self.staggered_load_list[i].start_time = t_it[i]
 
 
 def price(t):
