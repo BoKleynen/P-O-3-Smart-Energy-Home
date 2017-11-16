@@ -3,12 +3,14 @@ import scipy.optimize as opt
 import numpy as np
 import random
 import math
+import pandas as pd
 from house.Loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
 from house.production.SolarPanel import SolarPanel
 from house.production.WindMill import Windmill
 from house.Battery import Battery
 from typing import Iterable, List
 from datetime import datetime, date, time, timedelta
+from util.Util import *
 
 
 DAY_SECONDS = 86400
@@ -21,7 +23,7 @@ class House:
     """
 
     def __init__(self, load_it: Iterable[Load], solar_panel: SolarPanel=None, nb_solar_panel: int=0,
-                 windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None):
+                 windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, position: tuple=None):
         """
 
         :param load_it: An iterable containing all loads in the house
@@ -29,20 +31,34 @@ class House:
         :param nb_solar_panel: The amount of solar panels, will be set to 0 if the house has no solar panel
         :param windmill: The type of windmill installed, None if no windmill is installed
         :param nb_windmill: The amount of windmills installed, will be set to 0 if no windmill is installed
+        :param position: tuple (longitude, latitude)
         """
+        if solar_panel is not None and position is None:
+            raise Exception("Postion has to be known when solar panels are used")
+
         self.continuous_load_list: List[ContinuousLoad] = [load for load in load_it if isinstance(load, ContinuousLoad)]
         self.staggered_load_list: List[StaggeredLoad] = [load for load in load_it if isinstance(load, StaggeredLoad)]
         self.timed_load_list: List[TimedLoad] = [load for load in load_it if isinstance(load, TimedLoad)]
+
         self.solar_panel: SolarPanel = solar_panel
         self.nb_solar_panel: int = nb_solar_panel if self.solar_panel is not None else 0
+        if self.has_solar_panel():
+            solar_panel.house = self
+
         self.windmill: Windmill = windmill
         self.nb_windmill: int = nb_windmill if self.windmill is not None else 0
+
         self.battery = battery
-        self.is_optimised = False
-        battery.house = self
+        if self.has_battery():
+            battery.house = self
+
         self.is_large_installation = self.nb_solar_panel * self.solar_panel.peak_power if self.has_solar_panel() else 0\
-            + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) if self.has_windmill() else 0 > 10000.0
-        self.coordinates = None
+            + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) if self.has_windmill() else 0 > 10.0
+
+        self.position: tuple = position
+
+        self.irradiance_data: pd.DataFrame = None
+        self.wind_speed_data: pd.DataFrame = None
 
     def has_windmill(self) -> bool:
         """
@@ -58,6 +74,9 @@ class House:
         """
         return self.solar_panel is not None
 
+    def has_battery(self) -> bool:
+        return self.battery is not None
+
     def continuous_load_power(self) -> float:
         """
 
@@ -70,7 +89,7 @@ class House:
             )
         )
 
-    def staggered_load_power(self, t: float, t_arr: np.ndarray) -> float:
+    def staggered_load_power(self, t: datetime, t_arr: np.ndarray) -> float:
         """
 
         :param t:
@@ -89,7 +108,7 @@ class House:
             )
         )
 
-    def timed_load_power(self, t: float) -> float:
+    def timed_load_power(self, t: datetime) -> float:
         """
         return: The power consumed by all timed loads at a time t
         """
@@ -100,7 +119,7 @@ class House:
             )
         )
 
-    def total_load_power(self, t: float, t_arr: np.ndarray):
+    def total_load_power(self, t: datetime, t_arr: np.ndarray):
         return self.continuous_load_power() + self.timed_load_power(t) + self.staggered_load_power(t, t_arr)
 
     def produced_own_power(self, t: float) -> float:
@@ -115,7 +134,7 @@ class House:
     def total_power_consumption(self, t, t_arr):
         return self.total_load_power(t, t_arr) - self.produced_own_power(t)
 
-    def _staggered_cost(self, t_arr: np.ndarray) -> float:
+    def _cost(self, t_arr: np.ndarray, day: datetime) -> float:
         """
 
         :param t_arr:
@@ -124,11 +143,13 @@ class House:
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
-        t = [t for t in range(0, DAY_SECONDS, 300)] \
-            + [load.start_time for load in self.timed_load_list] \
-            + [load.start_time + load.cycle_duration for load in self.timed_load_list] \
-            + [t_arr[i] for i in range(len(t_arr))] \
-            + [t_arr[i] + self.staggered_load_list[i].cycle_duration for i in range(len(t_arr))]
+        t = [t for t in datetime_range(day, day+timedelta(days=1), timedelta(seconds=300))] \
+            + [datetime(day.year, day.month, day.day, 0)+timedelta(load.start_time) for load in self.timed_load_list] \
+            + [datetime(day.year, day.month, day.day, 0)+timedelta(load.start_time + load.cycle_duration)
+               for load in self.timed_load_list] \
+            + [datetime(day.year, day.month, day.day, 0)+timedelta(t_arr[i]) for i in range(len(t_arr))] \
+            + [datetime(day.year, day.month, day.day, 0)+timedelta(t_arr[i]+self.staggered_load_list[i].cycle_duration)
+               for i in range(len(t_arr))]
 
         t.sort()
 
@@ -136,8 +157,8 @@ class House:
         cost = 0.0
 
         for i in range(len(t)):
-            time_delta = t[i + 1] - t[i]
-            total_power = self.total_power_consumption(t, t_arr)
+            time_delta = (t[i + 1] - t[i]).total_seconds()
+            total_power = self.total_power_consumption(t[i], t_arr)
             used_energy = time_delta * (total_power + self.battery.power(time_delta, total_power))
             total_used_energy += used_energy
             cost += self.electricity_cost(t[i], used_energy)
@@ -156,7 +177,7 @@ class House:
         cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i])}
                 for i in range(len(self.staggered_load_list)))
 
-        res = opt.minimize(self._staggered_cost, init_guesses, constraints=cons)
+        res = opt.minimize(self._cost, init_guesses, constraints=cons)
 
         return res.x
 

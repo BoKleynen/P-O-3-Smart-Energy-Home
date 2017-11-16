@@ -18,8 +18,8 @@ class SolarPanel:
         self.area: float = area
         self.house = None
 
-    def power(self, t: datetime, irradiance):
-        return irradiance * self.peak_power / (1000 * self.area) * self.cos_theta(t)
+    def power(self, t: datetime):
+        return self.house.irradiance_data.at(t)[1] * self.peak_power/(1000 * self.area) * self.cos_theta(t)
 
     def cos_theta(self, t: datetime) -> float:
         delta = SolarPanel.delta((t.date() - date(t.date().year, 1, 1)).days + 1)

@@ -17,6 +17,7 @@ irradiance_df = pd.read_csv(filepath_or_buffer="../../data/Irradiance.csv",
 
 data = [np.mean(irradiance_df.at_time(t)) for t in Util.time_range()]
 date_list = [datetime(2017, 1, 1, hour=t.hour, minute=t.minute) for t in Util.time_range()]
+print(irradiance_df)
 
 fig, ax = plt.subplots()
 ax.plot(date_list, data)

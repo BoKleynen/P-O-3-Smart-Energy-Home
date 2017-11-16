@@ -1,5 +1,6 @@
 from abc import ABCMeta
 from typing import Callable
+from datetime import datetime, timedelta
 
 
 class Load(metaclass=ABCMeta):
@@ -59,7 +60,7 @@ class TimedLoad(Load):
     e.g.: cooking, watching television, ...
     """
 
-    def __init__(self, power_consumption: Callable[[float], float], start_time: float, cycle_duration):
+    def __init__(self, power_consumption: Callable[[float], float], start_time: float, cycle_duration, repeat):
         """
 
         :param power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
