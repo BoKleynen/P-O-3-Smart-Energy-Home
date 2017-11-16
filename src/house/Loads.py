@@ -10,12 +10,12 @@ class Load(metaclass=ABCMeta):
     time in seconds and relative to 00:00 when expressing a time of the day
     """
 
-    def __init__(self, power_consumption: Callable[[float], float]):
+    def __init__(self, power_consumption: Callable):
         """
 
         :param power_consumption:
         """
-        self.power_consumption: Callable[[float], float] = power_consumption
+        self.power_consumption: Callable = power_consumption
 
 
 class ContinuousLoad(Load):
