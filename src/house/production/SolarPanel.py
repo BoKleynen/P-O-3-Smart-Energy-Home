@@ -1,4 +1,6 @@
 import math
+from math import sin, cos
+from datetime import date, datetime, timedelta
 
 
 class SolarPanel:
@@ -14,7 +16,27 @@ class SolarPanel:
         self.orientation: float = orientation
         self.peak_power: float = peak_power
         self.area: float = area
+        self.house = None
 
-    def power_consumption(self, t, irradiance, solar_inclination):
-        math.cos(math.fabs(solar_inclination - self.inclination)) * self.peak_power/(1000*self.area) * irradiance
+    def power(self, t: datetime, irradiance):
+        return irradiance * self.peak_power / (1000 * self.area) * self.cos_theta(t)
 
+    def cos_theta(self, t: datetime) -> float:
+        delta = SolarPanel.delta((t.date() - date(t.date().year, 1, 1)).days + 1)
+        phi = self.house.coordinates
+        beta = self.inclination
+        a_zs = self.orientation
+        omega = SolarPanel.omega(t)
+
+        return sin(delta)*sin(phi)*cos(beta) + sin(delta)*cos(phi)*sin(beta)*cos(a_zs) \
+            + cos(delta)*cos(phi)*cos(beta)*cos(omega) - cos(delta)*sin(phi)*sin(beta)*cos(a_zs)*cos(omega) \
+            - cos(delta)*sin(beta)*sin(a_zs)*sin(omega)
+
+    @staticmethod
+    def delta(n):
+        return 23.45 * math.pi/180 * math.sin(2*math.pi * (284 + n)/36.25)
+
+    @staticmethod
+    def omega(t: datetime):
+        _t = (t - datetime(t.date().year, t.date().month, t.date().day, hour=12)).seconds/3600
+        return math.pi/12 * _t
