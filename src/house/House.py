@@ -188,7 +188,7 @@ class House:
     def total_load_power(self, t: datetime, t_arr: np.ndarray):
         return self.continuous_load_power() + self.timed_load_power(t) + self.staggered_load_power(t, t_arr)
 
-    def produced_own_power(self, t: float) -> float:
+    def produced_own_power(self, t: datetime) -> float:
         """
 
         :param t:
@@ -200,7 +200,7 @@ class House:
     def total_power_consumption(self, t, t_arr):
         return self.total_load_power(t, t_arr) - self.produced_own_power(t)
 
-    def _cost(self, t_arr: np.ndarray, day: datetime) -> float:
+    def _cost(self, t_arr: np.ndarray) -> float:
         """
 
         :param t_arr:
@@ -209,13 +209,18 @@ class House:
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
-        t = [t for t in datetime_range(day, day+timedelta(days=1), timedelta(seconds=300))] \
-            + [datetime(day.year, day.month, day.day, 0)+timedelta(load.start_time) for load in self.timed_load_list] \
-            + [datetime(day.year, day.month, day.day, 0)+timedelta(load.start_time + load.cycle_duration)
-               for load in self.timed_load_list] \
-            + [datetime(day.year, day.month, day.day, 0)+timedelta(t_arr[i]) for i in range(len(t_arr))] \
-            + [datetime(day.year, day.month, day.day, 0)+timedelta(t_arr[i]+self.staggered_load_list[i].cycle_duration)
-               for i in range(len(t_arr))]
+        init_battery_charge = self.battery.stored_energy
+
+        start = datetime.combine(self.date, time(0, 0, 0))
+        t = [t for t in datetime_range(start, start+timedelta(days=1), timedelta(seconds=300))] \
+            + [load.start_datetime for load in self.timed_load_list if load.execution_date == self.date] \
+            + [load.start_datetime + timedelta(seconds=load.cycle_duration) for load in self.timed_load_list
+               if load.execution_date == self.date] \
+            + [datetime.combine(self.staggered_load_list[i].execution_date, time(0, 0, 0)) + timedelta(seconds=t_arr[i])
+               for i in range(len(t_arr)) if self.staggered_load_list[i].execution_date == self.date] \
+            + [datetime.combine(self.staggered_load_list[i].execution_date, time(0, 0, 0))
+               + timedelta(seconds=t_arr[i]+self.staggered_load_list[i].cycle_duration) for i in range(len(t_arr))
+               if self.staggered_load_list[i].execution_date == self.date]
 
         t.sort()
 
