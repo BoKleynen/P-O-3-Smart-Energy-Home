@@ -238,7 +238,7 @@ class House:
 
         return cost
 
-    def optimise(self) -> List[float]:
+    def optimise(self, irradiance: pd.DataFrame=None, wind_speed: pd.DataFrame=None) -> List[float]:
         """
         Computes the optimal timings for the staggered loads to start their job.
 
@@ -250,14 +250,15 @@ class House:
         cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i])}
                 for i in range(len(self.staggered_load_list)))
 
-        res = opt.minimize(self._cost, init_guesses, constraints=cons)
+        res = opt.minimize(self._cost, init_guesses, constraints=cons, args=(irradiance, wind_speed))
 
-        return res.x
+        return res
 
     def set_staggered_load_times(self, t_it) -> None:
         """
 
         :param t_it: iterable containing times at which the staggered loads have to start their job, has to be ordered
+                     according to the order of staggered_loads
         :return:
         """
 
@@ -265,13 +266,18 @@ class House:
             raise Exception("iterable length mismatch")
 
         for i in range(len(self.staggered_load_list)):
-            self.staggered_load_list[i].start_time = t_it[i]
+            load = self.staggered_load_list[i]
+            seconds = t_it[i] % 60
+            minutes = int((t_it[i] % 3600) / 60)
+            hours = int(t_it[i] / 3600)
+            load.set_start_time(time(hours, minutes, seconds))
 
-    def electricity_cost(self, t: datetime, consumed_energy) -> float:
+    def electricity_cost(self, t: datetime, consumed_energy: float) -> float:
         """
 
         :param t:
         :param consumed_energy: energy in kWh
+                                negative values means that energy was produced by self
         :return:
 
             peak:       8:00 - 20:00 on weekdays
@@ -282,7 +288,7 @@ class House:
                 return 0.24 * consumed_energy
 
             else:
-                if t.time() < time(hour=8) or t.time() > time(hour=20) or t.isoweekday() >= 6:
+                if t.time() < time(hour=8) or t.time() >= time(hour=20) or t.isoweekday() >= 6:
                     return 0.036 * consumed_energy
 
                 else:
