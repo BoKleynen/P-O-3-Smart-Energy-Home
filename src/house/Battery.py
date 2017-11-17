@@ -38,11 +38,9 @@ class Battery:
     def power(self, time_delta, needed_power):
         if needed_power > 0:
             if self.stored_energy - time_delta * min(needed_power, self.max_power) >= 0:
-                self.stored_energy -= time_delta * min(needed_power, self.max_power)
                 return min(needed_power, self.max_power)
 
             elif self.stored_energy - time_delta * min(self.stored_energy/time_delta, self.max_power):
-                self.stored_energy -= time_delta * min(self.stored_energy/time_delta, self.max_power)
                 return min(self.stored_energy/time_delta, self.max_power)
 
         else:
