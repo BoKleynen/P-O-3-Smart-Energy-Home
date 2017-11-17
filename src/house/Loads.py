@@ -30,45 +30,77 @@ class ContinuousLoad(Load):
         super().__init__(power_consumption)
 
 
-class StaggeredLoad(Load):
-    """
-    Model for loads that can be freely moved throughout a day by and optimisation algorithm.
-
-    e.g.: charging battery, dishwasher, washing machine , ...
-    """
-
-    def __init__(self, power_consumption: Callable[[float], float], cycle_duration: float, due_time: float):
-        """
-
-        :param power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
-            assumed to be zero outside of [self.start_time, self.start_time + self.cycle_duration].
-            The parameter of this function should always be expressed relative to the start time of this load.
-            This is due to the mutable nature of self.start_time of an instance of StaggeredLoad.
-        :param cycle_duration:
-        :param due_time:
-        """
+class CyclicalLoad(Load, metaclass=ABCMeta):
+    def __init__(self, power_consumption, execution_date: date, start_time: time, cycle_duration: float,
+                 time_delta: timedelta):
         super().__init__(power_consumption)
-        self.cycle_duration = cycle_duration
-        self.start_time: float = None
-        self.due_time: float = due_time
+        self._execution_date = execution_date
+        self._start_time = start_time
+        self._cycle_duration = cycle_duration
+        self._time_delta = time_delta
+
+    @property
+    def start_datetime(self) -> datetime:
+        return datetime.combine(self._execution_date, self._start_time)
+
+    @property
+    def execution_date(self) -> date:
+        return self._execution_date
+
+    @property
+    def start_time(self) -> float:
+        return 3600*self.start_datetime.time().hour \
+               + 60*self.start_datetime.time().minute \
+               + self.start_datetime.time().second
+
+    @property
+    def time_delta(self) -> timedelta:
+        return self._time_delta
+
+    @property
+    def cycle_duration(self) -> float:
+        return self._cycle_duration
 
 
-class TimedLoad(Load):
+class TimedLoad(CyclicalLoad):
     """
     Model for loads that have a relatively fixed start time and duration
 
     e.g.: cooking, watching television, ...
     """
 
-    def __init__(self, power_consumption: Callable[[float], float], start_time: float, cycle_duration, repeat):
+    def __init__(self, power_consumption: Callable[[float], float], execution_date: date, start_time: time,
+                 cycle_duration: float, time_delta: timedelta):
         """
 
-        :param power_consumption: A function taking one argument (of time) that describes the power consumption of this load,
-            assumed to be zero outside of [self.start_time, self.start_time + self.cycle_duration].
-            This is done automatically due to the immutable nature of self.start_time of an instance of TimedLoad
+        :param power_consumption: A function taking one argument (of time) that describes the power consumption of this
+        load, assumed to be zero outside of [self.start_time, self.start_time + self.cycle_duration].
         :param start_time:
         :param cycle_duration:
         """
-        super().__init__(lambda t: power_consumption(t-start_time) if start_time <= t <= start_time + cycle_duration else 0)
-        self.start_time: float = start_time
-        self.cycle_duration: float = cycle_duration
+        super().__init__(power_consumption, execution_date, start_time, cycle_duration, time_delta)
+
+
+class StaggeredLoad(CyclicalLoad):
+    """
+    Model for loads that can be freely moved throughout a day by and optimisation algorithm.
+
+    e.g.: dishwasher, washing machine , ...
+    """
+
+    def __init__(self, power_consumption: Callable[[float], float], execution_date: date, original_start_time,
+                 cycle_duration: float, due_time: time, time_delta: timedelta):
+        super().__init__(power_consumption, execution_date, original_start_time, cycle_duration, time_delta)
+        self._due_time = due_time
+        self._original_start_time = original_start_time
+
+    @property
+    def due_time(self):
+        return self._due_time
+
+    @property
+    def original_start_time(self):
+        return self._original_start_time
+
+    def set_start_time(self, start_time: time):
+        super()._start_time = start_time
