@@ -1,4 +1,3 @@
-import scipy.integrate as integrate
 import scipy.optimize as opt
 import numpy as np
 import random
@@ -9,7 +8,6 @@ from house.production.SolarPanel import SolarPanel
 from house.production.WindMill import Windmill
 from house.Battery import Battery
 from typing import Iterable, List
-from datetime import datetime, date, time, timedelta
 from util.Util import *
 
 
