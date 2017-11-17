@@ -4,9 +4,29 @@ class Battery:
     """
 
     def __init__(self, capacity: float, max_power: float, stored_energy: float=0.0):
-        self.capacity: float = capacity
-        self.max_power: float = max_power
-        self.stored_energy: float = stored_energy
+        self._capacity = capacity
+        self._max_power = max_power
+        self._stored_energy = stored_energy
+
+    @property
+    def capacity(self):
+        return self._capacity
+
+    @property
+    def max_power(self):
+        return self._max_power
+
+    @property
+    def stored_energy(self):
+        return self._stored_energy
+
+    @stored_energy.setter
+    def stored_energy(self, stored_energy: float):
+        if stored_energy < 0:
+            raise Exception("Stored energy has to be positive")
+        if stored_energy > self.capacity:
+            raise Exception("Can't store more energy than the battery capacity")
+        self._stored_energy = stored_energy
 
     def power(self, time_delta, needed_power):
         if needed_power > 0:
