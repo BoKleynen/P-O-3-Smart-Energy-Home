@@ -51,6 +51,78 @@ class House:
         self._date = _date
         self._time = _time
 
+    @property
+    def continuous_load_list(self) -> List[ContinuousLoad]:
+        return self._continuous_load_list
+
+    @property
+    def staggered_load_list(self) -> List[StaggeredLoad]:
+        return self._staggered_load_list
+
+    @property
+    def timed_load_list(self) -> List[TimedLoad]:
+        return self._timed_load_list
+
+    @property
+    def solar_panel(self) -> SolarPanel:
+        return self._solar_panel
+
+    @solar_panel.setter
+    def solar_panel(self, solar_panel: SolarPanel):
+        solar_panel._house = self
+        self.solar_panel = solar_panel
+
+    @property
+    def nb_solar_panel(self) -> int:
+        return self._nb_solar_panel
+
+    @property
+    def windmill(self) -> Windmill:
+        return self._windmill
+
+    @windmill.setter
+    def windmill(self, windmill: Windmill):
+        windmill._house = self
+        self._windmill = windmill
+
+    @property
+    def nb_windmill(self) -> int:
+        return self._nb_windmill
+
+    @nb_windmill.setter
+    def nb_windmill(self, nb_windmill: int):
+        if self.has_windmill():
+            self._nb_windmill = nb_windmill
+
+    @property
+    def battery(self) -> Battery:
+        return self._battery
+
+    @battery.setter
+    def battery(self, battery: Battery):
+        if battery is not None:
+            Battery.house = self
+            self._battery = battery
+
+    @property
+    def is_large_installation(self):
+        return self._is_large_installation
+
+    @property
+    def position(self) -> tuple:
+        return self._position
+
+    @property
+    def date(self) -> date:
+        return self._date
+
+    @property
+    def time(self) -> time:
+        return self.time
+
+    @property
+    def datetime(self) -> datetime:
+        return datetime.combine(self.date, self.time)
 
     def has_windmill(self) -> bool:
         """
