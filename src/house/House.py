@@ -224,15 +224,17 @@ class House:
 
         t.sort()
 
-        total_used_energy = 0.0
         cost = 0.0
 
         for i in range(len(t)):
             time_delta = (t[i + 1] - t[i]).total_seconds()
             total_power = self.total_power_consumption(t[i], t_arr)
-            used_energy = time_delta * (total_power + self.battery.power(time_delta, total_power))
-            total_used_energy += used_energy
+            battery_power = self.battery.power(time_delta, total_power)
+            self.battery.use_energy(battery_power*time_delta)
+            used_energy = time_delta * (total_power + battery_power)
             cost += self.electricity_cost(t[i], used_energy)
+
+        self.battery.stored_energy = init_battery_charge
 
         return cost
 
