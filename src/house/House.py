@@ -178,7 +178,9 @@ class House:
         """
         return math.fsum(
             map(
-                lambda load: load.power(t),
+                lambda load: load.power(t - load.start_time)
+                if load.start_time <= t < load.start_time + load.cycle_duration
+                else 0,
                 self.timed_load_list
             )
         )
