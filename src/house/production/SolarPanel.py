@@ -12,11 +12,31 @@ class SolarPanel:
         :param inclination: the angle between the plane of the solar panel and the xy plane in degree
         :param orientation: the rotation around z axis with respect to the North in degree
         """
-        self.inclination: float = inclination
-        self.orientation: float = orientation
-        self.peak_power: float = peak_power
-        self.area: float = area
-        self.house = None
+        self._inclination = inclination
+        self._orientation = orientation
+        self._peak_power = peak_power
+        self._area = area
+        self._house = None
+
+    @property
+    def inclination(self):
+        return self._inclination
+
+    @property
+    def orientation(self):
+        return self._orientation
+
+    @property
+    def peak_power(self):
+        return self.peak_power
+
+    @property
+    def area(self):
+        return self._area
+
+    @property
+    def house(self):
+        return self.house
 
     def power(self, t: datetime):
         return self.house.irradiance_data.at(t)[1] * self.peak_power/(1000 * self.area) * self.cos_theta(t)
