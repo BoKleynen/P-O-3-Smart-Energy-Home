@@ -9,12 +9,12 @@ def time_range(start: time=time(0, 0), end: time=time(23, 59)) -> Generator[time
 
 
 def date_range(start: date, end: date):
-    for i in range ((end - start).days):
+    for i in range((end - start).days):
         yield start + timedelta(days=i)
 
 
 def datetime_range(start: datetime, end: datetime, delta: timedelta):
     t = start
-    while t < end:
+    while t <= end:
         yield t
         t + delta
