@@ -44,6 +44,7 @@ class Battery:
                 return min(self.stored_energy/time_delta, self.max_power)
 
         else:
-            return max(needed_power, -self.max_power)    def use_energy(self, energy):
+            return max(needed_power, -self.max_power)
+        
     def use_energy(self, energy):
         self.stored_energy = self.stored_energy - energy
