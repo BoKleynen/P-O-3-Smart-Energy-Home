@@ -1,6 +1,6 @@
 from abc import ABCMeta
 from typing import Callable
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date, time
 
 
 class Load(metaclass=ABCMeta):
