@@ -21,7 +21,8 @@ class House:
     """
 
     def __init__(self, load_it: Iterable[Load], solar_panel: SolarPanel=None, nb_solar_panel: int=0,
-                 windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, position: tuple=None):
+                 windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, position: tuple=None,
+                 _date=date(2016, 1, 1), _time=time(0, 0, 0)):
         """
 
         :param load_it: An iterable containing all loads in the house
@@ -32,31 +33,24 @@ class House:
         :param position: tuple (longitude, latitude)
         """
         if solar_panel is not None and position is None:
-            raise Exception("Postion has to be known when solar panels are used")
+            raise Exception("Position has to be known when solar panels are used")
 
-        self.continuous_load_list: List[ContinuousLoad] = [load for load in load_it if isinstance(load, ContinuousLoad)]
-        self.staggered_load_list: List[StaggeredLoad] = [load for load in load_it if isinstance(load, StaggeredLoad)]
-        self.timed_load_list: List[TimedLoad] = [load for load in load_it if isinstance(load, TimedLoad)]
+        self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]
+        self._staggered_load_list = [load for load in load_it if isinstance(load, StaggeredLoad)]
+        self._timed_load_list = [load for load in load_it if isinstance(load, TimedLoad)]
+        self._solar_panel = solar_panel
+        self._nb_solar_panel: int = nb_solar_panel if self.solar_panel is not None else 0
+        self._windmill: Windmill = windmill
+        self._nb_windmill: int = nb_windmill if self.windmill is not None else 0
+        self._battery = battery
+        self._is_large_installation = self.nb_solar_panel * self.solar_panel.peak_power \
+            if self.has_solar_panel() else 0 \
+            + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) \
+            if self.has_windmill() else 0 > 10.0
+        self._position: tuple = position
+        self._date = _date
+        self._time = _time
 
-        self.solar_panel: SolarPanel = solar_panel
-        self.nb_solar_panel: int = nb_solar_panel if self.solar_panel is not None else 0
-        if self.has_solar_panel():
-            solar_panel.house = self
-
-        self.windmill: Windmill = windmill
-        self.nb_windmill: int = nb_windmill if self.windmill is not None else 0
-
-        self.battery = battery
-        if self.has_battery():
-            battery.house = self
-
-        self.is_large_installation = self.nb_solar_panel * self.solar_panel.peak_power if self.has_solar_panel() else 0\
-            + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) if self.has_windmill() else 0 > 10.0
-
-        self.position: tuple = position
-
-        self.irradiance_data: pd.DataFrame = None
-        self.wind_speed_data: pd.DataFrame = None
 
     def has_windmill(self) -> bool:
         """
