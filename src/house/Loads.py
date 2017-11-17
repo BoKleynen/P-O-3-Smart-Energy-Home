@@ -16,7 +16,7 @@ class Load(metaclass=ABCMeta):
 
         :param power_consumption:
         """
-        self.power_consumption: Callable = power_consumption
+        self.power_consumption = power_consumption
 
 
 class ContinuousLoad(Load):
