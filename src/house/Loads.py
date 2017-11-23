@@ -16,7 +16,11 @@ class Load(metaclass=ABCMeta):
 
         :param power_consumption:
         """
-        self.power_consumption = power_consumption
+        self._power_consumption = power_consumption
+
+    @property
+    def power_consumption(self):
+        return self._power_consumption
 
 
 class ContinuousLoad(Load):

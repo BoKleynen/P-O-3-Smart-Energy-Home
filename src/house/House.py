@@ -39,15 +39,15 @@ class House:
         self._staggered_load_list = [load for load in load_it if isinstance(load, StaggeredLoad)]
         self._timed_load_list = [load for load in load_it if isinstance(load, TimedLoad)]
         self._solar_panel = solar_panel
-        self._nb_solar_panel: int = nb_solar_panel if self.solar_panel is not None else 0
-        self._windmill: Windmill = windmill
-        self._nb_windmill: int = nb_windmill if self.windmill is not None else 0
+        self._nb_solar_panel = nb_solar_panel if self.solar_panel is not None else 0
+        self._windmill = windmill
+        self._nb_windmill = nb_windmill if self.windmill is not None else 0
         self._battery = battery
         self._is_large_installation = self.nb_solar_panel * self.solar_panel.peak_power \
             if self.has_solar_panel() else 0 \
             + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) \
             if self.has_windmill() else 0 > 10.0
-        self._position: tuple = position
+        self._position = position
         self._date = _date
         self._time = _time
 
@@ -105,7 +105,7 @@ class House:
             self._battery = battery
 
     @property
-    def is_large_installation(self):
+    def is_large_installation(self) -> bool:
         return self._is_large_installation
 
     @property
@@ -200,7 +200,7 @@ class House:
     def total_power_consumption(self, t, t_arr):
         return self.total_load_power(t, t_arr) - self.produced_own_power(t)
 
-    def _cost(self, t_arr: np.ndarray) -> float:
+    def _cost(self, t_arr: np.ndarray, irradiance, wind_speed) -> float:
         """
 
         :param t_arr:

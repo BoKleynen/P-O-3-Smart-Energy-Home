@@ -3,6 +3,13 @@ import math
 
 class Windmill:
     def __init__(self, radius, min_wind_speed, max_wind_speed):
+        if radius < 0:
+            raise Exception("Radius should be non negative.")
+        if min_wind_speed < 0:
+            raise Exception("Minimal wind speed should be non negative")
+        if max_wind_speed < min_wind_speed:
+            raise Exception("Maximal wind speed should be greater than the minimal wind speed")
+
         self.radius = radius
         self.min_wind_speed = min_wind_speed
         self.max_wind_speed = max_wind_speed

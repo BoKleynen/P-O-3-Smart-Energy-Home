@@ -8,7 +8,7 @@ class Battery:
             raise Exception("Battery capacity has to be positive")
         if stored_energy < 0:
             raise Exception("Stored energy has to be positive")
-        if stored_energy > self.capacity:
+        if stored_energy > capacity:
             raise Exception("Can't store more energy than the battery capacity")
         
         self._capacity = capacity

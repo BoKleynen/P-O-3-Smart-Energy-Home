@@ -17,4 +17,4 @@ def datetime_range(start: datetime, end: datetime, delta: timedelta):
     t = start
     while t <= end:
         yield t
-        t + delta
+        t += delta

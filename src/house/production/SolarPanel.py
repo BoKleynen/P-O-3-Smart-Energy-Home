@@ -1,6 +1,11 @@
 import math
 from math import sin, cos
 from datetime import date, datetime, timedelta
+import pandas as pd
+import numpy as np
+from util.Util import *
+import matplotlib.pyplot as plt
+from matplotlib import dates
 
 
 class SolarPanel:
@@ -12,8 +17,13 @@ class SolarPanel:
         :param inclination: the angle between the plane of the solar panel and the xy plane in degree
         :param orientation: the rotation around z axis with respect to the North in degree
         """
-        self._inclination = inclination
-        self._orientation = orientation
+        if peak_power < 0:
+            raise Exception("Peak power should be non negative.")
+        if area < 0:
+            raise Exception("Area should be non negative.")
+
+        self._inclination = inclination % 2*math.pi
+        self._orientation = orientation % 2*math.pi
         self._peak_power = peak_power
         self._area = area
         self._house = None
@@ -28,7 +38,7 @@ class SolarPanel:
 
     @property
     def peak_power(self):
-        return self.peak_power
+        return self._peak_power
 
     @property
     def area(self):
@@ -38,12 +48,15 @@ class SolarPanel:
     def house(self):
         return self.house
 
-    def power(self, t: datetime):
-        return self.house.irradiance_data.at(t)[1] * self.peak_power/(1000 * self.area) * self.cos_theta(t)
+    # def power(self, t: datetime):
+    #     return self.house.irradiance_data.at(t)[1] * self.peak_power/(1000 * self.area) * self.cos_theta(t)
+
+    def _power(self, t, irradiance):
+        return irradiance * self.peak_power/(1000 * self.area) * max(self.cos_theta(t), 0)
 
     def cos_theta(self, t: datetime) -> float:
-        delta = SolarPanel.delta((t.date() - date(t.date().year, 1, 1)).days + 1)
-        phi = self.house.coordinates
+        delta = SolarPanel.delta((t.date() - date(t.year, 1, 1)).days + 1)
+        phi = 0.88839
         beta = self.inclination
         a_zs = self.orientation
         omega = SolarPanel.omega(t)
@@ -54,9 +67,11 @@ class SolarPanel:
 
     @staticmethod
     def delta(n):
-        return 23.45 * math.pi/180 * math.sin(2*math.pi * (284 + n)/36.25)
+        # return 23.45 * math.pi/180 * math.sin(2*math.pi * (284 + n)/36.25)
+        return -math.radians(23.44)*cos(math.radians(360/365*(n+10)))
 
     @staticmethod
     def omega(t: datetime):
-        _t = (t - datetime(t.date().year, t.date().month, t.date().day, hour=12)).seconds/3600
-        return math.pi/12 * _t
+        return math.pi/43200 * (t.hour*3600 + t.minute*60 - 43200)
+
+
