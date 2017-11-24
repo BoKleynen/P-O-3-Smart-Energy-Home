@@ -1,11 +1,6 @@
 import math
 from math import sin, cos
-from datetime import date, datetime, timedelta
 import pandas as pd
-import numpy as np
-from util.Util import *
-import matplotlib.pyplot as plt
-from matplotlib import dates
 
 
 class SolarPanel:
@@ -48,15 +43,15 @@ class SolarPanel:
     def house(self):
         return self.house
 
-    # def power(self, t: datetime):
+    # def power(self, t: pd.Timestamp):
     #     return self.house.irradiance_data.at(t)[1] * self.peak_power/(1000 * self.area) * self.cos_theta(t)
 
-    def _power(self, t, irradiance):
+    def _power(self, t: pd.Timestamp, irradiance) -> float:
         return irradiance * self.peak_power/(1000 * self.area) * max(self.cos_theta(t), 0)
 
-    def cos_theta(self, t: datetime) -> float:
-        delta = SolarPanel.delta((t.date() - date(t.year, 1, 1)).days + 1)
-        phi = 0.88839
+    def cos_theta(self, t: pd.Timestamp) -> float:
+        delta = SolarPanel.delta(t.dayofyear)
+        phi = 0.889536142
         beta = self.inclination
         a_zs = self.orientation
         omega = SolarPanel.omega(t)
@@ -67,11 +62,10 @@ class SolarPanel:
 
     @staticmethod
     def delta(n):
-        # return 23.45 * math.pi/180 * math.sin(2*math.pi * (284 + n)/36.25)
-        return -math.radians(23.44)*cos(math.radians(360/365*(n+10)))
+        return -0.409105177*cos(0.017214206*(n+10))
 
     @staticmethod
-    def omega(t: datetime):
+    def omega(t: pd.Timestamp):
         return math.pi/43200 * (t.hour*3600 + t.minute*60 - 43200)
 
 

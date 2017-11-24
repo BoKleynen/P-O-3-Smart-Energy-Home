@@ -22,7 +22,7 @@ class House:
 
     def __init__(self, load_it: Iterable[Load], solar_panel: SolarPanel=None, nb_solar_panel: int=0,
                  windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, position: tuple=None,
-                 _date=date(2016, 1, 1), _time=time(0, 0, 0)):
+                 timestamp=pd.Timestamp("2016-05-24 00:00")):
         """
 
         :param load_it: An iterable containing all loads in the house
@@ -48,8 +48,7 @@ class House:
             + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) \
             if self.has_windmill() else 0 > 10.0
         self._position = position
-        self._date = _date
-        self._time = _time
+        self.timestamp = timestamp
 
     @property
     def continuous_load_list(self) -> List[ContinuousLoad]:
