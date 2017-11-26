@@ -54,3 +54,5 @@ class PetrolCar(Car):
 
     def get_subsidy(self):
         return 0
+
+#TODO: belastingen, verzekering, onderhoudskosten, ...

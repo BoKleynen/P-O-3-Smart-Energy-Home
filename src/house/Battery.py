@@ -1,6 +1,6 @@
 class Battery:
     """
-    a class modelling a batter that can be used to store locally produced energy
+    a class modelling a battery that can be used to store locally produced energy
     """
 
     def __init__(self, capacity: float, max_power: float, stored_energy: float=0.0):
