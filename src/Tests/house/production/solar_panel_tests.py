@@ -13,26 +13,23 @@ irradiance_df = pd.read_csv(filepath_or_buffer="../../../../data/Irradiance.csv"
                             header=0,
                             index_col="Date/Time",
                             dtype={"watts-per-meter-sq": float},
-                            skiprows=8,
                             parse_dates=["Date/Time"]
                             )
-# irradiance_df.interpolate(method='time', inplace=True)
+print(irradiance_df)
 
-start = pd.Timestamp("2016-05-24 00:00")
-end = pd.Timestamp("2016-06-24 23:55")
-
+# irradiance_df.to_csv("Irradiance.csv")
 # hour_angle = [solar_panel.hour_angle(t) for t in pd.date_range(start, end, freq="300S")]
 # solar_declination = [solar_panel.solar_declination(n) for n in range(365)]
 # solar_azimuth = [solar_panel.solar_azimuth(t) for t in pd.date_range(start, end, freq="300S")]
 
-f = np.vectorize(solar_panel.incident_angle)
-
-data = f(pd.date_range(start, end, freq="300S").values)
-
-# print(math.fsum(map(lambda p: p * 300, data))*(2.77778*math.pow(10, -7)))
-
-plt.plot(data)
-plt.show()
+# f = np.vectorize(solar_panel.incident_angle)
+#
+# data = f(pd.date_range(start, end, freq="300S").values)
+#
+# # print(math.fsum(map(lambda p: p * 300, data))*(2.77778*math.pow(10, -7)))
+#
+# plt.plot(data)
+# plt.show()
 
 
 
