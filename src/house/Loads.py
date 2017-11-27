@@ -1,7 +1,6 @@
 from abc import ABCMeta
 from typing import Callable
-from datetime import datetime, timedelta, date, time
-
+import pandas as pd
 
 class Load(metaclass=ABCMeta):
     """
@@ -35,8 +34,8 @@ class ContinuousLoad(Load):
 
 
 class CyclicalLoad(Load, metaclass=ABCMeta):
-    def __init__(self, power_consumption, execution_date: date, start_time: time, cycle_duration: float,
-                 time_delta: timedelta):
+    def __init__(self, power_consumption, execution_date: pd.Timestamp, start_time: pd.Timestamp, cycle_duration: float,
+                 time_delta: pd.DateOffset):
         super().__init__(power_consumption)
         self._execution_date = execution_date
         self._start_time = start_time
@@ -44,7 +43,7 @@ class CyclicalLoad(Load, metaclass=ABCMeta):
         self._time_delta = time_delta
 
     @property
-    def start_datetime(self) -> datetime:
+    def start_timestamp(self) -> pd.Timestamp:
         return datetime.combine(self._execution_date, self._start_time)
 
     @property
@@ -53,9 +52,9 @@ class CyclicalLoad(Load, metaclass=ABCMeta):
 
     @property
     def start_time(self) -> float:
-        return 3600*self.start_datetime.time().hour \
-               + 60*self.start_datetime.time().minute \
-               + self.start_datetime.time().second
+        return 3600*self.start_timestamp.time().hour \
+               + 60*self.start_timestamp.time().minute \
+               + self.start_timestamp.time().second
 
     @property
     def time_delta(self) -> timedelta:

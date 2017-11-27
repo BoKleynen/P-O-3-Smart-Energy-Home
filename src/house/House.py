@@ -21,7 +21,7 @@ class House:
     """
 
     def __init__(self, load_it: Iterable[Load], solar_panel: SolarPanel=None, nb_solar_panel: int=0,
-                 windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, position: tuple=None,
+                 windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, latitude: float=50,
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
         """
 
@@ -47,8 +47,8 @@ class House:
             if self.has_solar_panel() else 0 \
             + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) \
             if self.has_windmill() else 0 > 10.0
-        self._position = position
-        self.timestamp = timestamp
+        self._latitude = latitude
+        self._timestamp = timestamp
 
     @property
     def continuous_load_list(self) -> List[ContinuousLoad]:
@@ -108,20 +108,12 @@ class House:
         return self._is_large_installation
 
     @property
-    def position(self) -> tuple:
-        return self._position
+    def latitude(self) -> float:
+        return self._latitude
 
     @property
     def date(self) -> date:
-        return self._date
-
-    @property
-    def time(self) -> time:
-        return self.time
-
-    @property
-    def datetime(self) -> datetime:
-        return datetime.combine(self.date, self.time)
+        return self._timestamp.date()
 
     def has_windmill(self) -> bool:
         """
@@ -141,10 +133,6 @@ class House:
         return self.battery is not None
 
     def continuous_load_power(self) -> float:
-        """
-
-        :return: The total amount of continuous power draw
-        """
         return math.fsum(
             map(
                 lambda load: load.power,
@@ -153,12 +141,6 @@ class House:
         )
 
     def staggered_load_power(self, t: datetime, t_arr: np.ndarray) -> float:
-        """
-
-        :param t:
-        :param t_arr:
-        :return: The power consumed by all the staggered loads at time t
-        """
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
@@ -172,9 +154,6 @@ class House:
         )
 
     def timed_load_power(self, t: datetime) -> float:
-        """
-        return: The power consumed by all timed loads at a time t
-        """
         return math.fsum(
             map(
                 lambda load: load.power(t - load.start_time)
@@ -188,11 +167,6 @@ class House:
         return self.continuous_load_power() + self.timed_load_power(t) + self.staggered_load_power(t, t_arr)
 
     def produced_own_power(self, t: datetime) -> float:
-        """
-
-        :param t:
-        :return: The total amount of power produced by the house at a given time
-        """
         return self.windmill.power(t) if self.has_windmill() else 0 \
             + self.solar_panel.power(t) if self.has_solar_panel() else 0
 
@@ -200,11 +174,6 @@ class House:
         return self.total_load_power(t, t_arr) - self.produced_own_power(t)
 
     def _cost(self, t_arr: np.ndarray, irradiance, wind_speed) -> float:
-        """
-
-        :param t_arr:
-        :return:
-        """
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
@@ -212,8 +181,8 @@ class House:
 
         start = datetime.combine(self.date, time(0, 0, 0))
         t = [t for t in datetime_range(start, start+timedelta(days=1), timedelta(seconds=300))] \
-            + [load.start_datetime for load in self.timed_load_list if load.execution_date == self.date] \
-            + [load.start_datetime + timedelta(seconds=load.cycle_duration) for load in self.timed_load_list
+            + [load.start_timestamp for load in self.timed_load_list if load.execution_date == self.date] \
+            + [load.start_timestamp + timedelta(seconds=load.cycle_duration) for load in self.timed_load_list
                if load.execution_date == self.date] \
             + [datetime.combine(self.staggered_load_list[i].execution_date, time(0, 0, 0)) + timedelta(seconds=t_arr[i])
                for i in range(len(t_arr)) if self.staggered_load_list[i].execution_date == self.date] \
@@ -238,12 +207,6 @@ class House:
         return cost
 
     def optimise(self, irradiance: pd.DataFrame=None, wind_speed: pd.DataFrame=None) -> List[float]:
-        """
-        Computes the optimal timings for the staggered loads to start their job.
-
-        :return: A list containing the optimal start times for the staggered loads in this house
-        """
-
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
         cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i])}
@@ -254,13 +217,6 @@ class House:
         return res
 
     def set_staggered_load_times(self, t_it) -> None:
-        """
-
-        :param t_it: iterable containing times at which the staggered loads have to start their job, has to be ordered
-                     according to the order of staggered_loads
-        :return:
-        """
-
         if len(t_it) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
@@ -271,7 +227,7 @@ class House:
             hours = int(t_it[i] / 3600)
             load.set_start_time(time(hours, minutes, seconds))
 
-    def electricity_cost(self, t: datetime, consumed_energy: float) -> float:
+    def electricity_cost(self, t: pd.Timestamp, consumed_energy: float) -> float:
         """
 
         :param t:
@@ -287,7 +243,7 @@ class House:
                 return 0.24 * consumed_energy
 
             else:
-                if t.time() < time(hour=8) or t.time() >= time(hour=20) or t.isoweekday() >= 6:
+                if t.hour < 8 or t.hour >= 20 or t.dayofweek >= 6:
                     return 0.036 * consumed_energy
 
                 else:
