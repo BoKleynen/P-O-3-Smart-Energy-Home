@@ -5,7 +5,7 @@ import pandas as pd
 
 class SolarPanel:
     
-    def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, area: float):
+    def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, area: float, nb_solar_panel: int):
         if peak_power < 0:
             raise Exception("Peak power should be non negative.")
         if area < 0:
@@ -15,6 +15,7 @@ class SolarPanel:
         self._azimuth = azimuth % (2*math.pi)
         self._peak_power = peak_power
         self._area = area
+        self._nb_solar_panel = nb_solar_panel
         self._house = None
 
     @property
@@ -36,6 +37,10 @@ class SolarPanel:
     @property
     def house(self):
         return self.house
+
+    @property
+    def nb_solar_panel(self):
+        return self._nb_solar_panel
 
     def power(self, t: pd.Timestamp, irradiance) -> float:
         return irradiance * self.peak_power/(1000 * self.area) * max(cos(self.incident_angle(t)), 0)

@@ -21,13 +21,7 @@ class Windmill:
 
     @staticmethod
     def _power_production(wind_speed: float, area: float) -> float:
-        """
-
-        :param wind_speed:
-        :param area:
-        :return:
-        """
-        return 0.6125 * area * math.pow(wind_speed, 3)
+        return 0.6125 * area * math.pow(2*wind_speed, 3)
 
     def power(self, wind_speed):
         """

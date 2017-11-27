@@ -7,7 +7,7 @@ from house.Loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
 from house.production.SolarPanel import SolarPanel
 from house.production.WindMill import Windmill
 from house.Battery import Battery
-from typing import Iterable, List
+from typing import Iterable, List, Tuple
 from util.Util import *
 
 
@@ -20,7 +20,7 @@ class House:
     of solar panels and/or windmills.
     """
 
-    def __init__(self, load_it: Iterable[Load], solar_panel: SolarPanel=None, nb_solar_panel: int=0,
+    def __init__(self, load_it: Iterable[Load], solar_panel: Tuple[SolarPanel]=(), nb_solar_panel: int=0,
                  windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None, latitude: float=50,
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
         """
@@ -32,9 +32,6 @@ class House:
         :param nb_windmill: The amount of windmills installed, will be set to 0 if no windmill is installed
         :param position: tuple (longitude, latitude)
         """
-        if solar_panel is not None and position is None:
-            raise Exception("Position has to be known when solar panels are used")
-
         self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]
         self._staggered_load_list = [load for load in load_it if isinstance(load, StaggeredLoad)]
         self._timed_load_list = [load for load in load_it if isinstance(load, TimedLoad)]
@@ -63,13 +60,13 @@ class House:
         return self._timed_load_list
 
     @property
-    def solar_panel(self) -> SolarPanel:
+    def solar_panel(self) -> Tuple[SolarPanel]:
         return self._solar_panel
 
-    @solar_panel.setter
-    def solar_panel(self, solar_panel: SolarPanel):
-        solar_panel._house = self
-        self.solar_panel = solar_panel
+    # @solar_panel.setter
+    # def solar_panel(self, solar_panel: SolarPanel):
+    #     solar_panel._house = self
+    #     self.solar_panel = solar_panel
 
     @property
     def nb_solar_panel(self) -> int:
@@ -79,10 +76,10 @@ class House:
     def windmill(self) -> Windmill:
         return self._windmill
 
-    @windmill.setter
-    def windmill(self, windmill: Windmill):
-        windmill._house = self
-        self._windmill = windmill
+    # @windmill.setter
+    # def windmill(self, windmill: Windmill):
+    #     windmill._house = self
+    #     self._windmill = windmill
 
     @property
     def nb_windmill(self) -> int:
@@ -127,7 +124,7 @@ class House:
 
         :return: True if and only if the house has a solar panel associated with it
         """
-        return self.solar_panel is not None
+        return len(self.solar_panel) != 0
 
     def has_battery(self) -> bool:
         return self.battery is not None
@@ -168,7 +165,7 @@ class House:
 
     def produced_own_power(self, t: datetime) -> float:
         return self.windmill.power(t) if self.has_windmill() else 0 \
-            + self.solar_panel.power(t) if self.has_solar_panel() else 0
+            + math.fsum(map(lambda solar_panel: solar_panel.power(), self.solar_panel))
 
     def total_power_consumption(self, t, t_arr):
         return self.total_load_power(t, t_arr) - self.produced_own_power(t)
@@ -179,16 +176,22 @@ class House:
 
         init_battery_charge = self.battery.stored_energy
 
-        start = datetime.combine(self.date, time(0, 0, 0))
-        t = [t for t in datetime_range(start, start+timedelta(days=1), timedelta(seconds=300))] \
+
+        t = [t for t in pd.date_range(self.date, self.date + pd.DateOffset(days=1), freq="300S")] \
             + [load.start_timestamp for load in self.timed_load_list if load.execution_date == self.date] \
-            + [load.start_timestamp + timedelta(seconds=load.cycle_duration) for load in self.timed_load_list
-               if load.execution_date == self.date] \
-            + [datetime.combine(self.staggered_load_list[i].execution_date, time(0, 0, 0)) + timedelta(seconds=t_arr[i])
-               for i in range(len(t_arr)) if self.staggered_load_list[i].execution_date == self.date] \
-            + [datetime.combine(self.staggered_load_list[i].execution_date, time(0, 0, 0))
-               + timedelta(seconds=t_arr[i]+self.staggered_load_list[i].cycle_duration) for i in range(len(t_arr))
-               if self.staggered_load_list[i].execution_date == self.date]
+            + [load.start_timestamp + pd.DateOffset(seconds=load.cycle_duration) for load in self.timed_load_list
+               if load.execution_date == self.date]
+
+        for i in range(len(t_arr)):
+            load = self.staggered_load_list[i]
+
+            if load.execution_date == self.date:
+                load_start_time = load.execution_date + pd.DateOffset(seconds=t_arr[i])
+                t += [load_start_time, load_start_time + pd.DateOffset(seconds=load.cycle_duration)]
+
+        for load in self.timed_load_list:
+            if load.execution_date == self.date:
+                t += [load.start_time, load.start_time + pd.DateOffset(seconds=load.cycle_duration)]
 
         t.sort()
 
@@ -209,7 +212,7 @@ class House:
     def optimise(self, irradiance: pd.DataFrame=None, wind_speed: pd.DataFrame=None) -> List[float]:
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
-        cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i])}
+        cons = ({'type': 'ineq', 'fun': lambda t: DAY_SECONDS - (t[i] + self.staggered_load_list[i].cycle_duration)}
                 for i in range(len(self.staggered_load_list)))
 
         res = opt.minimize(self._cost, init_guesses, constraints=cons, args=(irradiance, wind_speed))
