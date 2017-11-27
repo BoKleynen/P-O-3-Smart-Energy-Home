@@ -1,8 +1,10 @@
 from abc import ABCMeta
+from bisect import bisect
 
 
 class Car(metaclass=ABCMeta):
-    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing: bool, co2_emissions: int, fuel_type: str, euronorm: str):
+    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing: bool, co2_emissions: int, fuel_type: str,
+                 euronorm: str, cylinder_capacity: int):
         self.price = price
         self.year = year
         self.fuel_consumption = fuel_consumption
@@ -11,7 +13,7 @@ class Car(metaclass=ABCMeta):
         self.co2_emissions = co2_emissions
         self.fuel_type = fuel_type
         self.euronorm = euronorm
-        self.x_value = x_value
+        self.cylinder_capacity = cylinder_capacity
     
     def get_price(self):
         return self.price
@@ -32,13 +34,16 @@ class Car(metaclass=ABCMeta):
         return self.leasing
 
     def get_co2_emissions(self):
-        return self.get_co2_emissions()
+        return self.co2_emissions
 
     def get_fuel_type(self):
         return self.fuel_type
 
     def get_euronorm(self):
         return self.euronorm
+
+    def get_cylinder_capacity(self):
+        return self.cylinder_capacity
 
     def get_x_value(self):
         ...
@@ -54,11 +59,14 @@ class Car(metaclass=ABCMeta):
 
     def get_biv(self):
         ...
+
+    def get_vkb(self):
+        ...
     
 
 class ElectricalCar(Car):
-    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm):
-        super().__init__(price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm)
+    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm, cylinder_capacity):
+        super().__init__(price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm, cylinder_capacity)
     
     def get_subsidy(self):
         # year : (price < 31000, 31000 <= price <= 40999, 41000 <= price <= 60999, 61000 < price)
@@ -81,16 +89,21 @@ class ElectricalCar(Car):
 
     def get_biv(self):
         return 0
-        
+
+    def get_vkb(self):
+        return 0
         
 class PetrolCar(Car):
-    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm):
-        super().__init__(price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm)
+    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm,
+                 cylinder_capacity):
+        super().__init__(price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm,
+                         cylinder_capacity)
 
     def get_subsidy(self):
         return 0
 
     def get_x_value(self):
+        current_year = 2017
         return 4.5 * (current_year - 2012)
 
     def get_f_value(self):
@@ -135,6 +148,7 @@ class PetrolCar(Car):
                 return 21.46
 
     def get_age_correction(self):
+        current_year = 2017
         nb_years_in_use = (current_year - super().get_year())
         if nb_years_in_use < 1:
             return 1
@@ -162,7 +176,64 @@ class PetrolCar(Car):
             pass
         else:
             # https://belastingen.vlaanderen.be/formule-berekenen-belasting-op-inverkeerstelling
-            return (((super().get_co2_emissions() * self.get_f_value() + super().get_x_value()) / 246) ^ 6
-                    * 4500 + self.get_air_component()) * self.get_age_correction()
+            return round((((super().get_co2_emissions() * self.get_f_value() + self.get_x_value()) / 246) ** 6
+                    * 4500 + self.get_air_component()) * self.get_age_correction(), 2)
 
-#TODO: belastingen = BIV + jaarlijkse verkeersbelasting, verzekering, onderhoudskosten, ...
+    def co2_factor(self):
+        if super().get_co2_emissions() <= 24:
+            return -0.0030 * (122 - 24)
+        elif 24 < super().get_co2_emissions() <= 122:
+            return -0.0030 * (122 - super().get_co2_emissions())
+        elif 122 < super().get_co2_emissions() <= 500:
+            return 0.0030 * (super().get_co2_emissions()-122)
+        elif super().get_co2_emissions() > 500:
+            return 0.0030 * (500-122)
+
+    def air_term(self):
+        if super().get_fuel_type() == "diesel":
+            if super().get_euronorm() == "euro 0":
+                return 0.50
+            elif super().get_euronorm() == "euro 1":
+                return 0.40
+            elif super().get_euronorm() == "euro 2":
+                return 0.35
+            elif super().get_euronorm() == "euro 3":
+                return 0.30
+            elif super().get_euronorm() == "euro 3 + soot filter" or "euro 4":
+                return 0.25
+            elif super().get_euronorm() == "euro 4 + soot filter" or "euro 5":
+                return 0.175
+            elif super().get_euronorm() == "euro 6":
+                return 0.15
+
+        else:
+            if super().get_euronorm() == "euro 0":
+                return 0.30
+            elif super().get_euronorm() == "euro 1":
+                return 0.10
+            elif super().get_euronorm() == "euro 2":
+                return 0.05
+            elif super().get_euronorm() == "euro 3":
+                return 0.00
+            elif super().get_euronorm() == "euro 4":
+                return -0.125
+            else:
+                return -0.15
+
+    def get_vkb(self):
+        """this is only correct when the car is signed up after 01/01/2016"""
+
+        opdeciem = 0.10
+
+        breakpoints = [0.8, 1, 1.2, 1.4, 1.6, 1.8, 1.9, 2.0, 2.2, 2.4, 2.6, 2.8, 3.1, 3.3, 3.5, 3.7, 4.0, 4.2]
+        price = [80.52, 100.72, 145.73, 190.34, 235.36, 280.37, 324.85, 421.61, 518.36, 614.86, 711.61, 808.24, 1058.77,
+                 1309.44, 1560.11, 1810.12, 2060.65]
+        i = bisect(breakpoints, super().get_cylinder_capacity())
+        vkb = price[i] * (1 + self.co2_factor() + self.air_term() + opdeciem)
+        if vkb > 40:
+            return round(vkb, 2)
+        else:
+            return round(40 + opdeciem, 2)
+
+
+#TODO: verzekering, onderhoudskosten, ...
