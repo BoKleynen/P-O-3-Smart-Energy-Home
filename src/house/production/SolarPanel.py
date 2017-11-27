@@ -1,6 +1,9 @@
 import math
-from math import sin, cos, acos, asin
+from math import cos
+
 import pandas as pd
+
+from util.solar_angles import incident_angle
 
 
 class SolarPanel:
@@ -43,29 +46,5 @@ class SolarPanel:
         return self._nb_solar_panel
 
     def power(self, t: pd.Timestamp, irradiance) -> float:
-        return irradiance * self.peak_power/(1000 * self.area) * max(cos(self.incident_angle(t)), 0)
-
-    @staticmethod
-    def solar_declination(n):
-        return -0.409105177*cos(0.017214206*(n+10))
-
-    @staticmethod
-    def hour_angle(t: pd.Timestamp):
-        return math.pi/43200 * (t.hour*3600 + t.minute*60 - 43200)
-
-    def solar_altitude(self, t: pd.Timestamp):
-        return asin(
-            cos(self.solar_declination(t.dayofyear)) * cos(0.87) * cos(self.hour_angle(t))
-            + sin(self.solar_declination(t.dayofyear)) * sin(0.87)
-        )
-
-    def solar_azimuth(self, t: pd.Timestamp):
-        return asin(
-            cos(self.solar_declination(t.dayofyear)) * sin(self.hour_angle(t)) / cos(self.solar_altitude(t))
-        )
-
-    def incident_angle(self, t: pd.Timestamp):
-        return acos(
-            cos(self.solar_altitude(t)) * cos(self.solar_azimuth(t) - self.azimuth) * sin(self.tilt_angle)
-            + sin(self.solar_altitude(t)) * cos(self.tilt_angle)
-        )
+        return irradiance * self.peak_power/(1000 * self.area) \
+               * max(cos(incident_angle(t, self.azimuth, self.tilt_angle, 0.87)), 0)

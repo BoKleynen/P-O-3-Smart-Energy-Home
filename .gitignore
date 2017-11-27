@@ -2,3 +2,5 @@
 \.idea/
 src/house/__pycache__/
 src/house/production/__pycache__/
+
+build/
