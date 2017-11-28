@@ -3,13 +3,13 @@ from bisect import bisect
 
 
 class Car(metaclass=ABCMeta):
-    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing: bool, co2_emissions: int, fuel_type: str,
+    def __init__(self, price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions: int, fuel_type: str,
                  euronorm: str, cylinder_capacity: int):
         self.price = price
         self.year = year
+        self.year_first_registration_tax = year_first_registration_tax
         self.fuel_consumption = fuel_consumption
         self.fuel_capacity = fuel_capacity
-        self.leasing = leasing
         self.co2_emissions = co2_emissions
         self.fuel_type = fuel_type
         self.euronorm = euronorm
@@ -20,6 +20,9 @@ class Car(metaclass=ABCMeta):
     
     def get_year(self):
         return self.year
+
+    def get_year_first_registration_tax(self):
+        return self.year_first_registration_tax
     
     def get_fuel_consumption(self):
         return self.fuel_consumption
@@ -29,9 +32,6 @@ class Car(metaclass=ABCMeta):
     
     def get_subsidy(self):
         ...
-
-    def get_leasing(self):
-        return self.leasing
 
     def get_co2_emissions(self):
         return self.co2_emissions
@@ -65,8 +65,10 @@ class Car(metaclass=ABCMeta):
     
 
 class ElectricalCar(Car):
-    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm, cylinder_capacity):
-        super().__init__(price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm, cylinder_capacity)
+    def __init__(self, price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions, fuel_type, euronorm,
+                 cylinder_capacity):
+        super().__init__(price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions, fuel_type, euronorm,
+                         cylinder_capacity)
     
     def get_subsidy(self):
         # year : (price < 31000, 31000 <= price <= 40999, 41000 <= price <= 60999, 61000 < price)
@@ -92,19 +94,19 @@ class ElectricalCar(Car):
 
     def get_vkb(self):
         return 0
-        
+
+
 class PetrolCar(Car):
-    def __init__(self, price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm,
+    def __init__(self, price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions, fuel_type, euronorm,
                  cylinder_capacity):
-        super().__init__(price, year, fuel_consumption, fuel_capacity, leasing, co2_emissions, fuel_type, euronorm,
+        super().__init__(price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions, fuel_type, euronorm,
                          cylinder_capacity)
 
     def get_subsidy(self):
         return 0
 
     def get_x_value(self):
-        current_year = 2017
-        return 4.5 * (current_year - 2012)
+        return 4.5 * (super().get_year() - 2012)
 
     def get_f_value(self):
         if super().get_fuel_type() == "lpg":
@@ -126,9 +128,9 @@ class PetrolCar(Car):
                 return 648.1
             elif super().get_euronorm() == "euro 3":
                 return 513.59
-            elif super().get_euronorm() == "euro 3 + soot filter" or "euro 4":
+            elif super().get_euronorm() == "euro 3 + soot filter" or super().get_euronorm() == "euro 4":
                 return 486.21
-            elif super().get_euronorm() == "euro 4 + soot filter" or "euro 5":
+            elif super().get_euronorm() == "euro 4 + soot filter" or super().get_euronorm() == "euro 5":
                 return 478.18
             else:
                 return 472.69
@@ -138,46 +140,45 @@ class PetrolCar(Car):
                 return 1185.47
             elif super().get_euronorm() == "euro 1":
                 return 530.16
-            elif super().get_euronorm() == "euro 2" or "euro 3":
+            elif super().get_euronorm() == "euro 2":
                 return 158.53
-            elif super().get_euronorm() == "euro 4":
+            elif super().get_euronorm() == "euro 3":
                 return 99.45
-            elif super().get_euronorm() == "euro 5":
+            elif super().get_euronorm() == "euro 4":
                 return 23.87
             else:
                 return 21.46
 
     def get_age_correction(self):
-        current_year = 2017
-        nb_years_in_use = (current_year - super().get_year())
+        nb_years_in_use = super().get_year() - super().get_year_first_registration_tax()
+
         if nb_years_in_use < 1:
             return 1
-        elif 1 < nb_years_in_use < 2:
+        elif 1 <= nb_years_in_use < 2:
             return 0.90
-        elif 2 < nb_years_in_use < 3:
+        elif 2 <= nb_years_in_use < 3:
             return 0.80
-        elif 3 < nb_years_in_use < 4:
+        elif 3 <= nb_years_in_use < 4:
             return 0.70
-        elif 4 < nb_years_in_use < 5:
+        elif 4 <= nb_years_in_use < 5:
             return 0.60
-        elif 5 < nb_years_in_use < 6:
+        elif 5 <= nb_years_in_use < 6:
             return 0.50
-        elif 6 < nb_years_in_use < 7:
+        elif 6 <= nb_years_in_use < 7:
             return 0.40
-        elif 7 < nb_years_in_use < 8:
+        elif 7 <= nb_years_in_use < 8:
             return 0.30
-        elif 8 < nb_years_in_use < 9:
+        elif 8 <= nb_years_in_use < 9:
             return 0.20
         else:
             return 0.10
 
     def get_biv(self):
-        if super().get_leasing() is True:
-            pass
-        else:
-            # https://belastingen.vlaanderen.be/formule-berekenen-belasting-op-inverkeerstelling
-            return round((((super().get_co2_emissions() * self.get_f_value() + self.get_x_value()) / 246) ** 6
-                    * 4500 + self.get_air_component()) * self.get_age_correction(), 2)
+        """formula is only correct when the year_of_first_registration_tax is 2017 or higher"""
+        # https://belastingen.vlaanderen.be/formule-berekenen-belasting-op-inverkeerstelling
+        biv = (((super().get_co2_emissions() * self.get_f_value() + self.get_x_value()) / 246) ** 6 * 4500 +
+               self.get_air_component()) * self.get_age_correction()
+        return round(biv, 2)
 
     def co2_factor(self):
         if super().get_co2_emissions() <= 24:
@@ -236,4 +237,4 @@ class PetrolCar(Car):
             return round(40 + opdeciem, 2)
 
 
-#TODO: verzekering, onderhoudskosten, ...
+#TODO: vkb juiste waarde laten berekenen, verzekering, onderhoudskosten, ...
