@@ -23,15 +23,7 @@ class House:
     def __init__(self, load_it: Iterable[Load], solar_panel: Tuple[SolarPanel]=(), nb_solar_panel: Tuple[int]=(),
                  windmill: Windmill=None, nb_windmill: int=0, battery: Battery=None,
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
-        """
 
-        :param load_it: An iterable containing all loads in the house
-        :param solar_panel: The type of solar panel installed, None if no solar panels are installed
-        :param nb_solar_panel: The amount of solar panels, will be set to 0 if the house has no solar panel
-        :param windmill: The type of windmill installed, None if no windmill is installed
-        :param nb_windmill: The amount of windmills installed, will be set to 0 if no windmill is installed
-        :param position: tuple (longitude, latitude)
-        """
         if len(solar_panel) != len(nb_solar_panel):
             raise Exception
 
@@ -66,11 +58,6 @@ class House:
     def solar_panel(self) -> Tuple[SolarPanel]:
         return self._solar_panel
 
-    # @solar_panel.setter
-    # def solar_panel(self, solar_panel: SolarPanel):
-    #     solar_panel._house = self
-    #     self.solar_panel = solar_panel
-
     @property
     def nb_solar_panel(self) -> int:
         return self._nb_solar_panel
@@ -78,11 +65,6 @@ class House:
     @property
     def windmill(self) -> Windmill:
         return self._windmill
-
-    # @windmill.setter
-    # def windmill(self, windmill: Windmill):
-    #     windmill._house = self
-    #     self._windmill = windmill
 
     @property
     def nb_windmill(self) -> int:
@@ -188,7 +170,7 @@ class House:
 
     def produced_own_power(self, t: pd.Timestamp, irradiance=0, wind_speed=0) -> float:
         return self.windmill.power(wind_speed) if self.has_windmill() else 0 \
-            + math.fsum(map(lambda solar_panel: solar_panel.power(irradiance), self.solar_panel)) \
+            + math.fsum(map(lambda solar_panel: solar_panel.power(t, irradiance), self.solar_panel)) \
             if self.has_solar_panel() else 0
 
     def total_power_consumption(self, t, t_arr, irradiance=0, wind_speed=0):
@@ -306,3 +288,18 @@ class House:
         self._is_optimised = False
 
         return cost
+
+    def original_day_cost(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame):
+        cost = (math.fsum(map(lambda load: load.power_consumption * load.cycle_duration, self.timed_load_list))
+               + math.fsum(map(lambda load: load.power_consumption * load.cycle_duration, self.staggered_load_list))) \
+               * 0.24
+
+        cost -= math.fsum(
+            map(
+                lambda t: self.electricity_cost(t, self.produced_own_power(t,
+                                                                           irradiance_df.loc[t].values[0],
+                                                                           wind_speed_df.loc[t].values[0])
+                                                ),
+                pd.date_range()
+            )
+        )
