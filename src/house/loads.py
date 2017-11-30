@@ -1,6 +1,7 @@
 from abc import ABCMeta
-from typing import Callable
+from datetime import date, time
 import pandas as pd
+
 
 class Load(metaclass=ABCMeta):
     """
@@ -10,7 +11,7 @@ class Load(metaclass=ABCMeta):
     time in seconds and relative to 00:00 when expressing a time of the day
     """
 
-    def __init__(self, power_consumption: Callable):
+    def __init__(self, power_consumption: float):
         """
 
         :param power_consumption:
@@ -18,7 +19,7 @@ class Load(metaclass=ABCMeta):
         self._power_consumption = power_consumption
 
     @property
-    def power_consumption(self):
+    def power_consumption(self) -> float:
         return self._power_consumption
 
 
@@ -29,26 +30,26 @@ class ContinuousLoad(Load):
     e.g.: freezer, fridge, ...
     """
 
-    def __init__(self, power_consumption: Callable[[float], float]):
+    def __init__(self, power_consumption: float):
         super().__init__(power_consumption)
 
 
 class CyclicalLoad(Load, metaclass=ABCMeta):
-    def __init__(self, power_consumption, execution_date: pd.Timestamp, start_time: pd.Timestamp, cycle_duration: float,
+    def __init__(self, power_consumption: float, execution_date: pd.Timestamp, start_time: pd.Timestamp, cycle_duration: float,
                  time_delta: pd.DateOffset):
         super().__init__(power_consumption)
         self._execution_date = execution_date
-        self._start_time = start_time
+        self._start_datetime = start_time
         self._cycle_duration = cycle_duration
         self._time_delta = time_delta
 
     @property
     def start_timestamp(self) -> pd.Timestamp:
-        return datetime.combine(self._execution_date, self._start_time)
+        return self._start_datetime
 
     @property
     def execution_date(self) -> date:
-        return self._execution_date
+        return self._execution_date.date()
 
     @property
     def start_time(self) -> float:
@@ -57,7 +58,7 @@ class CyclicalLoad(Load, metaclass=ABCMeta):
                + self.start_timestamp.time().second
 
     @property
-    def time_delta(self) -> timedelta:
+    def time_delta(self) -> pd.DateOffset:
         return self._time_delta
 
     @property
@@ -72,8 +73,8 @@ class TimedLoad(CyclicalLoad):
     e.g.: cooking, watching television, ...
     """
 
-    def __init__(self, power_consumption: Callable[[float], float], execution_date: date, start_time: time,
-                 cycle_duration: float, time_delta: timedelta):
+    def __init__(self, power_consumption: float, execution_date: pd.Timestamp, start_time: pd.Timestamp,
+                 cycle_duration: float, time_delta: pd.DateOffset):
         """
 
         :param power_consumption: A function taking one argument (of time) that describes the power consumption of this
@@ -91,8 +92,9 @@ class StaggeredLoad(CyclicalLoad):
     e.g.: dishwasher, washing machine , ...
     """
 
-    def __init__(self, power_consumption: Callable[[float], float], execution_date: date, original_start_time,
-                 cycle_duration: float, due_time: time, time_delta: timedelta):
+    def __init__(self, power_consumption: float, execution_date: pd.Timestamp, original_start_time,
+                 cycle_duration: float, due_time: time, time_delta: pd.DateOffset):
+
         super().__init__(power_consumption, execution_date, original_start_time, cycle_duration, time_delta)
         self._due_time = due_time
         self._original_start_time = original_start_time
@@ -106,4 +108,4 @@ class StaggeredLoad(CyclicalLoad):
         return self._original_start_time
 
     def set_start_time(self, start_time: time):
-        super()._start_time = start_time
+        super()._start_datetime = start_time
