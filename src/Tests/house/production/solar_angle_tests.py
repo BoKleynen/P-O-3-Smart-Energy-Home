@@ -1,4 +1,4 @@
-from house.production.SolarPanel import SolarPanel
+from house.production.solar_panel import SolarPanel
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt

@@ -1,13 +1,13 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from house.production.SolarPanel import SolarPanel
+from house.production.solar_panel import SolarPanel
 from time import time
 from util.solar_angles import incident_angle
 
 start_time = time()
 
-solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 1)
+solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539)
 
 irradiance_df = pd.read_csv(filepath_or_buffer="../../../../data/Irradiance.csv",
                             header=0,

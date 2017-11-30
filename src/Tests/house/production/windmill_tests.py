@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from house.production.WindMill import Windmill
+from house.production.wind_mill import Windmill
 from time import time
 
 start_time = time()

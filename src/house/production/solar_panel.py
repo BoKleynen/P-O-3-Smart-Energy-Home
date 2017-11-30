@@ -6,8 +6,7 @@ from util.solar_angles import incident_angle
 
 
 class SolarPanel:
-    def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, latitude: float, area: float,
-                 nb_solar_panel: int):
+    def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, latitude: float, area: float):
         if peak_power < 0:
             raise Exception("Peak power should be non negative.")
         if area < 0:
@@ -17,7 +16,6 @@ class SolarPanel:
         self._azimuth = azimuth % (2*math.pi)
         self._peak_power = peak_power
         self._area = area
-        self._nb_solar_panel = nb_solar_panel
         self._latitude = latitude
 
     @property
@@ -41,13 +39,9 @@ class SolarPanel:
         return self.house
 
     @property
-    def nb_solar_panel(self):
-        return self._nb_solar_panel
-
-    @property
     def latitude(self):
         return self._latitude
 
-    def power(self, t: pd.Timestamp, irradiance) -> float:
+    def power(self, t: pd.Timestamp, irradiance: float) -> float:
         return irradiance * self.peak_power/(1000 * self.area) \
                * max(cos(incident_angle(t, self.azimuth, self.tilt_angle, self.latitude)), 0)

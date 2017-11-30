@@ -1,7 +1,7 @@
 import pandas as pd
 from libc.math cimport sin, cos, asin, acos, pi
 
-cdef float solar_declination(day_of_year):
+cdef float solar_declination(int day_of_year):
     return -0.409105177 * cos(0.017214206 * (day_of_year + 10))
 
 
