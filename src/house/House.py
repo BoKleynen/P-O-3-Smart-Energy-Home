@@ -8,7 +8,7 @@ from house.production.SolarPanel import SolarPanel
 from house.production.WindMill import Windmill
 from house.Battery import Battery
 from typing import Iterable, List, Tuple
-from util.Util import *
+from datetime import date, time
 
 
 DAY_SECONDS = 86400
@@ -40,11 +40,10 @@ class House:
         self._windmill = windmill
         self._nb_windmill = nb_windmill if self.windmill is not None else 0
         self._battery = battery
-        self._is_large_installation = self.nb_solar_panel * self.solar_panel.peak_power \
+        self._is_large_installation = math.fsum(map(lambda sp: sp.nb_solar_panel * sp.peak_power, self.solar_panel)) \
             if self.has_solar_panel() else 0 \
             + self.nb_windmill * self.windmill.power(self.windmill.max_wind_speed) \
             if self.has_windmill() else 0 > 10.0
-        self._latitude = latitude
         self._timestamp = timestamp
 
     @property
@@ -105,10 +104,6 @@ class House:
         return self._is_large_installation
 
     @property
-    def latitude(self) -> float:
-        return self._latitude
-
-    @property
     def date(self) -> date:
         return self._timestamp.date()
 
@@ -137,7 +132,7 @@ class House:
             )
         )
 
-    def staggered_load_power(self, t: datetime, t_arr: np.ndarray) -> float:
+    def staggered_load_power(self, t: pd.Timestamp, t_arr: np.ndarray) -> float:
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
 
@@ -150,7 +145,7 @@ class House:
             )
         )
 
-    def timed_load_power(self, t: datetime) -> float:
+    def timed_load_power(self, t: pd.Timestamp) -> float:
         return math.fsum(
             map(
                 lambda load: load.power(t - load.start_time)
@@ -160,10 +155,10 @@ class House:
             )
         )
 
-    def total_load_power(self, t: datetime, t_arr: np.ndarray):
+    def total_load_power(self, t: pd.Timestamp, t_arr: np.ndarray):
         return self.continuous_load_power() + self.timed_load_power(t) + self.staggered_load_power(t, t_arr)
 
-    def produced_own_power(self, t: datetime) -> float:
+    def produced_own_power(self, t: pd.Timestamp) -> float:
         return self.windmill.power(t) if self.has_windmill() else 0 \
             + math.fsum(map(lambda solar_panel: solar_panel.power(), self.solar_panel))
 
@@ -176,23 +171,18 @@ class House:
 
         init_battery_charge = self.battery.stored_energy
 
-
         t = [t for t in pd.date_range(self.date, self.date + pd.DateOffset(days=1), freq="300S")] \
             + [load.start_timestamp for load in self.timed_load_list if load.execution_date == self.date] \
             + [load.start_timestamp + pd.DateOffset(seconds=load.cycle_duration) for load in self.timed_load_list
                if load.execution_date == self.date]
-
         for i in range(len(t_arr)):
             load = self.staggered_load_list[i]
-
             if load.execution_date == self.date:
                 load_start_time = load.execution_date + pd.DateOffset(seconds=t_arr[i])
                 t += [load_start_time, load_start_time + pd.DateOffset(seconds=load.cycle_duration)]
-
         for load in self.timed_load_list:
             if load.execution_date == self.date:
                 t += [load.start_time, load.start_time + pd.DateOffset(seconds=load.cycle_duration)]
-
         t.sort()
 
         cost = 0.0

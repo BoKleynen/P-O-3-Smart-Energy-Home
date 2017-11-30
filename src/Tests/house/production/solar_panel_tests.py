@@ -1,13 +1,13 @@
-from house.production.SolarPanel import SolarPanel
-import math
 import matplotlib.pyplot as plt
-from matplotlib import dates
-from datetime import date, datetime, timedelta
 import pandas as pd
-import time
-import numpy as np
 
-solar_panel = SolarPanel(285.0, 0.64, 0, 1.540539, 1)
+from house.production.SolarPanel import SolarPanel
+from time import time
+from util.solar_angles import incident_angle
+
+start_time = time()
+
+solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 1)
 
 irradiance_df = pd.read_csv(filepath_or_buffer="../../../../data/Irradiance.csv",
                             header=0,
@@ -15,22 +15,16 @@ irradiance_df = pd.read_csv(filepath_or_buffer="../../../../data/Irradiance.csv"
                             dtype={"watts-per-meter-sq": float},
                             parse_dates=["Date/Time"]
                             )
-print(irradiance_df)
 
-# irradiance_df.to_csv("Irradiance.csv")
-# hour_angle = [solar_panel.hour_angle(t) for t in pd.date_range(start, end, freq="300S")]
-# solar_declination = [solar_panel.solar_declination(n) for n in range(365)]
-# solar_azimuth = [solar_panel.solar_azimuth(t) for t in pd.date_range(start, end, freq="300S")]
+start = pd.Timestamp("2016-05-24 00:00:00")
+end = pd.Timestamp("2017-04-21 23:55:00")
+# end = pd.Timestamp("2016-06-24 23:55:00")
+times = pd.date_range(start, end, freq="300S")
 
-# f = np.vectorize(solar_panel.incident_angle)
-#
-# data = f(pd.date_range(start, end, freq="300S").values)
-#
-# # print(math.fsum(map(lambda p: p * 300, data))*(2.77778*math.pow(10, -7)))
-#
-# plt.plot(data)
-# plt.show()
+data = [solar_panel.power(t, irradiance_df.loc[t].values[0]) for t in pd.date_range(start, end, freq="300S")]
+# print(data)
 
-
-
+plt.plot(data)
+print(time() - start_time)
+plt.show()
 
