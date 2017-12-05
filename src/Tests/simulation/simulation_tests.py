@@ -21,7 +21,7 @@ washing_machine1 = StaggeredLoad(1000, time(hour=21), 5400, time_delta=pd.DateOf
 loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine1]
 solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539)
 
-house = House(loads, (solar_panel,), (15,))
+house = House(loads, (solar_panel,))
 simulation = Simulation(house)
 
 print(simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"), pd.Timestamp("2016-05-24 23:55:00")))
