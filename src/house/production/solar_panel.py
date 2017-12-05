@@ -6,17 +6,23 @@ from util.solar_angles import incident_angle
 
 
 class SolarPanel:
-    def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, latitude: float, area: float):
+    def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, latitude: float, area: float,
+                 nb_solar_panel: int=1):
         if peak_power < 0:
             raise Exception("Peak power should be non negative.")
         if area < 0:
             raise Exception("Area should be non negative.")
+        if not isinstance(nb_solar_panel, int):
+            raise TypeError("The number of solar panels must be an integer number")
+        if nb_solar_panel < 1:
+            raise Exception("The number of solar panels must be greater than or equal to 1")
 
         self._tilt_angle = tilt_angle % (2*math.pi)
         self._azimuth = azimuth % (2*math.pi)
         self._peak_power = peak_power
         self._area = area
         self._latitude = latitude
+        self._nb_solar_panel = nb_solar_panel
 
     @property
     def tilt_angle(self):
@@ -42,6 +48,6 @@ class SolarPanel:
     def latitude(self):
         return self._latitude
 
-    def power(self, t: pd.Timestamp, irradiance: float) -> float:
-        return irradiance * self.peak_power/(1000 * self.area) \
+    def power_production(self, t: pd.Timestamp, irradiance: float) -> float:
+        return self._nb_solar_panel * irradiance * self.peak_power/(1000 * self.area) \
                * max(cos(incident_angle(t, self.azimuth, self.tilt_angle, self.latitude)), 0)

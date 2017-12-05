@@ -1,6 +1,7 @@
 from abc import ABCMeta
 from datetime import date, time
 import pandas as pd
+from datetime import date
 
 
 class Load(metaclass=ABCMeta):
@@ -35,27 +36,35 @@ class ContinuousLoad(Load):
 
 
 class CyclicalLoad(Load, metaclass=ABCMeta):
-    def __init__(self, power_consumption: float, execution_date: pd.Timestamp, start_time: pd.Timestamp, cycle_duration: float,
-                 time_delta: pd.DateOffset):
+    def __init__(self, power_consumption: float, start_time: time, cycle_duration: float,
+                 time_delta: pd.DateOffset, execution_date: date=None):
+
         super().__init__(power_consumption)
+
         self._execution_date = execution_date
-        self._start_datetime = start_time
+        self._start_time = start_time
         self._cycle_duration = cycle_duration
         self._time_delta = time_delta
 
     @property
-    def start_timestamp(self) -> pd.Timestamp:
-        return self._start_datetime
-
-    @property
     def execution_date(self) -> date:
-        return self._execution_date.date()
+        return self._execution_date
+
+    @execution_date.setter
+    def execution_date(self, execution_date: date):
+        self._execution_date = execution_date
 
     @property
     def start_time(self) -> float:
-        return 3600*self.start_timestamp.time().hour \
-               + 60*self.start_timestamp.time().minute \
-               + self.start_timestamp.time().second
+        return 3600*self._start_time.hour + 60*self._start_time.minute + self._start_time.second
+
+    @start_time.setter
+    def start_time(self, start_time: time):
+        self._start_time = start_time
+
+    @property
+    def start_timestamp(self) -> pd.Timestamp:
+        return pd.Timestamp.combine(self._execution_date, self._start_time)
 
     @property
     def time_delta(self) -> pd.DateOffset:
@@ -73,16 +82,10 @@ class TimedLoad(CyclicalLoad):
     e.g.: cooking, watching television, ...
     """
 
-    def __init__(self, power_consumption: float, execution_date: pd.Timestamp, start_time: pd.Timestamp,
-                 cycle_duration: float, time_delta: pd.DateOffset):
-        """
+    def __init__(self, power_consumption: float, start_time: time,
+                 cycle_duration: float, time_delta: pd.DateOffset, execution_date: date=None):
 
-        :param power_consumption: A function taking one argument (of time) that describes the power consumption of this
-        load, assumed to be zero outside of [self.start_time, self.start_time + self.cycle_duration].
-        :param start_time:
-        :param cycle_duration:
-        """
-        super().__init__(power_consumption, execution_date, start_time, cycle_duration, time_delta)
+        super().__init__(power_consumption, start_time, cycle_duration, time_delta, execution_date)
 
 
 class StaggeredLoad(CyclicalLoad):
@@ -92,20 +95,18 @@ class StaggeredLoad(CyclicalLoad):
     e.g.: dishwasher, washing machine , ...
     """
 
-    def __init__(self, power_consumption: float, execution_date: pd.Timestamp, original_start_time,
-                 cycle_duration: float, due_time: time, time_delta: pd.DateOffset):
+    def __init__(self, power_consumption: float, original_start_time,
+                 cycle_duration: float, execution_date: date=None, time_delta: pd.DateOffset=None, due_time: time=None):
 
-        super().__init__(power_consumption, execution_date, original_start_time, cycle_duration, time_delta)
-        self._due_time = due_time
+        super().__init__(power_consumption, original_start_time, cycle_duration, time_delta, execution_date)
+
+        self._due_time = 86400 if due_time is None else due_time.hour + 60*due_time.minute + 3600*due_time.second
         self._original_start_time = original_start_time
 
     @property
-    def due_time(self):
+    def due_time(self) -> float:
         return self._due_time
 
     @property
     def original_start_time(self):
         return self._original_start_time
-
-    def set_start_time(self, start_time: time):
-        super()._start_datetime = start_time

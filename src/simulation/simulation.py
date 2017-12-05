@@ -8,61 +8,48 @@ from house.house import House
 class Simulation:
     def __init__(self, house: House):
         self.house = house
+        if self.house.has_solar_panel():
+            self.irradiance_df = pd.read_csv(filepath_or_buffer="../../../data/Irradiance.csv",
+                                             header=0,
+                                             index_col="Date/Time",
+                                             dtype={"watts-per-meter-sq": float},
+                                             parse_dates=["Date/Time"]
+                                             )
+        else:
+            self.irradiance_df = None
+
+        if self.house.has_windmill():
+            self.wind_speed_df = pd.read_csv(filepath_or_buffer="../../../data/wind_speed.csv",
+                                             header=0,
+                                             index_col="Date/Time",
+                                             dtype={"meters-per-second": float},
+                                             parse_dates=["Date/Time"]
+                                             )
+        else:
+            self.wind_speed_df = None
+
+    def setup(self, start: pd.Timestamp):
+        for load in self.house.timed_load_list:
+            load.execution_date = start.date()
+
+        for load in self.house.staggered_load_list:
+            load.execution_date = start.date()
+
+        self.house.timestamp = start
 
     def simulate_optimise(self, start: pd.Timestamp, end: pd.Timestamp):
-
-        if self.house.has_solar_panel():
-            irradiance_df = pd.read_csv(filepath_or_buffer="../../../data/Irradiance.csv",
-                                        header=0,
-                                        index_col="Date/Time",
-                                        dtype={"watts-per-meter-sq": float},
-                                        parse_dates=["Date/Time"]
-                                        )
-        else:
-            irradiance_df = None
-
-        if self.house.has_windmill():
-            wind_speed_df = pd.read_csv(filepath_or_buffer="../../../data/wind_speed.csv",
-                                        header=0,
-                                        index_col="Date/Time",
-                                        dtype={"meters-per-second": float},
-                                        parse_dates=["Date/Time"]
-                                        )
-        else:
-            wind_speed_df = None
-
-        self.house.timestamp = start
+        self.setup(start)
         total_cost = 0
 
         while self.house.timestamp < end:
-            self.house.optimise(irradiance_df, wind_speed_df)
-            total_cost += self.house.advance_time(pd.Timedelta("1 days"), irradiance_df, wind_speed_df)
+            self.house.optimise(self.irradiance_df, self.wind_speed_df)
+            total_cost += self.house.advance_time(self.irradiance_df, self.wind_speed_df)
 
-    def simulate_original(self, start: pd.datetime, end: pd.Timestamp):
-        if self.house.has_solar_panel():
-            irradiance_df = pd.read_csv(filepath_or_buffer="../../../data/Irradiance.csv",
-                                        header=0,
-                                        index_col="Date/Time",
-                                        dtype={"watts-per-meter-sq": float},
-                                        parse_dates=["Date/Time"]
-                                        )
-        else:
-            irradiance_df = None
+        return total_cost
 
-        if self.house.has_windmill():
-            wind_speed_df = pd.read_csv(filepath_or_buffer="../../../data/wind_speed.csv",
-                                        header=0,
-                                        index_col="Date/Time",
-                                        dtype={"meters-per-second": float},
-                                        parse_dates=["Date/Time"]
-                                        )
-        else:
-            wind_speed_df = None
-
-        self.house.timestamp = start
+    def simulate_original(self, start: pd.Timestamp, end: pd.Timestamp):
+        self.setup(start)
         total_cost = 0
 
         while self.house.timestamp < end:
-            self.house.optimise(irradiance_df, wind_speed_df)
-            total_cost += self.house.advance_time(pd.Timedelta("1 days"), irradiance_df, wind_speed_df)
-
+            total_cost += self.house.advance_time(self.irradiance_df, self.wind_speed_df)

@@ -19,7 +19,7 @@ start = pd.Timestamp("2016-05-24 00:00:00")
 end = pd.Timestamp("2016-05-24 23:55:00")
 times = pd.date_range(start, end, freq="300S")
 
-data = [windmill.power(wind_speed_df.loc[t].values[0]) for t in pd.date_range(start, end, freq="300S")]
+data = [windmill.power_production(wind_speed_df.loc[t].values[0]) for t in pd.date_range(start, end, freq="300S")]
 # print(data)
 
 plt.plot(data)

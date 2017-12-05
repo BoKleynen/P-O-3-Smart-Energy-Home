@@ -21,7 +21,7 @@ end = pd.Timestamp("2017-04-21 23:55:00")
 # end = pd.Timestamp("2016-06-24 23:55:00")
 times = pd.date_range(start, end, freq="300S")
 
-data = [solar_panel.power(t, irradiance_df.loc[t].values[0]) for t in pd.date_range(start, end, freq="300S")]
+data = [solar_panel.power_production(t, irradiance_df.loc[t].values[0]) for t in pd.date_range(start, end, freq="300S")]
 # print(data)
 
 plt.plot(data)

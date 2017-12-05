@@ -167,27 +167,7 @@ class PetrolCar(Car):
 
     def age_correction(self):
         nb_years_in_use = super().year - super().year_first_registration_tax
-
-        if nb_years_in_use < 1:
-            return 1
-        elif 1 <= nb_years_in_use < 2:
-            return 0.90
-        elif 2 <= nb_years_in_use < 3:
-            return 0.80
-        elif 3 <= nb_years_in_use < 4:
-            return 0.70
-        elif 4 <= nb_years_in_use < 5:
-            return 0.60
-        elif 5 <= nb_years_in_use < 6:
-            return 0.50
-        elif 6 <= nb_years_in_use < 7:
-            return 0.40
-        elif 7 <= nb_years_in_use < 8:
-            return 0.30
-        elif 8 <= nb_years_in_use < 9:
-            return 0.20
-        else:
-            return 0.10
+        return 1 - nb_years_in_use/10 if nb_years_in_use < 9 else 0.1
 
     def biv(self):
         """formula is only correct when the year_of_first_registration_tax is 2017 or higher"""
