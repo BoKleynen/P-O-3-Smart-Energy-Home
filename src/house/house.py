@@ -134,16 +134,6 @@ class House:
             )
         )
 
-    def original_staggered_load_power(self, t: pd.Timestamp):
-        return math.fsum(
-            map(
-                lambda load: load.power_consumption
-                if load.original_start_time <= 3600*t.hour + 60*t.minute <= load.original_start_time + load.cycle_duration
-                else 0,
-                self.staggered_load_list
-            )
-        )
-
     def total_load_power(self, t: pd.Timestamp, t_arr: np.ndarray):
         return self.continuous_load_power() + self.timed_load_power(t) + self.staggered_load_power(t, t_arr)
 
@@ -152,8 +142,9 @@ class House:
             raise Exception("This method can only be called on a house that has been optimised")
         return self.continuous_load_power() + self.timed_load_power(t) + self.optimised_staggered_load_power(t)
 
-    def total_original_load_power(self, t: pd.Timestamp):
-        return self.continuous_load_power() + self.timed_load_power(t) + self.original_staggered_load_power(t)
+    def power_production(self, t: pd.Timestamp, irradiance_df: pd.DataFrame=None, wind_speed_df: pd.DataFrame=None):
+        return math.fsum(map(lambda sp: sp.power_production(t, irradiance_df.loc[t].values[0]), self.solar_panel_tp)) \
+            + math.fsum(map(lambda wm: wm.power_production(wind_speed_df.loc[t].values[0]), self.windmill_tp))
 
     def _cost_function(self, t_arr: np.ndarray, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame) -> float:
         if len(t_arr) != len(self.staggered_load_list):
@@ -165,11 +156,7 @@ class House:
 
         for i in range(len(t)-1):
             time_delta = 300
-            total_power = \
-                self.total_load_power(t[i], t_arr) \
-                - math.fsum(map(lambda sp: sp.power_production(t[i], irradiance_df.loc[t[i]].values[0]), self.solar_panel_tp)) \
-                - math.fsum(map(lambda wm: wm.power_production(wind_speed_df.loc[t[i]].values[0]), self.windmill_tp))
-
+            total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df)
             battery_power_list = [battery.power(time_delta, battery.capacity/self.total_battery_capacity*total_power)
                                   for battery in self.battery_tp]
             for j in range(len(self.battery_tp)):
@@ -200,11 +187,11 @@ class House:
             raise Exception("iterable length mismatch")
 
         for i in range(len(self.staggered_load_list)):
-            load = self.staggered_load_list[i]
-            seconds = int(t_it[i] % 60)
-            minutes = int((t_it[i] % 3600) // 60)
-            hours = int(t_it[i] // 3600)
-            load.start_time = time(hours, minutes, seconds)
+            t = t_it[i]//300 * 300
+            print(t)
+            minutes = int((t % 3600) // 60)
+            hours = int(t // 3600)
+            self.staggered_load_list[i].start_time = time(hours, minutes)
 
     def electricity_cost(self, t: pd.Timestamp, consumed_energy: float) -> float:
         """
@@ -239,11 +226,9 @@ class House:
         cost = 0.0
         for i in range(len(t)-1):
             time_delta = (t[i + 1] - t[i]).total_seconds()
-            total_power = self.total_optimised_load_power(t[i]) \
-                - math.fsum(map(lambda sp: sp.power_production(t[i], irradiance_df.loc[t[i]].values[0]), self.solar_panel_tp)) \
-                - math.fsum(map(lambda wm: wm.power_production(wind_speed_df.loc[t[i]].values[0]), self.windmill_tp))
+            total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
             battery_power_list = [
-                battery.power(time_delta, battery.capacity / self.total_battery_capacity * total_power)
+                battery.power(time_delta, battery.capacity/self.total_battery_capacity * total_power)
                 for battery in self.battery_tp]
             for j in range(len(self.battery_tp)):
                 self.battery_tp[j] -= battery_power_list[j]
@@ -254,25 +239,20 @@ class House:
 
         return cost
 
-    # def original_day_cost(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame):
-    #     cost = math.fsum(
-    #         map(
-    #             lambda load: self.electricity_cost(load.start_time, load.power_consumption * load.cycle_duration),
-    #             self.timed_load_list
-    #         )
-    #     ) + math.fsum(
-    #         map(
-    #             lambda load: self.electricity_cost(load.original_start_time, load.power_consumption * load.cycle_duration),
-    #             self.staggered_load_list
-    #         )
-    #     )
-    #
-    #     cost += math.fsum(
-    #         map(
-    #             lambda t: self.electricity_cost(t, -self.power_production(t,
-    #                                                                       irradiance_df.loc[t].values[0],
-    #                                                                       wind_speed_df.loc[t].values[0])
-    #                                             ),
-    #             pd.date_range()
-    #         )
-    #     )
+    def original_day_cost(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame):
+        return math.fsum(
+            map(
+                lambda load: self.electricity_cost(load.start_time, load.power_consumption * load.cycle_duration),
+                self.timed_load_list
+            )
+        ) + math.fsum(
+            map(
+                lambda load: self.electricity_cost(load.original_start_time, load.power_consumption * load.cycle_duration),
+                self.staggered_load_list
+            )
+        ) + math.fsum(
+            map(
+                lambda t: self.electricity_cost(t, -self.power_production(t, irradiance_df, wind_speed_df)),
+                pd.date_range(self.date, self.date+pd.DateOffset(), freq="300S")
+            )
+        )
