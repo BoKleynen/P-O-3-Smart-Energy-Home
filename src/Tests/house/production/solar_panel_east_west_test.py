@@ -14,7 +14,7 @@ solar_panel_west = SolarPanel(285.0, 37*pi/180, pi/2, 0.87, 1.540539)
 
 house = House([], solar_panel_tp=(solar_panel_east, solar_panel_west))
 
-irradiance_df = pd.read_csv(filepath_or_buffer="../../../../data/Irradiance.csv",
+irradiance_df = pd.read_csv(filepath_or_buffer="data/Irradiance.csv",
                             header=0,
                             index_col="Date/Time",
                             dtype={"watts-per-meter-sq": float},

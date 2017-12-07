@@ -2,6 +2,8 @@ import math
 import pandas as pd
 
 from math import cos
+import pyximport
+pyximport.install()
 from util.solar_angles import incident_angle
 
 
