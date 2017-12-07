@@ -33,9 +33,9 @@ class Battery:
             raise Exception("Stored energy has to be positive")
         if stored_energy > self.capacity:
             raise Exception("Can't store more energy than the battery capacity")
-        self._stored_energy = stored_energy
+        self._stored_energy = 0.9*stored_energy
 
-    def power(self, time_delta, needed_power):
+    def power(self, time_delta, needed_power) -> float:
         if needed_power > 0:
             if self.stored_energy - time_delta * min(needed_power, self.max_power) >= 0:
                 return min(needed_power, self.max_power)

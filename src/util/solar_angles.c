@@ -6,7 +6,7 @@
         "depends": [],
         "name": "util.solar_angles",
         "sources": [
-            "solar_angles.pyx"
+            "/Users/bokleynen/Documents/2Bir/P&O3/Smart-Energy-Home/src/util/solar_angles.pyx"
         ]
     },
     "module_name": "util.solar_angles"
@@ -737,7 +737,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "solar_angles.pyx",
+  "src/util/solar_angles.pyx",
 };
 
 /*--- Type declarations ---*/

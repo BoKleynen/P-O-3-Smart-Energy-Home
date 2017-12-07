@@ -84,7 +84,7 @@ def start_simulation(option):
 # Make the input screen
 root = Tk()
 root.title("GUI Smart Energy House")
-root.iconbitmap(default="logo.ico")
+# root.iconbitmap(default="logo.ico")
 root.configure(background='white')
 
 # Set input screen to fullscreen mode

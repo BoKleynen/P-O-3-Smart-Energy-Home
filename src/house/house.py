@@ -15,13 +15,8 @@ DAY_SECONDS = 86400
 
 
 class House:
-    """
-    A class of houses with certain appliances that are modelled as loads and possibly a given number
-    of solar panels and/or windmills.
-    """
-
-    def __init__(self, load_it: Iterable[Load], solar_panel_tp: Tuple[SolarPanel] = (),
-                 windmill_tp: Tuple[Windmill] = (), battery_tp: Tuple[Battery] = (),
+    def __init__(self, load_it: Iterable[Load], solar_panel_tp=(),
+                 windmill_tp=(), battery_tp= (),
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
 
         self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]
@@ -123,7 +118,7 @@ class House:
 
     def optimised_staggered_load_power(self, t: pd.Timestamp):
         if not self._is_optimised:
-            raise Exception("This method can only be called on a house that has been optimised")
+            raise Exception("This method can only be called upon a house that has been optimised")
 
         return math.fsum(
             map(

@@ -2,22 +2,22 @@ import math
 
 
 class Windmill:
-    def __init__(self, area, min_wind_speed, max_wind_speed, nb_windmil: int=1):
+    def __init__(self, area, min_wind_speed, max_wind_speed, nb_windmill: int=1):
         if area < 0:
             raise Exception("Radius should be non negative.")
         if min_wind_speed < 0:
             raise Exception("Minimal wind speed should be non negative")
         if max_wind_speed < min_wind_speed:
             raise Exception("Maximal wind speed should be greater than the minimal wind speed")
-        if not isinstance(nb_windmil, int):
+        if not isinstance(nb_windmill, int):
             raise TypeError("The number of windmills must be an integer number")
-        if nb_windmil < 1:
+        if nb_windmill < 1:
             raise Exception("The number of windmills must be greater or equal to 1")
 
         self.area = area
         self.min_wind_speed = min_wind_speed
         self.max_wind_speed = max_wind_speed
-        self._nb_windmill = nb_windmil
+        self._nb_windmill = nb_windmill
 
     @staticmethod
     def _power_production(wind_speed: float, area: float) -> float:
