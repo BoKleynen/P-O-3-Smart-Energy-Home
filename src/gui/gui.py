@@ -28,7 +28,7 @@ def slider_electric_car(option):
 def show_wind_turbine_and_battery(option):
     global battery
 
-    if option == "wel windmolen en thuisbatterij":
+    if option == "windmolen en thuisbatterij":
         battery.place(x=screen_width / 2 - drawing_new_house_width / 2 - 250,
                       y=screen_height / 2 - drawing_new_house_height / 2 + 450)
         wind_turbine.place(x=screen_width / 2 - drawing_new_house_width / 2 - 265,
@@ -131,31 +131,31 @@ logo.place(x=screen_width-drawing_logo_width-10, y=10)
 
 # make the optionmenus to chose your input
 variable_sun_panel = StringVar(root)
-variable_sun_panel.set("maak u keuze")
-sun_panel_menu = OptionMenu(root, variable_sun_panel, "wel zonnepanelen", "geen zonnepanelen",
+variable_sun_panel.set("maak uw keuze")
+sun_panel_menu = OptionMenu(root, variable_sun_panel, "zonnepanelen", "geen zonnepanelen",
                             command=combine_func(slider_sun_panel, show_sun_panels))
 sun_panel_menu.configure(width=30, relief=SOLID, background="white", activebackground="white",
                          highlightbackground="white")
 sun_panel_menu.place(x=10, y=50)
 
 variable_wind_turbine_and_battery = StringVar(root)
-variable_wind_turbine_and_battery.set("maak u keuze")
-wind_turbine_and_battery_menu = OptionMenu(root, variable_wind_turbine_and_battery, "wel windmolen en thuisbatterij",
+variable_wind_turbine_and_battery.set("maak uw keuze")
+wind_turbine_and_battery_menu = OptionMenu(root, variable_wind_turbine_and_battery, "windmolen en thuisbatterij",
                                            "geen windmolen en thuisbatterij", command=show_wind_turbine_and_battery)
 wind_turbine_and_battery_menu.configure(width=30, relief=SOLID, background="white", activebackground="white",
                                         highlightbackground="white")
 wind_turbine_and_battery_menu.place(x=240, y=50)
 
 variable_electric_car = StringVar(root)
-variable_electric_car.set("maak u keuze")
-electric_car_menu = OptionMenu(root, variable_electric_car, "elektrische wagen", "brandstof wagen",
+variable_electric_car.set("maak uw keuze")
+electric_car_menu = OptionMenu(root, variable_electric_car, "elektrische wagen", "brandstofwagen",
                                command=combine_func(show_car, slider_electric_car))
 electric_car_menu.configure(width=30, relief=SOLID, background="white", activebackground="white",
                             highlightbackground="white")
 electric_car_menu.place(x=470, y=50)
 
 variable_house = StringVar(root)
-variable_house.set("maak u keuze")
+variable_house.set("maak uw keuze")
 house_menu = OptionMenu(root, variable_house, "nieuwbouw", "bestaand huis", command=show_house)
 house_menu.configure(width=30, relief=SOLID, background="white", activebackground="white", highlightbackground="white")
 house_menu.place(x=700, y=50)
