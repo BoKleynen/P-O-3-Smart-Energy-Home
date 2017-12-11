@@ -5,6 +5,7 @@ from house.loads import *
 from house.battery import *
 from house.house import *
 from house.battery import *
+from house.cars import *
 from simulation.simulation import *
 
 def stop_fullscreen(event):
@@ -84,8 +85,10 @@ def combine_func(*funcs):
 
 
 def start_simulation():
+    sun_panel = variable_sun_panel.get()
     nb_sun_panels = nb_sun_panel.get()
     windmill_battery = variable_wind_turbine_and_battery.get()
+    cars = variable_electric_car.get()
     nb_cars = nb_car.get()
     house = variable_house
 
@@ -107,15 +110,29 @@ def start_simulation():
     heat_pump_boiler = None
     oven = None
 
+    if cars == "elektrische wagen":
+        car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
+    else:
+        car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro 6", 3.498),)
+
+    if sun_panel == "zonnepanelen":
+        solar_panel = (SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels),)
+    else:
+        solar_panel = ()
+
+    if windmill_battery == "windmolen en thuisbatterij":
+        windmill = (Windmill(31.2, 2.5, 12.75),)
+        battery = (Battery(13.5, 5),)
+    else:
+        windmill = ()
+        battery = ()
+
     loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, dryer, led_lamps, central_heating, computer,
-             microwave, hairdryer, hood, boiler]
-
-    solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels)
-    windmill = Windmill(31.2, 2.5, 12.75)
-    battery = Battery(13.5, 5)
-
-    house = House(loads, (solar_panel,), (windmill,), (battery,))
+             microwave, hairdryer, hood, boiler, car]
+    house = House(loads, solar_panel_tp=solar_panel, windmill_tp=windmill, battery_tp=battery)
+    
     simulation = Simulation(house)
+    simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"), pd.Timestamp("2016-05-24 23:55:00"))
 
 
 # Make the input screen
