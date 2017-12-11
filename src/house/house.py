@@ -16,7 +16,7 @@ DAY_SECONDS = 86400
 
 class House:
     def __init__(self, load_it: Iterable[Load], solar_panel_tp=(),
-                 windmill_tp=(), battery_tp= (),
+                 windmill_tp=(), battery_tp=(),
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
 
         self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]

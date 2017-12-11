@@ -16,8 +16,7 @@ stove = TimedLoad(5250, time(hour=17, minute=30), 900, pd.DateOffset())
 
 dishwasher = StaggeredLoad(900, time(hour=4), 9000, time_delta=pd.DateOffset())
 washing_machine1 = StaggeredLoad(1000, time(hour=21), 5400, time_delta=pd.DateOffset())
-boiler = StaggeredLoad()
-
+#boiler = StaggeredLoad()
 loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine1]
 solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539)
 

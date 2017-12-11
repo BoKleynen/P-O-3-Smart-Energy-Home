@@ -1,5 +1,11 @@
 from tkinter import *
-
+from house.production.wind_mill import *
+from house.production.solar_panel import *
+from house.loads import *
+from house.battery import *
+from house.house import *
+from house.battery import *
+from simulation.simulation import *
 
 def stop_fullscreen(event):
     """stop fullscreen mode"""
@@ -21,8 +27,8 @@ def slider_sun_panel(option):
 
 
 def slider_electric_car(option):
-    global nb_electric_car
-    nb_electric_car.place(x=530, y=80)
+    global nb_car
+    nb_car.place(x=530, y=80)
 
 
 def show_wind_turbine_and_battery(option):
@@ -77,8 +83,39 @@ def combine_func(*funcs):
     return combined_func
 
 
-def start_simulation(option):
-    pass
+def start_simulation():
+    nb_sun_panels = nb_sun_panel.get()
+    windmill_battery = variable_wind_turbine_and_battery.get()
+    nb_cars = nb_car.get()
+    house = variable_house
+
+    fridge = ContinuousLoad(90)
+    freezer = ContinuousLoad(90)
+    led_tv = TimedLoad(60, time(hour=20, minute=30), 3600, pd.DateOffset())
+    stove = TimedLoad(5250, time(hour=17, minute=30), 900, pd.DateOffset())
+    dishwasher = StaggeredLoad(900, time(hour=4), 9576, time_delta=pd.DateOffset())
+    washing_machine = StaggeredLoad(1000, time(hour=21), 4788, time_delta=pd.DateOffset())
+    dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
+    led_lamps = TimedLoad(240, time(hour=20), 18000, pd.DateOffset())
+    central_heating = StaggeredLoad(2400, time(hour=0), 18000, time_delta=pd.DateOffset())
+    computer = TimedLoad(800, time(hour=21), 7200, pd.DateOffset())
+    microwave = TimedLoad(1500, time(hour=18), 600, pd.DateOffset())
+    hairdryer = TimedLoad(300, time(hour=8), 600, pd.DateOffset())
+    hood = TimedLoad(150, time(hour=17, minute=30), 900, pd.DateOffset())
+    boiler = StaggeredLoad(3000, time(hour=0), 16200, time_delta=pd.DateOffset())
+    swimming_pool_pump = None
+    heat_pump_boiler = None
+    oven = None
+
+    loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, dryer, led_lamps, central_heating, computer,
+             microwave, hairdryer, hood, boiler]
+
+    solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels)
+    windmill = Windmill(31.2, 2.5, 12.75)
+    battery = Battery(13.5, 5)
+
+    house = House(loads, (solar_panel,), (windmill,), (battery,))
+    simulation = Simulation(house)
 
 
 # Make the input screen
@@ -95,41 +132,41 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # Make image of the new house
-drawing_new_house = PhotoImage(file="NewHouse.png")
+drawing_new_house = PhotoImage(file="src/gui/NewHouse.png")
 drawing_new_house_width = drawing_new_house.width()
 drawing_new_house_height = drawing_new_house.height()
 new_house = Label(root, image=drawing_new_house, background="white")
 
 # Make image of the old house
-drawing_old_house = PhotoImage(file="OldHouse.png")
+drawing_old_house = PhotoImage(file="src/gui/OldHouse.png")
 old_house = Label(root, image=drawing_old_house, background="white")
 
 # Make image of the battery
-drawing_battery = PhotoImage(file="battery.png")
+drawing_battery = PhotoImage(file="src/gui/battery.png")
 drawing_battery = drawing_battery.subsample(3, 3)
 battery = Label(root, image=drawing_battery, background="white")
 
 # Make image of the Tesla Model S
-drawing_Tesla_model_S = PhotoImage(file="TeslaModelS.png")
+drawing_Tesla_model_S = PhotoImage(file="src/gui/TeslaModelS.png")
 drawing_Tesla_model_S = drawing_Tesla_model_S.subsample(2, 2)
 Tesla_model_S = Label(root, image=drawing_Tesla_model_S, background="white")
 
 # Make image of the Mercedes
-drawing_Mercedes = PhotoImage(file="Mercedes.png")
+drawing_Mercedes = PhotoImage(file="src/gui/Mercedes.png")
 Mercedes = Label(root, image=drawing_Mercedes, background="white")
 
 # Make image of the wind turbine
-drawing_wind_turbine = PhotoImage(file="WindTurbine.png")
+drawing_wind_turbine = PhotoImage(file="src/gui/WindTurbine.png")
 wind_turbine = Label(root, image=drawing_wind_turbine, background="white")
 
 # make image of the logo
-drawing_logo = PhotoImage(file="logo.png")
+drawing_logo = PhotoImage(file="src/gui/logo.png")
 drawing_logo_width = drawing_logo.width()
 drawing_logo_height = drawing_logo.height()
 logo = Label(root, image=drawing_logo, borderwidth=0)
 logo.place(x=screen_width-drawing_logo_width-10, y=10)
 
-# make the optionmenus to chose your input
+# make the optionmenu's to chose your input
 variable_sun_panel = StringVar(root)
 variable_sun_panel.set("maak uw keuze")
 sun_panel_menu = OptionMenu(root, variable_sun_panel, "zonnepanelen", "geen zonnepanelen",
@@ -164,7 +201,7 @@ house_menu.place(x=700, y=50)
 nb_sun_panel = Scale(root, from_=1, to=10, orient=HORIZONTAL, background="white", borderwidth=1,
                      sliderrelief=FLAT, troughcolor="black", highlightbackground="white")
 
-nb_electric_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,
+nb_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,
                         troughcolor="black", highlightbackground="white")
 
 # Create a button to start the simulation
