@@ -6,7 +6,7 @@ import pandas as pd
 from house.loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
 from house.production.solar_panel import SolarPanel
 from house.production.wind_mill import Windmill
-from house.battery import Battery
+from house.battery import Battery, CarBattery
 from typing import Iterable, List, Tuple
 from datetime import date, time
 
@@ -16,7 +16,7 @@ DAY_SECONDS = 86400
 
 class House:
     def __init__(self, load_it: Iterable[Load], solar_panel_tp=(),
-                 windmill_tp=(), battery_tp= (),
+                 windmill_tp=(), battery_tp=(), car_battery: CarBattery=None,
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
 
         self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]
@@ -27,10 +27,12 @@ class House:
         self._battery_tp = battery_tp
         self._total_battery_power = math.fsum(map(lambda battery: battery.max_power, battery_tp))
         self._total_battery_capacity = math.fsum(map(lambda battery: battery.capacity, battery_tp))
+        self._electrical_car_battery = car_battery
         self._is_large_installation = math.fsum(map(lambda sp: sp.peak_power, self.solar_panel_tp)) \
             + math.fsum(map(lambda wm: wm.peak_power, self.windmill_tp)) >= 10000
         self._timestamp = timestamp
         self._is_optimised = False
+        self._constraints = []
 
     @property
     def continuous_load_list(self) -> List[ContinuousLoad]:
@@ -84,6 +86,9 @@ class House:
 
     def has_battery(self) -> bool:
         return len(self.battery_tp) != 0
+
+    def has_electrical_car(self) -> bool:
+        return self._electrical_car_battery is not None
 
     def continuous_load_power(self) -> float:
         return math.fsum(
@@ -141,6 +146,26 @@ class House:
         return math.fsum(map(lambda sp: sp.power_production(t, irradiance_df.loc[t].values[0]), self.solar_panel_tp)) \
             + math.fsum(map(lambda wm: wm.power_production(wind_speed_df.loc[t].values[0]), self.windmill_tp))
 
+    def _interval_cost(self, t: pd.Timestamp, time_delta: float, power) -> float:
+        battery_power_list = [
+            battery.power(time_delta, battery.capacity / self.total_battery_capacity * power)
+            for battery in self.battery_tp]
+        for j in range(len(self.battery_tp)):
+            self.battery_tp[j] -= battery_power_list[j]
+        return self.electricity_cost(t, 2.77778e-7 * time_delta * (power - math.fsum(battery_power_list)))
+
+    def _interval_cost_charge_car(self, t: pd.Timestamp, time_delta: float, power) -> float:
+
+        car_battery_power = self._electrical_car_battery.power(time_delta, power)
+        self._electrical_car_battery.stored_energy -= car_battery_power
+        power -= car_battery_power
+        battery_power_list = [
+            battery.power(time_delta, battery.capacity / self.total_battery_capacity * power)
+            for battery in self.battery_tp]
+        for j in range(len(self.battery_tp)):
+            self.battery_tp[j].stored_energy -= battery_power_list[j]
+        return self.electricity_cost(t, 2.77778e-7 * time_delta * (power - math.fsum(battery_power_list)))
+
     def _cost_function(self, t_arr: np.ndarray, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame) -> float:
         if len(t_arr) != len(self.staggered_load_list):
             raise Exception("iterable length mismatch")
@@ -148,15 +173,41 @@ class House:
         init_battery_charge_tp = [battery.stored_energy for battery in self.battery_tp]
         t = [t for t in pd.date_range(self.date, self.date + pd.DateOffset(days=1), freq="300S")]
         cost = 0.0
+        time_delta = 300
 
-        for i in range(len(t)-1):
-            time_delta = 300
-            total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df)
-            battery_power_list = [battery.power(time_delta, battery.capacity/self.total_battery_capacity*total_power)
-                                  for battery in self.battery_tp]
-            for j in range(len(self.battery_tp)):
-                self.battery_tp[j] -= battery_power_list[j]
-            cost += self.electricity_cost(t[i], 2.77778e-7*time_delta*(total_power - math.fsum(battery_power_list)))
+        if self.has_electrical_car():
+            initial_car_charge = self._electrical_car_battery.charge
+
+            if self._electrical_car_battery.stored_energy >= self._electrical_car_battery.daily_required_energy:
+                nb_intervals = 0
+
+            else:
+                nb_intervals = 96 - ((self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy)
+                    / self._electrical_car_battery.max_power) // 300 + 1
+
+            for i in range(96-nb_intervals):
+                total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
+
+            for i in range(96-nb_intervals, 96):
+                total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df) + 16500
+                self._electrical_car_battery.stored_energy += 16500*time_delta
+                cost += self._interval_cost(t[i], time_delta, total_power)
+
+            for i in range(96, 222):
+                total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost(t[i], time_delta, total_power)
+
+            for i in range(222, 288):
+                total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
+
+            self._electrical_car_battery.charge = initial_car_charge
+
+        else:
+            for i in range(288):
+                total_power = self.total_load_power(t[i], t_arr) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost(t[i], time_delta, total_power)
 
         for i in range(len(init_battery_charge_tp)):
             self.battery_tp[i].stored_energy = init_battery_charge_tp[i]
@@ -166,11 +217,8 @@ class House:
     def optimise(self, irradiance_df: pd.DataFrame = None, wind_speed_df: pd.DataFrame = None) -> List[float]:
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
 
-        cons = ({'type': 'ineq', 'fun':
-                lambda t: self.staggered_load_list[i].due_time - (t[i] + self.staggered_load_list[i].cycle_duration)}
-                for i in range(len(self.staggered_load_list)))
-
-        res = opt.minimize(self._cost_function, init_guesses, constraints=cons, args=(irradiance_df, wind_speed_df))
+        res = opt.minimize(self._cost_function, init_guesses, constraints=self._constraints,
+                           args=(irradiance_df, wind_speed_df))
         self._is_optimised = True
 
         self.set_staggered_load_times(res.x)
@@ -219,17 +267,33 @@ class House:
         t = [t for t in pd.date_range(self.date, self.date + pd.DateOffset(days=1), freq="300S")]
 
         cost = 0.0
-        for i in range(len(t)-1):
-            time_delta = (t[i + 1] - t[i]).total_seconds()
-            total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
-            battery_power_list = [
-                battery.power(time_delta, battery.capacity/self.total_battery_capacity * total_power)
-                for battery in self.battery_tp]
-            for j in range(len(self.battery_tp)):
-                self.battery_tp[j] -= battery_power_list[j]
-            cost += self.electricity_cost(t[i], 2.77778e-7*time_delta*(total_power + math.fsum(battery_power_list)))
+        time_delta = 300
+
+        if self.has_electrical_car():
+            for i in range(96):
+                total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
+
+            for i in range(96, 222):
+                total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost(t[i], time_delta, total_power)
+
+            for i in range(222, 288):
+                total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
+        else:
+            for i in range(288):
+                total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
+                cost += self._interval_cost(t[i], time_delta, total_power)
 
         self.timestamp += pd.DateOffset()
+
+        self._constraints = []
+        for load in self.staggered_load_list:
+            load.execution_date += load.time_delta
+            if load.execution_date == self.timestamp.date():
+                self._constraints += load.constraints
+
         self._is_optimised = False
 
         return cost

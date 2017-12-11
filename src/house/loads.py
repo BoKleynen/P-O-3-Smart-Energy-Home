@@ -37,14 +37,14 @@ class ContinuousLoad(Load):
 
 class CyclicalLoad(Load, metaclass=ABCMeta):
     def __init__(self, power_consumption: float, start_time: time, cycle_duration: float,
-                 time_delta: pd.DateOffset, execution_date: date=None):
+                 time_delta: pd.DateOffset=None, execution_date: date=None):
 
         super().__init__(power_consumption)
 
         self._execution_date = execution_date
         self._start_time = start_time
         self._cycle_duration = cycle_duration
-        self._time_delta = time_delta
+        self._time_delta = time_delta if time_delta is not None else pd.DateOffset()
 
     @property
     def execution_date(self) -> date:
@@ -83,7 +83,7 @@ class TimedLoad(CyclicalLoad):
     """
 
     def __init__(self, power_consumption: float, start_time: time,
-                 cycle_duration: float, time_delta: pd.DateOffset, execution_date: date=None):
+                 cycle_duration: float, time_delta: pd.DateOffset=None, execution_date: date=None):
 
         super().__init__(power_consumption, start_time, cycle_duration, time_delta, execution_date)
 
@@ -96,16 +96,20 @@ class StaggeredLoad(CyclicalLoad):
     """
 
     def __init__(self, power_consumption: float, original_start_time,
-                 cycle_duration: float, execution_date: date=None, time_delta: pd.DateOffset=None, due_time: time=None):
+                 cycle_duration: float, execution_date: date=None, time_delta: pd.DateOffset=None, constraints=None):
 
         super().__init__(power_consumption, original_start_time, cycle_duration, time_delta, execution_date)
 
-        self._due_time = 86400 if due_time is None else due_time.hour + 60*due_time.minute + 3600*due_time.second
+        if constraints is None:
+            constraints = [{'type': 'ineq',
+                            'fun': lambda _: 86400 - (self.start_time + self.cycle_duration)}]
+
+        self._constraints = constraints
         self._original_start_time = original_start_time
 
     @property
-    def due_time(self) -> float:
-        return self._due_time
+    def constraints(self):
+        return self._constraints
 
     @property
     def original_start_time(self):
