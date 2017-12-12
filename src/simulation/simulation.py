@@ -9,7 +9,7 @@ class Simulation:
     def __init__(self, house: House):
         self.house = house
         if self.house.has_solar_panel():
-            self.irradiance_df = pd.read_csv(filepath_or_buffer="../../../data/Irradiance.csv",
+            self.irradiance_df = pd.read_csv(filepath_or_buffer=r"../../data/Irradiance.csv",
                                              header=0,
                                              index_col="Date/Time",
                                              dtype={"watts-per-meter-sq": float},
@@ -19,7 +19,7 @@ class Simulation:
             self.irradiance_df = None
 
         if self.house.has_windmill():
-            self.wind_speed_df = pd.read_csv(filepath_or_buffer="../../../data/wind_speed.csv",
+            self.wind_speed_df = pd.read_csv(filepath_or_buffer=r"../../../data/wind_speed.csv",
                                              header=0,
                                              index_col="Date/Time",
                                              dtype={"meters-per-second": float},

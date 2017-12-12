@@ -7,7 +7,7 @@ from time import time
 start_time = time()
 windmill = Windmill(9.448223734, 2.5, 12.75190283)
 
-wind_speed_df = pd.read_csv(filepath_or_buffer="/Users/bokleynen/Documents/2Bir/P&O3/Smart-Energy-Home/data/wind_speed.csv",
+wind_speed_df = pd.read_csv(filepath_or_buffer="data/wind_speed.csv",
                             header=0,
                             index_col="Date/Time",
                             dtype={"meters-per-second": float},

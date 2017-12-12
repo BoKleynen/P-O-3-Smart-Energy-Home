@@ -9,7 +9,7 @@ start_time = time()
 
 solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 20)
 
-irradiance_df = pd.read_csv(filepath_or_buffer="../../../../data/Irradiance.csv",
+irradiance_df = pd.read_csv(filepath_or_buffer="data/Irradiance.csv",
                             header=0,
                             index_col="Date/Time",
                             dtype={"watts-per-meter-sq": float},
