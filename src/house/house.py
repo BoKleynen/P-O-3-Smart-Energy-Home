@@ -216,9 +216,11 @@ class House:
 
     def optimise(self, irradiance_df: pd.DataFrame = None, wind_speed_df: pd.DataFrame = None) -> List[float]:
         init_guesses = np.array([random.random() * DAY_SECONDS for i in range(len(self.staggered_load_list))])
+        print(init_guesses)
 
         res = opt.minimize(self._cost_function, init_guesses, constraints=self._constraints,
-                           args=(irradiance_df, wind_speed_df))
+                           args=(irradiance_df, wind_speed_df), method="SLSQP")
+        print(res)
         self._is_optimised = True
 
         self.set_staggered_load_times(res.x)
