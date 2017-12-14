@@ -123,6 +123,12 @@ class House:
             raise Exception("This method can only be called on a house that has been optimised")
         return self.continuous_load_power() + self.timed_load_power(t) + self.optimised_staggered_load_power(t)
 
+    def solar_power_production(self, t, irradiance):
+        return math.fsum(map(lambda sp: sp.power_production(t, irradiance), self.solar_panel_tp))
+
+    def wind_power_production(self, wind_speed):
+        return math.fsum(map(lambda wm: wm.power_production(wind_speed), self.windmill_tp))
+
     def power_production(self, t: pd.Timestamp, irradiance_df: pd.DataFrame=None, wind_speed_df: pd.DataFrame=None):
         return math.fsum(map(lambda sp: sp.power_production(t, irradiance_df.loc[t].values[0]), self.solar_panel_tp)) \
             + math.fsum(map(lambda wm: wm.power_production(wind_speed_df.loc[t].values[0]), self.windmill_tp))
@@ -148,7 +154,7 @@ class House:
         return self.electricity_cost(t, 2.77778e-7 * time_delta * (power - math.fsum(battery_power_list)))
 
     @staticmethod
-    def _optimized_load_cost(t, load_it):
+    def _optimized_load_power(t, load_it):
         return math.fsum(
             map(
                 lambda load: load.power_consumption
@@ -178,7 +184,7 @@ class House:
             for i in range(96-nb_intervals):
                 total_power = self.continuous_load_power() \
                               + self.timed_load_power(t[i]) \
-                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + self._optimized_load_power(t[i], optimized_loads) \
                               + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
                               - power_production_df.loc[t[i]].values[2]
                 cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
@@ -186,7 +192,7 @@ class House:
             for i in range(96-nb_intervals, 96):
                 total_power = self.continuous_load_power() \
                               + self.timed_load_power(t[i]) \
-                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + self._optimized_load_power(t[i], optimized_loads) \
                               + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
                               - power_production_df.loc[t[i]].values[2]
                 self._electrical_car_battery.stored_energy += 16500*time_delta
@@ -195,7 +201,7 @@ class House:
             for i in range(96, 222):
                 total_power = self.continuous_load_power() \
                               + self.timed_load_power(t[i]) \
-                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + self._optimized_load_power(t[i], optimized_loads) \
                               + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
                               - power_production_df.loc[t[i]].values[2]
                 cost += self._interval_cost(t[i], time_delta, total_power)
@@ -203,7 +209,7 @@ class House:
             for i in range(222, 288):
                 total_power = self.continuous_load_power() \
                               + self.timed_load_power(t[i]) \
-                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + self._optimized_load_power(t[i], optimized_loads) \
                               + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
                               - power_production_df.loc[t[i]].values[2]
                 cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
@@ -214,8 +220,8 @@ class House:
             for i in range(len(t) - 1):
                 total_power = self.continuous_load_power() \
                               + self.timed_load_power(t[i]) \
-                              + self._optimized_load_cost(t[i], optimized_loads) \
-                              + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
+                              + self._optimized_load_power(t[i], optimized_loads) \
+                              + load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
                               - power_production_df.loc[t[i]].values[2]
                 cost += self._interval_cost(t[i], time_delta, total_power)
 
@@ -223,12 +229,6 @@ class House:
                 self.battery_tp[i].stored_energy = init_battery_charge_tp[i]
 
         return cost
-
-    def _solar_power_production(self, t, irradiance):
-        return math.fsum(map(lambda sp: sp.power_production(t, irradiance), self.solar_panel_tp))
-
-    def _wind_power_production(self, wind_speed):
-        return math.fsum(map(lambda wm: wm.power_production(wind_speed), self.windmill_tp))
 
     def optimise(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame):
         sorted_load = sorted(self.staggered_load_list, key=lambda load: load.power_consumption * load.cycle_duration,
@@ -240,9 +240,9 @@ class House:
         power_generation_df.columns = ["Irradiance", "WindSpeed"]
         power_generation_df.index.name = "Timestamp"
 
-        power_generation_df["AvailablePower"] = list(map(lambda ws, sp: self._wind_power_production(ws) + sp,
+        power_generation_df["AvailablePower"] = list(map(lambda ws, sp: self.wind_power_production(ws) + sp,
                                                          power_generation_df["WindSpeed"],
-                                                         map(self._solar_power_production,
+                                                         map(self.solar_power_production,
                                                              power_generation_df.index,
                                                              power_generation_df["Irradiance"]
                                                              )
