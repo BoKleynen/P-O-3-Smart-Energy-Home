@@ -252,7 +252,7 @@ class House:
             print(n)
             min_t_start = 0.0
             min_cost = math.inf
-            for load_start_time in pd.date_range(self.date, self.date + pd.DateOffset(), freq="300S"):
+            for load_start_time in pd.date_range(self.date, self.date + pd.Timedelta(seconds=86400-sorted_load[n].cycle_duration), freq="300S"):
                 cost = self._cost_function(load_start_time, sorted_load[n], power_generation_df,
                                            sorted_load[:n])
 
