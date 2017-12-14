@@ -8,25 +8,19 @@ from house.house import House
 class Simulation:
     def __init__(self, house: House):
         self.house = house
-        if self.house.has_solar_panel():
-            self.irradiance_df = pd.read_csv(filepath_or_buffer="data/Irradiance.csv",
-                                             header=0,
-                                             index_col="Date/Time",
-                                             dtype={"watts-per-meter-sq": float},
-                                             parse_dates=["Date/Time"]
-                                             )
-        else:
-            self.irradiance_df = None
+        self.irradiance_df = pd.read_csv(filepath_or_buffer="../../../data/Irradiance.csv",
+                                         header=0,
+                                         index_col="Date/Time",
+                                         dtype={"watts-per-meter-sq": float},
+                                         parse_dates=["Date/Time"]
+                                         )
 
-        if self.house.has_windmill():
-            self.wind_speed_df = pd.read_csv(filepath_or_buffer="data/wind_speed.csv",
-                                             header=0,
-                                             index_col="Date/Time",
-                                             dtype={"meters-per-second": float},
-                                             parse_dates=["Date/Time"]
-                                             )
-        else:
-            self.wind_speed_df = None
+        self.wind_speed_df = pd.read_csv(filepath_or_buffer="../../../data/wind_speed.csv",
+                                         header=0,
+                                         index_col="Date/Time",
+                                         dtype={"meters-per-second": float},
+                                         parse_dates=["Date/Time"]
+                                         )
 
     def setup(self, start: pd.Timestamp):
         for load in self.house.timed_load_list:

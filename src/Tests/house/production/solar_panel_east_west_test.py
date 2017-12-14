@@ -32,3 +32,4 @@ data = [house.power_production(t, irradiance_df) for t in pd.date_range(start, e
 plt.plot(data)
 print(time() - start_time)
 plt.show()
+
