@@ -340,4 +340,4 @@ class House:
                 pd.date_range(self.date, self.date+pd.DateOffset(), freq="300S")
             )
         ) + 0.24 * 2.77778e-7 * self.continuous_load_power() \
-               + (0.24 * 2.77778e-7 * (self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy) if self.has_electrical_car() else 0)
+               + (0.24 * 2.77778e-7 * (max(self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy, 0)) if self.has_electrical_car() else 0)
