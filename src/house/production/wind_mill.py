@@ -36,7 +36,7 @@ class Windmill:
             return self._power_production(wind_speed, self.area)
 
         else:
-            self.peak_power()
+            return self.peak_power()
 
     def peak_power(self):
         return self._power_production(self.max_wind_speed, self.area)
