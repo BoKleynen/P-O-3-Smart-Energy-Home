@@ -3,10 +3,10 @@ import numpy as np
 import random
 import math
 import pandas as pd
-from house.loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
-from house.production.solar_panel import SolarPanel
-from house.production.wind_mill import Windmill
-from house.battery import Battery, CarBattery
+from src.house.loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
+from src.house.production.solar_panel import SolarPanel
+from src.house.production.wind_mill import Windmill
+from src.house.battery import Battery, CarBattery
 from typing import Iterable, List, Tuple
 from datetime import date, time
 
@@ -29,7 +29,7 @@ class House:
         self._total_battery_capacity = math.fsum(map(lambda battery: battery.capacity, battery_tp))
         self._electrical_car_battery = car_battery
         self._is_large_installation = math.fsum(map(lambda sp: sp.peak_power, self.solar_panel_tp)) \
-            + math.fsum(map(lambda wm: wm.peak_power, self.windmill_tp)) >= 10000
+            + math.fsum(map(lambda wm: wm.peak_power(), self.windmill_tp)) >= 10000
         self._timestamp = timestamp
         self._is_optimised = False
         self._constraints = []
@@ -151,7 +151,7 @@ class House:
             battery.power(time_delta, battery.capacity / self.total_battery_capacity * power)
             for battery in self.battery_tp]
         for j in range(len(self.battery_tp)):
-            self.battery_tp[j] -= battery_power_list[j]
+            self.battery_tp[j].stored_energy -= battery_power_list[j]
         return self.electricity_cost(t, 2.77778e-7 * time_delta * (power - math.fsum(battery_power_list)))
 
     def _interval_cost_charge_car(self, t: pd.Timestamp, time_delta: float, power) -> float:
@@ -231,7 +231,6 @@ class House:
 
         for i in range(len(self.staggered_load_list)):
             t = t_it[i]//300 * 300
-            print(t)
             minutes = int((t % 3600) // 60)
             hours = int(t // 3600)
             self.staggered_load_list[i].start_time = time(hours, minutes)

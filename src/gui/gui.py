@@ -1,4 +1,5 @@
 from tkinter import *
+from math import pi
 from house.production.wind_mill import *
 from house.production.solar_panel import *
 from house.loads import *
@@ -8,12 +9,17 @@ from house.battery import *
 from house.cars import *
 from simulation.simulation import *
 
-def stop_fullscreen(event):
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
+from matplotlib.figure import Figure
+from matplotlib.dates import DateFormatter
+
+
+def stop_fullscreen_1(event):
     """stop fullscreen mode"""
     root.attributes("-fullscreen", False)
 
 
-def start_fullscreen(event):
+def start_fullscreen_1(event):
     """start fullscreen mode"""
     root.attributes("-fullscreen", True)
 
@@ -33,15 +39,15 @@ def slider_electric_car(option):
 
 
 def show_wind_turbine_and_battery(option):
-    global battery
+    global battery1
 
     if option == "windmolen en thuisbatterij":
-        battery.place(x=screen_width / 2 - drawing_new_house_width / 2 - 250,
+        battery1.place(x=screen_width / 2 - drawing_new_house_width / 2 - 250,
                       y=screen_height / 2 - drawing_new_house_height / 2 + 450)
         wind_turbine.place(x=screen_width / 2 - drawing_new_house_width / 2 - 265,
                            y=screen_height / 2 - drawing_new_house_height / 2 - 90)
     else:
-        battery.place_forget()
+        battery1.place_forget()
         wind_turbine.place_forget()
 
 
@@ -90,7 +96,7 @@ def start_simulation():
     windmill_battery = variable_wind_turbine_and_battery.get()
     cars = variable_electric_car.get()
     nb_cars = nb_car.get()
-    house = variable_house
+    house = variable_house.get()
 
     fridge = ContinuousLoad(90)
     freezer = ContinuousLoad(90)
@@ -98,7 +104,7 @@ def start_simulation():
     stove = TimedLoad(5250, time(hour=17, minute=30), 900, pd.DateOffset())
     dishwasher = StaggeredLoad(900, time(hour=4), 9576, time_delta=pd.DateOffset())
     washing_machine = StaggeredLoad(1000, time(hour=21), 4788, time_delta=pd.DateOffset())
-    dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
+    tumble_dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
     led_lamps = TimedLoad(240, time(hour=20), 18000, pd.DateOffset())
     central_heating = StaggeredLoad(2400, time(hour=0), 18000, time_delta=pd.DateOffset())
     computer = TimedLoad(800, time(hour=21), 7200, pd.DateOffset())
@@ -112,39 +118,115 @@ def start_simulation():
 
     if cars == "elektrische wagen":
         car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
-    else:
+    elif cars == "brandstofwagen":
         car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro 6", 3.498),)
+    else:
+        raise Exception("you have to make a chose.1")
 
     if sun_panel == "zonnepanelen":
-        solar_panel = (SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels),)
-    else:
+        if house == "bestaand huis":
+            solar_panel = (SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels),)
+        elif house == "nieuwbouw":
+            if nb_sun_panels != 1:
+                solar_panel = (SolarPanel(285.0, 0.64, -pi/2, 0.87, 1.540539, int(nb_sun_panels/2)),
+                               SolarPanel(285.0, 0.64, pi/2, 0.87, 1.540539, int(nb_sun_panels/2)+1))
+            else:
+                solar_panel = (SolarPanel(285.0, 0.64, pi/2, 0.87, 1.540539, nb_sun_panels), )
+        else:
+            raise Exception("you have to make a chose.2")
+    elif sun_panel == "geen zonnepanelen":
         solar_panel = ()
+    else:
+        raise Exception("you have to make a chose.3")
 
     if windmill_battery == "windmolen en thuisbatterij":
         windmill = (Windmill(31.2, 2.5, 12.75),)
         battery = (Battery(13.5, 5),)
-    else:
+    elif windmill_battery == "geen windmolen en geen thuisbatterij":
         windmill = ()
         battery = ()
+    else:
+        raise Exception("you have to make a chose.4")
 
-    loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, dryer, led_lamps, central_heating, computer,
-             microwave, hairdryer, hood, boiler, car]
+    loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, tumble_dryer, led_lamps, central_heating,
+             computer, microwave, hairdryer, hood, boiler, car]
     house = House(loads, solar_panel_tp=solar_panel, windmill_tp=windmill, battery_tp=battery)
-    
+
     simulation = Simulation(house)
-    simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"), pd.Timestamp("2016-05-24 23:55:00"))
+    cost_optimised = round(simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"),
+                                                        pd.Timestamp("2016-05-24 23:55:00")), 2)
+    #cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24 00:00:00"),
+    #                                                 pd.Timestamp("2016-05-24 23:55:00")), 2)
+    cost_normal = 5
+    create_output_screen(house, cost_optimised, cost_normal)
 
 
-# Make the input screen
+def create_output_screen(house, amount_optimised, amount_normal):
+    amount_optimised = str(amount_optimised)
+    amount_normal = str(amount_normal)
+
+    # Make output window
+    output = Tk()
+    output.title("Results of the simulation")
+    output.configure(background="white")
+
+    output.attributes("-fullscreen", True)
+    output.bind("<Escape>", lambda x: output.attributes("-fullscreen", False))
+    output.bind("<F11>", lambda x: output.attributes("-fullscreen", False))
+
+    button1 = Button(output, text='Sluit venster', width=25, height=2, relief=SOLID, background="white",
+                     activebackground="white", command=lambda: output.destroy())
+    button1.pack()
+
+    # Show results from the cost calculations
+    w1 = Label(output, text="De simulatie is uitgevoerd voor de volgende dag: 24 mei 2016 \n"
+                            "Te betalen bedrag aan elektriciteit met optimalisatie: €"+amount_optimised,
+               background="white", font=("Ariel", 15))
+    w3 = Label(output, text="Te betalen bedrag aan elektriciteit zonder optimalisatie: €"+amount_normal,
+               background="white", font=("Ariel", 15))
+    w1.pack()
+    w3.pack()
+
+    # Show graphs
+    irradiance_df = pd.read_csv(filepath_or_buffer="data/Irradiance.csv", header=0, index_col="Date/Time",
+                                dtype={"watts-per-meter-sq": float}, parse_dates=["Date/Time"])
+    wind_speed_df = pd.read_csv(filepath_or_buffer="data/wind_speed.csv", header=0, index_col="Date/Time",
+                                dtype={"meters-per-second": float}, parse_dates=["Date/Time"])
+    start = pd.Timestamp("2016-05-24 00:00:00")
+    end = pd.Timestamp("2016-05-24 23:55:00")
+    times = pd.date_range(start, end, freq="300S")
+    house._is_optimised = True
+    data_production = [house.power_production(t, irradiance_df, wind_speed_df) for t in times]
+    data_consumption = [house.optimised_staggered_load_power(t) for t in times]
+
+    fig = Figure(figsize=(15, 8))
+    a = fig.add_subplot(121)
+    a.plot_date(times, data_production, color="blue", linestyle="solid", linewidth=2, marker=None)
+    a.xaxis.set_major_formatter(DateFormatter("%H:%M"))
+    a.set_title("elektriciteitsproductie door windmolen en zonnepanelen", fontsize=16)
+    a.set_ylabel("vermogen [W]", fontsize=14)
+    a.set_xlabel("tijd [uur:min]", fontsize=14)
+    b = fig.add_subplot(122)
+    b.plot_date(times, data_consumption, color="blue", linestyle="solid", linewidth=2, marker=None)
+    b.xaxis.set_major_formatter(DateFormatter("%H:%M"))
+    b.set_title("elektriciteitsverbruik", fontsize=16)
+    b.set_ylabel("vermogen [W]", fontsize=14)
+    b.set_xlabel("tijd [uur:min]", fontsize=14)
+
+    canvas = FigureCanvasTkAgg(fig, master=output)
+    canvas.get_tk_widget().pack()
+    canvas.draw()
+
+
+# Make the input window
 root = Tk()
 root.title("GUI Smart Energy House")
-# root.iconbitmap(default="logo.ico")
 root.configure(background='white')
 
 # Set input screen to fullscreen mode
 root.attributes("-fullscreen", True)
-root.bind("<Escape>", stop_fullscreen)
-root.bind("<F11>", start_fullscreen)
+root.bind("<Escape>", stop_fullscreen_1)
+root.bind("<F11>", start_fullscreen_1)
 screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
@@ -161,7 +243,7 @@ old_house = Label(root, image=drawing_old_house, background="white")
 # Make image of the battery
 drawing_battery = PhotoImage(file="src/gui/battery.png")
 drawing_battery = drawing_battery.subsample(3, 3)
-battery = Label(root, image=drawing_battery, background="white")
+battery1 = Label(root, image=drawing_battery, background="white")
 
 # Make image of the Tesla Model S
 drawing_Tesla_model_S = PhotoImage(file="src/gui/TeslaModelS.png")
@@ -188,38 +270,38 @@ variable_sun_panel = StringVar(root)
 variable_sun_panel.set("maak uw keuze")
 sun_panel_menu = OptionMenu(root, variable_sun_panel, "zonnepanelen", "geen zonnepanelen",
                             command=combine_func(slider_sun_panel, show_sun_panels))
-sun_panel_menu.configure(width=30, relief=SOLID, background="white", activebackground="white",
+sun_panel_menu.configure(width=35, relief=SOLID, background="white", activebackground="white",
                          highlightbackground="white")
 sun_panel_menu.place(x=10, y=50)
 
 variable_wind_turbine_and_battery = StringVar(root)
 variable_wind_turbine_and_battery.set("maak uw keuze")
 wind_turbine_and_battery_menu = OptionMenu(root, variable_wind_turbine_and_battery, "windmolen en thuisbatterij",
-                                           "geen windmolen en thuisbatterij", command=show_wind_turbine_and_battery)
-wind_turbine_and_battery_menu.configure(width=30, relief=SOLID, background="white", activebackground="white",
+                                           "geen windmolen en geen thuisbatterij", command=show_wind_turbine_and_battery)
+wind_turbine_and_battery_menu.configure(width=35, relief=SOLID, background="white", activebackground="white",
                                         highlightbackground="white")
-wind_turbine_and_battery_menu.place(x=240, y=50)
+wind_turbine_and_battery_menu.place(x=270, y=50)
 
 variable_electric_car = StringVar(root)
 variable_electric_car.set("maak uw keuze")
 electric_car_menu = OptionMenu(root, variable_electric_car, "elektrische wagen", "brandstofwagen",
                                command=combine_func(show_car, slider_electric_car))
-electric_car_menu.configure(width=30, relief=SOLID, background="white", activebackground="white",
+electric_car_menu.configure(width=35, relief=SOLID, background="white", activebackground="white",
                             highlightbackground="white")
-electric_car_menu.place(x=470, y=50)
+electric_car_menu.place(x=530, y=50)
 
 variable_house = StringVar(root)
 variable_house.set("maak uw keuze")
 house_menu = OptionMenu(root, variable_house, "nieuwbouw", "bestaand huis", command=show_house)
-house_menu.configure(width=30, relief=SOLID, background="white", activebackground="white", highlightbackground="white")
-house_menu.place(x=700, y=50)
+house_menu.configure(width=35, relief=SOLID, background="white", activebackground="white", highlightbackground="white")
+house_menu.place(x=790, y=50)
 
 # Make sliders to select number of sun panels and cars
 nb_sun_panel = Scale(root, from_=1, to=10, orient=HORIZONTAL, background="white", borderwidth=1,
                      sliderrelief=FLAT, troughcolor="black", highlightbackground="white")
 
 nb_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,
-                        troughcolor="black", highlightbackground="white")
+               troughcolor="black", highlightbackground="white")
 
 # Create a button to start the simulation
 button = Button(root, text='Start simulatie', width=25, height=5, relief=SOLID, background="white",
@@ -227,8 +309,3 @@ button = Button(root, text='Start simulatie', width=25, height=5, relief=SOLID, 
 button.place(x=screen_width/2-90, y=screen_height-100)
 
 root.mainloop()
-
-# TODO:
-# - al dan niet tonen van de zonnepanelen
-# - outputscreen maken => grafiek + animatie van de toestellen in de tijd
-# - GUI koppelen aan simulatie
