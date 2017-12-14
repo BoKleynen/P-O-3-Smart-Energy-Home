@@ -1,6 +1,3 @@
-import scipy.optimize as opt
-import numpy as np
-import random
 import math
 import pandas as pd
 from src.house.loads import Load, StaggeredLoad, TimedLoad, ContinuousLoad
@@ -120,9 +117,6 @@ class House:
                 self.staggered_load_list
             )
         )
-
-    def total_load_power(self, t: pd.Timestamp, t_arr: np.ndarray):
-        return self.continuous_load_power() + self.timed_load_power(t) + self.staggered_load_power(t, t_arr)
 
     def total_optimised_load_power(self, t: pd.Timestamp) -> float:
         if not self._is_optimised:
@@ -296,8 +290,6 @@ class House:
             return 0.24 * consumed_energy
 
     def advance_time(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame) -> float:
-        if not self._is_optimised:
-            raise Exception
         t = [t for t in pd.date_range(self.date, self.date + pd.DateOffset(days=1), freq="300S")]
 
         cost = 0.0
@@ -335,17 +327,17 @@ class House:
     def original_day_cost(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame):
         return math.fsum(
             map(
-                lambda load: self.electricity_cost(load.start_time, load.power_consumption * load.cycle_duration),
+                lambda load: self.electricity_cost(load.start_time, 2.77778e-7 * load.power_consumption * load.cycle_duration),
                 self.timed_load_list
             )
         ) + math.fsum(
             map(
-                lambda load: self.electricity_cost(load.original_start_time, load.power_consumption * load.cycle_duration),
+                lambda load: self.electricity_cost(load.original_start_time, 2.77778e-7 * load.power_consumption * load.cycle_duration),
                 self.staggered_load_list
             )
         ) + math.fsum(
             map(
-                lambda t: self.electricity_cost(t, -self.power_production(t, irradiance_df, wind_speed_df)),
+                lambda t: self.electricity_cost(t, -2.77778e-7 * self.power_production(t, irradiance_df, wind_speed_df)),
                 pd.date_range(self.date, self.date+pd.DateOffset(), freq="300S")
             )
-        )
+        ) + 0.24 * 2.77778e-7 * (self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy)

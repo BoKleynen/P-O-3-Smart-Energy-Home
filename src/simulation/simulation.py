@@ -46,4 +46,7 @@ class Simulation:
         total_cost = 0
 
         while self.house.timestamp < end:
-            total_cost += self.house.advance_time(self.irradiance_df, self.wind_speed_df)
+            total_cost += self.house.original_day_cost(self.irradiance_df, self.wind_speed_df)
+            self.house.timestamp += pd.DateOffset()
+
+        return total_cost
