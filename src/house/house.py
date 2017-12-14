@@ -105,6 +105,16 @@ class House:
             )
         )
 
+    def original_staggered_load_power(self, t: pd.Timestamp):
+        return math.fsum(
+            map(
+                lambda load: load.power_consumption
+                if load.original_start_time <= 3600 * t.hour + 60 * t.minute < load.original_start_time + load.cycle_duration
+                else 0,
+                self.staggered_load_list
+            )
+        )
+
     def optimised_staggered_load_power(self, t: pd.Timestamp):
         if not self._is_optimised:
             raise Exception("This method can only be called upon a house that has been optimised")
@@ -112,7 +122,7 @@ class House:
         return math.fsum(
             map(
                 lambda load: load.power_consumption
-                if load.start_time <= 3600*t.hour + 60*t.minute <= load.start_time + load.cycle_duration
+                if load.start_time <= 3600*t.hour + 60*t.minute < load.start_time + load.cycle_duration
                 else 0,
                 self.staggered_load_list
             )
@@ -307,18 +317,14 @@ class House:
                 total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
                 cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
         else:
-            for i in range(288):
-                total_power = self.total_optimised_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
-                cost += self._interval_cost(t[i], time_delta, total_power)
+            cost = math.fsum(
+                map(
+                    lambda t: self._interval_cost(t, 300, self.total_optimised_load_power(t) - self.power_production(t, irradiance_df, wind_speed_df)),
+                    pd.date_range(pd.Timestamp(self.date), pd.Timestamp(self.date) + pd.DateOffset(), freq="300S")
+                )
+            )
 
         self.timestamp += pd.DateOffset()
-
-        self._constraints = []
-        for load in self.staggered_load_list:
-            load.execution_date += load.time_delta
-            if load.execution_date == self.timestamp.date():
-                self._constraints += load.constraints
-
         self._is_optimised = False
 
         return cost
@@ -336,8 +342,8 @@ class House:
             )
         ) + math.fsum(
             map(
-                lambda t: self.electricity_cost(t, -2.77778e-7 * self.power_production(t, irradiance_df, wind_speed_df)),
+                lambda t: self.electricity_cost(t, -2.77778e-7 * 300 * self.power_production(t, irradiance_df, wind_speed_df)),
                 pd.date_range(self.date, self.date+pd.DateOffset(), freq="300S")
             )
-        ) + 0.24 * 2.77778e-7 * self.continuous_load_power() \
+        ) + 0.24 * 2.77778e-7 * 86400 * self.continuous_load_power() \
                + (0.24 * 2.77778e-7 * (max(self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy, 0)) if self.has_electrical_car() else 0)
