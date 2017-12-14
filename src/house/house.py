@@ -137,10 +137,6 @@ class House:
         battery_power_list = [
             battery.power(time_delta, battery.capacity / self.total_battery_capacity * power)
             for battery in self.battery_tp]
-        for battery in self.battery_tp:
-            print(battery.power(time_delta, battery.capacity / self.total_battery_capacity * power))
-            print("power" + str(power))
-        print("bat" + str(battery_power_list))
         for j in range(len(self.battery_tp)):
             self.battery_tp[j].stored_energy -= battery_power_list[j]
         return self.electricity_cost(t, 2.77778e-7 * time_delta * (power - math.fsum(battery_power_list)))
@@ -176,14 +172,14 @@ class House:
         time_delta = 300
 
         if self.has_electrical_car():
-            initial_car_charge = self._electrical_car_battery.stored_energy
+            initial_car_charge = self._electrical_car_battery.charge
 
             if self._electrical_car_battery.stored_energy >= self._electrical_car_battery.daily_required_energy:
                 nb_intervals = 0
 
             else:
                 nb_intervals = 96 - ((self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy)
-                                     / self._electrical_car_battery.max_power) // 300 + 1
+                    / self._electrical_car_battery.max_power) // 300 + 1
 
             for i in range(96-nb_intervals):
                 total_power = self.continuous_load_power() \
@@ -218,11 +214,10 @@ class House:
                               - power_production_df.loc[t[i]].values[2]
                 cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
 
-            self._electrical_car_battery.stored_energy = initial_car_charge
+            self._electrical_car_battery.charge = initial_car_charge
 
         else:
             for i in range(len(t) - 1):
-                print("i: ", str(i))
                 total_power = self.continuous_load_power() \
                               + self.timed_load_power(t[i]) \
                               + self._optimized_load_power(t[i], optimized_loads) \
@@ -329,42 +324,10 @@ class House:
         return cost
 
     def original_day_cost(self, irradiance_df: pd.DataFrame, wind_speed_df: pd.DataFrame):
-        if self.has_electrical_car():
-            return math.fsum(
-                map(
-                    lambda load: self.electricity_cost(load.start_time, 2.77778e-7 * load.power_consumption * load.cycle_duration),
-                    self.timed_load_list
-                )
-            ) + math.fsum(
-                map(
-                    lambda load: self.electricity_cost(load.original_start_time, 2.77778e-7 * load.power_consumption * load.cycle_duration),
-                    self.staggered_load_list
-                )
-            ) + math.fsum(
-                map(
-                    lambda t: self.electricity_cost(t, -2.77778e-7 * self.power_production(t, irradiance_df, wind_speed_df)),
-                    pd.date_range(self.date, self.date+pd.DateOffset(), freq="300S")
-                )
-            ) + 0.24 * 2.77778e-7 * (self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy)
-        else:
-            return math.fsum(
-                map(
-                    lambda load: self.electricity_cost(load.start_time,
-                                                       2.77778e-7 * load.power_consumption * load.cycle_duration),
-                    self.timed_load_list
-                )
-            ) + math.fsum(
-                map(
-                    lambda load: self.electricity_cost(load.original_start_time,
-                                                       2.77778e-7 * load.power_consumption * load.cycle_duration),
-                    self.staggered_load_list
-                )
-            ) + math.fsum(
-                map(
-                    lambda t: self.electricity_cost(t, -2.77778e-7 * self.power_production(t, irradiance_df,
-                                                                                           wind_speed_df)),
-                    pd.date_range(self.date, self.date + pd.DateOffset(), freq="300S")
-                )
+        return math.fsum(
+            map(
+                lambda load: self.electricity_cost(load.start_time, 2.77778e-7 * load.power_consumption * load.cycle_duration),
+                self.timed_load_list
             )
         ) + math.fsum(
             map(
