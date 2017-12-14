@@ -72,7 +72,7 @@ def show_house(option):
     global new_house
     global old_house
 
-    if option == "nieuwbouw":
+    if option == "oost-west-georiënteerd":
         old_house.place_forget()
         new_house.place(x=screen_width / 2 - drawing_new_house_width / 2,
                         y=screen_height / 2 - drawing_new_house_height / 2)
@@ -102,8 +102,8 @@ def start_simulation():
     freezer = ContinuousLoad(90)
     led_tv = TimedLoad(60, time(hour=20, minute=30), 3600, pd.DateOffset())
     stove = TimedLoad(5250, time(hour=17, minute=30), 900, pd.DateOffset())
-    dishwasher = StaggeredLoad(900, time(hour=4), 9576, time_delta=pd.DateOffset())
-    washing_machine = StaggeredLoad(1000, time(hour=21), 4788, time_delta=pd.DateOffset())
+    dishwasher = StaggeredLoad(900, time(hour=7), 9600, time_delta=pd.DateOffset())
+    washing_machine = StaggeredLoad(1000, time(hour=21), 4800, time_delta=pd.DateOffset())
     tumble_dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
     led_lamps = TimedLoad(240, time(hour=20), 18000, pd.DateOffset())
     central_heating = StaggeredLoad(2400, time(hour=0), 18000, time_delta=pd.DateOffset())
@@ -118,15 +118,17 @@ def start_simulation():
 
     if cars == "elektrische wagen":
         car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
+        car_battery = CarBattery(75, 16500)
     elif cars == "brandstofwagen":
-        car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro 6", 3.498),)
+        car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro) 6", 3.498),)
+        car_battery = None
     else:
         raise Exception("you have to make a chose.1")
 
     if sun_panel == "zonnepanelen":
-        if house == "bestaand huis":
+        if house == "zuid georiënteerd":
             solar_panel = (SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels),)
-        elif house == "nieuwbouw":
+        elif house == "oost-west-georiënteerd":
             if nb_sun_panels != 1:
                 solar_panel = (SolarPanel(285.0, 0.64, -pi/2, 0.87, 1.540539, int(nb_sun_panels/2)),
                                SolarPanel(285.0, 0.64, pi/2, 0.87, 1.540539, int(nb_sun_panels/2)+1))
@@ -140,7 +142,7 @@ def start_simulation():
         raise Exception("you have to make a chose.3")
 
     if windmill_battery == "windmolen en thuisbatterij":
-        windmill = (Windmill(31.2, 2.5, 12.75),)
+        windmill = (Windmill(9.448223734, 2.5, 12.75190283),)
         battery = (Battery(13.5, 5),)
     elif windmill_battery == "geen windmolen en geen thuisbatterij":
         windmill = ()
@@ -148,20 +150,21 @@ def start_simulation():
     else:
         raise Exception("you have to make a chose.4")
 
-    loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, tumble_dryer, led_lamps, central_heating,
-             computer, microwave, hairdryer, hood, boiler, car]
-    house = House(loads, solar_panel_tp=solar_panel, windmill_tp=windmill, battery_tp=battery)
+    loads = [freezer, fridge, led_tv, stove, dishwasher, washing_machine, tumble_dryer, led_lamps, central_heating,
+             computer, microwave, hairdryer, hood, boiler]
+    house = House(loads, solar_panel_tp=solar_panel, windmill_tp=windmill, battery_tp=battery, car_battery=car_battery,
+                  timestamp=pd.Timestamp("2016-05-24 00:00"))
 
     simulation = Simulation(house)
     cost_optimised = round(simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"),
                                                         pd.Timestamp("2016-05-24 23:55:00")), 2)
-    #cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24 00:00:00"),
-    #                                                 pd.Timestamp("2016-05-24 23:55:00")), 2)
-    cost_normal = 5
-    create_output_screen(house, cost_optimised, cost_normal)
+    cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24 00:00:00"),
+                                                     pd.Timestamp("2016-05-24 23:55:00")), 2)
+    create_output_screen(house, cost_optimised, cost_normal, solar_panel[0] if house.has_solar_panel() else None,
+                         windmill[0] if house.has_windmill() else None)
 
 
-def create_output_screen(house, amount_optimised, amount_normal):
+def create_output_screen(house, amount_optimised, amount_normal, solar_panel, windmill):
     amount_optimised = str(amount_optimised)
     amount_normal = str(amount_normal)
 
@@ -188,24 +191,35 @@ def create_output_screen(house, amount_optimised, amount_normal):
     w3.pack()
 
     # Show graphs
-    irradiance_df = pd.read_csv(filepath_or_buffer="data/Irradiance.csv", header=0, index_col="Date/Time",
-                                dtype={"watts-per-meter-sq": float}, parse_dates=["Date/Time"])
-    wind_speed_df = pd.read_csv(filepath_or_buffer="data/wind_speed.csv", header=0, index_col="Date/Time",
-                                dtype={"meters-per-second": float}, parse_dates=["Date/Time"])
     start = pd.Timestamp("2016-05-24 00:00:00")
     end = pd.Timestamp("2016-05-24 23:55:00")
     times = pd.date_range(start, end, freq="300S")
     house._is_optimised = True
-    data_production = [house.power_production(t, irradiance_df, wind_speed_df) for t in times]
+
+    if solar_panel is not None:
+        irradiance_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\Irradiance.csv",
+                                    header=0, index_col="Date/Time", dtype={"watts-per-meter-sq": float}, parse_dates=["Date/Time"])
+        data_production_solar_panel = [solar_panel.power_production(t, irradiance_df.loc[t].values[0])
+                                       for t in pd.date_range(start, end, freq="300S")]
+    if windmill is not None:
+        wind_speed_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\wind_speed.csv",
+                                    header=0, index_col="Date/Time", dtype={"meters-per-second": float}, parse_dates=["Date/Time"])
+        data_production_windmill = [windmill.power_production(wind_speed_df.loc[t].values[0])
+                                    for t in pd.date_range(start, end, freq="300S")]
+
     data_consumption = [house.optimised_staggered_load_power(t) for t in times]
 
     fig = Figure(figsize=(15, 8))
-    a = fig.add_subplot(121)
-    a.plot_date(times, data_production, color="blue", linestyle="solid", linewidth=2, marker=None)
-    a.xaxis.set_major_formatter(DateFormatter("%H:%M"))
-    a.set_title("elektriciteitsproductie door windmolen en zonnepanelen", fontsize=16)
-    a.set_ylabel("vermogen [W]", fontsize=14)
-    a.set_xlabel("tijd [uur:min]", fontsize=14)
+    if windmill is not None or solar_panel is not None:
+        a = fig.add_subplot(121)
+        if windmill is not None:
+            a.plot_date(times, data_production_windmill, color="red", linestyle="solid", linewidth=2, marker=None)
+        if solar_panel is not None:
+            a.plot_date(times, data_production_solar_panel, color="blue", linestyle="solid", linewidth=2, marker=None)
+        a.xaxis.set_major_formatter(DateFormatter("%H:%M"))
+        a.set_title("elektriciteitsproductie door windmolen (rood) en zonnepanelen (blauw)", fontsize=16)
+        a.set_ylabel("vermogen [W]", fontsize=14)
+        a.set_xlabel("tijd [uur:min]", fontsize=14)
     b = fig.add_subplot(122)
     b.plot_date(times, data_consumption, color="blue", linestyle="solid", linewidth=2, marker=None)
     b.xaxis.set_major_formatter(DateFormatter("%H:%M"))
@@ -231,35 +245,35 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # Make image of the new house
-drawing_new_house = PhotoImage(file="src/gui/NewHouse.png")
+drawing_new_house = PhotoImage(file="NewHouse.png")
 drawing_new_house_width = drawing_new_house.width()
 drawing_new_house_height = drawing_new_house.height()
 new_house = Label(root, image=drawing_new_house, background="white")
 
 # Make image of the old house
-drawing_old_house = PhotoImage(file="src/gui/OldHouse.png")
+drawing_old_house = PhotoImage(file="OldHouse.png")
 old_house = Label(root, image=drawing_old_house, background="white")
 
 # Make image of the battery
-drawing_battery = PhotoImage(file="src/gui/battery.png")
+drawing_battery = PhotoImage(file="battery.png")
 drawing_battery = drawing_battery.subsample(3, 3)
 battery1 = Label(root, image=drawing_battery, background="white")
 
 # Make image of the Tesla Model S
-drawing_Tesla_model_S = PhotoImage(file="src/gui/TeslaModelS.png")
+drawing_Tesla_model_S = PhotoImage(file="TeslaModelS.png")
 drawing_Tesla_model_S = drawing_Tesla_model_S.subsample(2, 2)
 Tesla_model_S = Label(root, image=drawing_Tesla_model_S, background="white")
 
 # Make image of the Mercedes
-drawing_Mercedes = PhotoImage(file="src/gui/Mercedes.png")
+drawing_Mercedes = PhotoImage(file="Mercedes.png")
 Mercedes = Label(root, image=drawing_Mercedes, background="white")
 
 # Make image of the wind turbine
-drawing_wind_turbine = PhotoImage(file="src/gui/WindTurbine.png")
+drawing_wind_turbine = PhotoImage(file="WindTurbine.png")
 wind_turbine = Label(root, image=drawing_wind_turbine, background="white")
 
 # make image of the logo
-drawing_logo = PhotoImage(file="src/gui/logo.png")
+drawing_logo = PhotoImage(file="logo.png")
 drawing_logo_width = drawing_logo.width()
 drawing_logo_height = drawing_logo.height()
 logo = Label(root, image=drawing_logo, borderwidth=0)
@@ -292,12 +306,12 @@ electric_car_menu.place(x=530, y=50)
 
 variable_house = StringVar(root)
 variable_house.set("maak uw keuze")
-house_menu = OptionMenu(root, variable_house, "nieuwbouw", "bestaand huis", command=show_house)
+house_menu = OptionMenu(root, variable_house, "oost-west-georiënteerd", "zuid georiënteerd", command=show_house)
 house_menu.configure(width=35, relief=SOLID, background="white", activebackground="white", highlightbackground="white")
 house_menu.place(x=790, y=50)
 
 # Make sliders to select number of sun panels and cars
-nb_sun_panel = Scale(root, from_=1, to=10, orient=HORIZONTAL, background="white", borderwidth=1,
+nb_sun_panel = Scale(root, from_=1, to=20, orient=HORIZONTAL, background="white", borderwidth=1,
                      sliderrelief=FLAT, troughcolor="black", highlightbackground="white")
 
 nb_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,

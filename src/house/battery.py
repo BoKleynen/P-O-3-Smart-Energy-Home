@@ -40,8 +40,10 @@ class Battery:
             if self.stored_energy - time_delta * min(power, self.max_power) >= 0:
                 return min(power, self.max_power)
 
-            elif self.stored_energy - time_delta * min(self.stored_energy/time_delta, self.max_power):
-                return min(self.stored_energy/time_delta, self.max_power)
+            else:
+                return self.stored_energy / time_delta
+                # self.stored_energy - time_delta * min(self.stored_energy/time_delta, self.max_power):
+                # return min(self.stored_energy/time_delta, self.max_power)
 
         else:
             if self.stored_energy - time_delta * max(power, -self.max_power) > self.capacity:
