@@ -105,7 +105,7 @@ class StaggeredLoad(CyclicalLoad):
                             'fun': lambda _: 86400 - (self.start_time + self.cycle_duration)}]
 
         self._constraints = constraints
-        self._original_start_time = original_start_time
+        self._original_start_time = (3600*original_start_time.hour + 60*original_start_time.minute) // 300 * 300
 
     @property
     def constraints(self):
