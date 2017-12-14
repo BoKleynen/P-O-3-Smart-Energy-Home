@@ -3,7 +3,7 @@ class Battery:
     a class modelling a battery that can be used to store locally produced energy
     """
 
-    def __init__(self, capacity: float, max_power: float, stored_energy: float=0.0):
+    def __init__(self, capacity: float, max_power: float, stored_energy: float=0.0, price: float=0.0):
         if capacity < 0:
             raise Exception("Battery capacity has to be positive")
         if stored_energy < 0:
@@ -14,6 +14,7 @@ class Battery:
         self._capacity = capacity
         self._max_power = max_power
         self._stored_energy = stored_energy
+        self._price = price
 
     @property
     def capacity(self):
@@ -26,6 +27,10 @@ class Battery:
     @property
     def stored_energy(self):
         return self._stored_energy
+
+    @property
+    def price(self):
+        return self._price
 
     @stored_energy.setter
     def stored_energy(self, stored_energy: float):
@@ -52,8 +57,8 @@ class Battery:
 
 
 class CarBattery(Battery):
-    def __init__(self, capacity: float, max_power: float, stored_energy: float=0.0, day_energy_req: float=0.0):
-        super().__init__(capacity, max_power, stored_energy)
+    def __init__(self, capacity: float, max_power: float, stored_energy: float=0.0, day_energy_req: float=0.0, price: float=0.0):
+        super().__init__(capacity, max_power, stored_energy, price)
         if day_energy_req < 0:
             raise Exception("The daily energy requirement should be non negative")
         if day_energy_req > capacity:

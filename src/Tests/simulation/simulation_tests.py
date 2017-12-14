@@ -24,7 +24,7 @@ tumble_drier = StaggeredLoad(power_consumption=2600,
 
 loads = [dishwasher, washing_machine1, tumble_drier, led_tv, stove]
 solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 5)
-windmill = Windmill(1, 1, 10)
+windmill = Windmill(9.448223734, 2.5, 12.75190283)
 
 house = House(loads, (solar_panel,), (windmill,))
 

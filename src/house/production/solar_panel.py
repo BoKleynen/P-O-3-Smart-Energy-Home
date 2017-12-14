@@ -9,7 +9,7 @@ from util.solar_angles import incident_angle
 
 class SolarPanel:
     def __init__(self, peak_power: float, tilt_angle: float, azimuth: float, latitude: float, area: float,
-                 nb_solar_panel: int=1):
+                 nb_solar_panel: int=1, price: float=0.0):
         if peak_power < 0:
             raise Exception("Peak power should be non negative.")
         if area < 0:
