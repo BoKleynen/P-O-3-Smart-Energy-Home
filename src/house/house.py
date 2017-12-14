@@ -171,16 +171,62 @@ class House:
         cost = 0.0
         time_delta = 300
 
-        for i in range(len(t) - 1):
-            total_power = self.continuous_load_power() \
-                          + self.timed_load_power(t[i]) \
-                          + self._optimized_load_cost(t[i], optimized_loads) \
-                          + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
-                          - power_production_df.loc[t[i]].values[2]
-            cost += self._interval_cost(t[i], time_delta, total_power)
+        if self.has_electrical_car():
+            initial_car_charge = self._electrical_car_battery.charge
 
-        for i in range(len(init_battery_charge_tp)):
-            self.battery_tp[i].stored_energy = init_battery_charge_tp[i]
+            if self._electrical_car_battery.stored_energy >= self._electrical_car_battery.daily_required_energy:
+                nb_intervals = 0
+
+            else:
+                nb_intervals = 96 - ((self._electrical_car_battery.daily_required_energy - self._electrical_car_battery.stored_energy)
+                    / self._electrical_car_battery.max_power) // 300 + 1
+
+            for i in range(96-nb_intervals):
+                total_power = self.continuous_load_power() \
+                              + self.timed_load_power(t[i]) \
+                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
+                              - power_production_df.loc[t[i]].values[2]
+                cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
+
+            for i in range(96-nb_intervals, 96):
+                total_power = self.continuous_load_power() \
+                              + self.timed_load_power(t[i]) \
+                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
+                              - power_production_df.loc[t[i]].values[2]
+                self._electrical_car_battery.stored_energy += 16500*time_delta
+                cost += self._interval_cost(t[i], time_delta, total_power)
+
+            for i in range(96, 222):
+                total_power = self.continuous_load_power() \
+                              + self.timed_load_power(t[i]) \
+                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
+                              - power_production_df.loc[t[i]].values[2]
+                cost += self._interval_cost(t[i], time_delta, total_power)
+
+            for i in range(222, 288):
+                total_power = self.continuous_load_power() \
+                              + self.timed_load_power(t[i]) \
+                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
+                              - power_production_df.loc[t[i]].values[2]
+                cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
+
+            self._electrical_car_battery.charge = initial_car_charge
+
+        else:
+            for i in range(len(t) - 1):
+                total_power = self.continuous_load_power() \
+                              + self.timed_load_power(t[i]) \
+                              + self._optimized_load_cost(t[i], optimized_loads) \
+                              + 300 * load.power_consumption if load_start_time < t[i] < load_start_time + pd.Timedelta(seconds=load.cycle_duration) else 0 \
+                              - power_production_df.loc[t[i]].values[2]
+                cost += self._interval_cost(t[i], time_delta, total_power)
+
+            for i in range(len(init_battery_charge_tp)):
+                self.battery_tp[i].stored_energy = init_battery_charge_tp[i]
 
         return cost
 
@@ -223,13 +269,6 @@ class House:
             sorted_load[n].start_time = min_t_start
 
         self._is_optimised = True
-
-    @staticmethod
-    def set_staggered_load_time(t, load):
-        t = t//300 * 300
-        minutes = (t % 3600) // 60
-        hours = t // 3600
-        load.start_time = time(hours, minutes)
 
     def electricity_cost(self, t: pd.Timestamp, consumed_energy: float) -> float:
         """
