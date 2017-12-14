@@ -22,7 +22,7 @@ tumble_drier = StaggeredLoad(power_consumption=2600,
                              cycle_duration=2700,
                              )
 
-loads = [dishwasher, led_tv, stove]
+loads = [dishwasher, washing_machine1, tumble_drier, led_tv, stove]
 solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 5)
 windmill = Windmill(1, 1, 10)
 
@@ -31,6 +31,8 @@ house = House(loads, (solar_panel,), (windmill,))
 simulation = Simulation(house)
 
 print(simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"), pd.Timestamp("2016-05-24 23:55:00")))
+for load in loads:
+    print(load.start_time)
 
 print()
 print(datetime.now() - start_t)
