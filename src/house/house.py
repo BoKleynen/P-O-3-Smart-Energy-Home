@@ -185,7 +185,7 @@ class House:
         time_delta = 300
 
         if self.has_electrical_car():
-            initial_car_charge = self._electrical_car_battery.charge
+            initial_car_charge = self._electrical_car_battery.stored_energy
 
             if self._electrical_car_battery.stored_energy >= self._electrical_car_battery.daily_required_energy:
                 nb_intervals = 0
@@ -227,7 +227,7 @@ class House:
                               - power_production_df.loc[t[i]].values[2]
                 cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
 
-            self._electrical_car_battery.charge = initial_car_charge
+            self._electrical_car_battery.stored_energy = initial_car_charge
 
         else:
             for i in range(len(t) - 1):

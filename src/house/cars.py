@@ -3,11 +3,12 @@ from bisect import bisect
 
 
 class Car(metaclass=ABCMeta):
-    def __init__(self, price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions: int,
+    def __init__(self, price, year, year_first_registration_tax, curr_year, fuel_consumption, fuel_capacity, co2_emissions: int,
                  fuel_type: str, euronorm: str, cylinder_capacity: int):
         self._price = price
         self._year = year
         self._year_first_registration_tax = year_first_registration_tax
+        self._curr_year = curr_year
         self._fuel_consumption = fuel_consumption
         self._fuel_capacity = fuel_capacity
         self._co2_emissions = co2_emissions
@@ -26,6 +27,10 @@ class Car(metaclass=ABCMeta):
     @property
     def year_first_registration_tax(self):
         return self._year_first_registration_tax
+
+    @property
+    def curr_year(self):
+        return self._curr_year
 
     @property
     def fuel_consumption(self):
@@ -80,9 +85,9 @@ class Car(metaclass=ABCMeta):
     
 
 class ElectricalCar(Car):
-    def __init__(self, price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions=None,
+    def __init__(self, price, year, year_first_registration_tax, curr_year, fuel_consumption, fuel_capacity, co2_emissions=None,
                  fuel_type=None, euronorm=None, cylinder_capacity=None):
-        super().__init__(price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions,
+        super().__init__(price, year, year_first_registration_tax, curr_year, fuel_consumption, fuel_capacity, co2_emissions,
                          fuel_type, euronorm, cylinder_capacity)
 
     @property
@@ -111,11 +116,20 @@ class ElectricalCar(Car):
     def vkb(self):
         return 0
 
+    def costs(self):
+        yearly_driven_km = 15500
+        if self.curr_year > self.year:
+            return self.vkb() * (self.curr_year() - self.year)
+        elif self.curr_year == self.year:
+            return self.subsidy + self.biv() + self.vkb() * (self.curr_year() - self.year)
+        else:
+            raise Exception("self.curr_year must be equal or greater than self.year.")
+
 
 class PetrolCar(Car):
-    def __init__(self, price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions,
+    def __init__(self, price, year, year_first_registration_tax, curr_year, fuel_consumption, fuel_capacity, co2_emissions,
                  fuel_type, euronorm, cylinder_capacity):
-        super().__init__(price, year, year_first_registration_tax, fuel_consumption, fuel_capacity, co2_emissions,
+        super().__init__(price, year, year_first_registration_tax, curr_year, fuel_consumption, fuel_capacity, co2_emissions,
                          fuel_type, euronorm, cylinder_capacity)
 
     def subsidy(self):
@@ -233,5 +247,13 @@ class PetrolCar(Car):
         else:
             return round(40 + opdeciem, 2)
 
-
-# TODO: verzekering, onderhoudskosten, ...
+    def costs(self):
+        fuel_price = 1.55
+        yearly_driven_km = 15500
+        if self.curr_year > self.year:
+            return self.vkb()*(self.curr_year()-self.year) + self.fuel_consumption()/100*fuel_price*yearly_driven_km
+        elif self.curr_year == self.year:
+            return self.subsidy() + self.biv() + self.vkb()*(self.curr_year()-self.year) + \
+                   self.fuel_consumption()/100*fuel_price*yearly_driven_km
+        else:
+            raise Exception("self.curr_year must be equal or greater than self.year.")

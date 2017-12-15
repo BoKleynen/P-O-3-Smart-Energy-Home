@@ -8,14 +8,14 @@ from house.house import House
 class Simulation:
     def __init__(self, house: House):
         self.house = house
-        self.irradiance_df = pd.read_csv(filepath_or_buffer="../../../data/Irradiance.csv",
+        self.irradiance_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\Irradiance.csv",
                                          header=0,
                                          index_col="Date/Time",
                                          dtype={"watts-per-meter-sq": float},
                                          parse_dates=["Date/Time"]
                                          )
 
-        self.wind_speed_df = pd.read_csv(filepath_or_buffer="../../../data/wind_speed.csv",
+        self.wind_speed_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\wind_speed.csv",
                                          header=0,
                                          index_col="Date/Time",
                                          dtype={"meters-per-second": float},

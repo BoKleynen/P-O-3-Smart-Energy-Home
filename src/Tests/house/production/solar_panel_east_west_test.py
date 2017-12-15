@@ -9,12 +9,12 @@ from util.solar_angles import incident_angle
 
 start_time = time()
 
-solar_panel_east = SolarPanel(285.0, 37*pi/180, -pi/2, 0.87, 1.540539, 10)
-solar_panel_west = SolarPanel(285.0, 37*pi/180, pi/2, 0.87, 1.540539, 10)
+solar_panel_east = SolarPanel(285.0, 10*pi/180, -pi/2, 0.87, 1.540539, 10)
+solar_panel_west = SolarPanel(285.0, 10*pi/180, pi/2, 0.87, 1.540539, 10)
 
 house = House([], solar_panel_tp=(solar_panel_east, solar_panel_west))
 
-irradiance_df = pd.read_csv(filepath_or_buffer="data/Irradiance.csv",
+irradiance_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\Irradiance.csv",
                             header=0,
                             index_col="Date/Time",
                             dtype={"watts-per-meter-sq": float},

@@ -106,15 +106,16 @@ def start_simulation():
     washing_machine = StaggeredLoad(1000, time(hour=21), 4800, time_delta=pd.DateOffset())
     tumble_dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
     led_lamps = TimedLoad(240, time(hour=20), 18000, pd.DateOffset())
-    central_heating = StaggeredLoad(2400, time(hour=0), 18000, time_delta=pd.DateOffset())
+    central_heating_1 = TimedLoad(2400, time(hour=6, minute=30), 9000, time_delta=pd.DateOffset())
+    central_heating_2 = TimedLoad(2400, time(hour=18), 9000, time_delta=pd.DateOffset())
     computer = TimedLoad(800, time(hour=21), 7200, pd.DateOffset())
     microwave = TimedLoad(1500, time(hour=18), 600, pd.DateOffset())
-    hairdryer = TimedLoad(300, time(hour=8), 600, pd.DateOffset())
+    hairdryer = TimedLoad(300, time(hour=7, minute=30), 600, pd.DateOffset())
     hood = TimedLoad(150, time(hour=17, minute=30), 900, pd.DateOffset())
-    boiler = StaggeredLoad(3000, time(hour=0), 16200, time_delta=pd.DateOffset())
-    swimming_pool_pump = None
-    heat_pump_boiler = None
-    oven = None
+    boiler = StaggeredLoad(2000, time(hour=0), 16200, time_delta=pd.DateOffset())
+    swimming_pool_pump = StaggeredLoad(1100, time(hour=0), 43200, time_delta=pd.DateOffset())
+    heat_pump_boiler = StaggeredLoad(700, time(hour=0), 16200, time_delta=pd.DateOffset())
+    oven = TimedLoad(2500, time(hour=17, minute=30), 900, pd.DateOffset())
 
     if cars == "elektrische wagen":
         car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
@@ -127,13 +128,13 @@ def start_simulation():
 
     if sun_panel == "zonnepanelen":
         if house == "zuid georiënteerd":
-            solar_panel = (SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels),)
+            solar_panel = (SolarPanel(285.0, 0.64, pi, 0.87, 1.540539, nb_sun_panels),)
         elif house == "oost-west-georiënteerd":
             if nb_sun_panels != 1:
-                solar_panel = (SolarPanel(285.0, 0.64, -pi/2, 0.87, 1.540539, int(nb_sun_panels/2)),
-                               SolarPanel(285.0, 0.64, pi/2, 0.87, 1.540539, int(nb_sun_panels/2)+1))
+                solar_panel = (SolarPanel(285.0, 0.17, -pi/2, 0.87, 1.540539, int(nb_sun_panels/2)),
+                               SolarPanel(285.0, 0.17, pi/2, 0.87, 1.540539, int(nb_sun_panels/2)+1))
             else:
-                solar_panel = (SolarPanel(285.0, 0.64, pi/2, 0.87, 1.540539, nb_sun_panels), )
+                solar_panel = (SolarPanel(285.0, 0.17, pi/2, 0.87, 1.540539, nb_sun_panels), )
         else:
             raise Exception("you have to make a chose.2")
     elif sun_panel == "geen zonnepanelen":
@@ -150,8 +151,8 @@ def start_simulation():
     else:
         raise Exception("you have to make a chose.4")
 
-    loads = [freezer, fridge, led_tv, stove, dishwasher, washing_machine, tumble_dryer, led_lamps, central_heating,
-             computer, microwave, hairdryer, hood, boiler]
+    loads = [freezer, fridge, led_tv, stove, dishwasher, washing_machine, tumble_dryer, led_lamps, central_heating_1,
+             central_heating_2, computer, microwave, hairdryer, hood, boiler]
     house = House(loads, solar_panel_tp=solar_panel, windmill_tp=windmill, battery_tp=battery, car_battery=car_battery,
                   timestamp=pd.Timestamp("2016-05-24 00:00"))
 
@@ -216,10 +217,10 @@ def create_output_screen(house, amount_optimised, amount_normal, solar_panel, wi
             a.plot_date(times, data_production_windmill, color="red", linestyle="solid", linewidth=2, marker=None)
         if solar_panel is not None:
             a.plot_date(times, data_production_solar_panel, color="blue", linestyle="solid", linewidth=2, marker=None)
-        a.xaxis.set_major_formatter(DateFormatter("%H:%M"))
+        a.xaxis.set_major_formatter(DateFormatter("%H: %M"))
         a.set_title("elektriciteitsproductie door windmolen (rood) en zonnepanelen (blauw)", fontsize=16)
         a.set_ylabel("vermogen [W]", fontsize=14)
-        a.set_xlabel("tijd [uur:min]", fontsize=14)
+        a.set_xlabel("tijd [uur: minuten]", fontsize=14)
     b = fig.add_subplot(122)
     b.plot_date(times, data_consumption, color="blue", linestyle="solid", linewidth=2, marker=None)
     b.xaxis.set_major_formatter(DateFormatter("%H:%M"))
