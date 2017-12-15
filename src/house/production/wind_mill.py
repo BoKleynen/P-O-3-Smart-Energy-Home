@@ -2,7 +2,7 @@ import math
 
 
 class Windmill:
-    def __init__(self, area, min_wind_speed, max_wind_speed, nb_windmill: int=1):
+    def __init__(self, area, min_wind_speed, max_wind_speed, nb_windmill: int=1, price: float=0):
         if area < 0:
             raise Exception("Radius should be non negative.")
         if min_wind_speed < 0:
@@ -18,6 +18,11 @@ class Windmill:
         self.min_wind_speed = min_wind_speed
         self.max_wind_speed = max_wind_speed
         self._nb_windmill = nb_windmill
+        self._price = price
+
+    @property
+    def price(self):
+        return self._nb_windmill * self._price
 
     @staticmethod
     def _power_production(wind_speed: float, area: float) -> float:

@@ -14,7 +14,7 @@ DAY_SECONDS = 86400
 class House:
     def __init__(self, load_it: Iterable[Load], solar_panel_tp=(),
                  windmill_tp=(), battery_tp=(), car_battery: CarBattery=None,
-                 timestamp=pd.Timestamp("2016-05-24 00:00")):
+                 timestamp=pd.Timestamp("2016-05-24 00:00"), electrical_car=None):
 
         self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]
         self._staggered_load_list = [load for load in load_it if isinstance(load, StaggeredLoad)]
@@ -349,7 +349,7 @@ class House:
             for i in range(222, 288):
                 total_power = self.total_original_load_power(t[i]) - self.power_production(t[i], irradiance_df, wind_speed_df)
                 cost += self._interval_cost_charge_car(t[i], time_delta, total_power)
-                
+
         else:
             cost = math.fsum(
                 map(

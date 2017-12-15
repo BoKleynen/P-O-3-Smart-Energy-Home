@@ -25,6 +25,7 @@ class SolarPanel:
         self._area = area
         self._latitude = latitude
         self._nb_solar_panel = nb_solar_panel
+        self._price = price
 
     @property
     def tilt_angle(self):
@@ -49,6 +50,10 @@ class SolarPanel:
     @property
     def latitude(self):
         return self._latitude
+
+    @property
+    def price(self):
+        return self._nb_solar_panel * self.price
 
     def power_production(self, t: pd.Timestamp, irradiance: float) -> float:
         return self._nb_solar_panel * irradiance * self.peak_power/(1000 * self.area) \
