@@ -1,18 +1,16 @@
-from abc import ABCMeta
 from datetime import date, time
 import pandas as pd
 from datetime import date
 
 
-class Load(metaclass=ABCMeta):
+cdef class Load:
     """
     Base class for modelling all the loads in a house
 
     power consumption should be expressed in kW (= 1000W)
     time in seconds and relative to 00:00 when expressing a time of the day
     """
-
-    def __init__(self, power_consumption: float):
+    def __init__(self, float power_consumption):
         """
 
         :param power_consumption:
@@ -20,24 +18,24 @@ class Load(metaclass=ABCMeta):
         self._power_consumption = power_consumption
 
     @property
-    def power_consumption(self) -> float:
+    def power_consumption(self):
         return self._power_consumption
 
 
-class ContinuousLoad(Load):
+cdef class ContinuousLoad(Load):
     """
     Model for loads that have a relatively constant drain throughout the day.
 
     e.g.: freezer, fridge, ...
     """
 
-    def __init__(self, power_consumption: float):
+    def __init__(self, float power_consumption):
         super().__init__(power_consumption)
 
 
-class CyclicalLoad(Load, metaclass=ABCMeta):
-    def __init__(self, power_consumption: float, start_time: time, cycle_duration: float,
-                 time_delta: pd.DateOffset=None, execution_date: date=None):
+cdef class CyclicalLoad(Load):
+    def __init__(self, power_consumption, start_time, cycle_duration,
+                 time_delta=None, execution_date=None):
 
         super().__init__(power_consumption)
 
@@ -75,7 +73,7 @@ class CyclicalLoad(Load, metaclass=ABCMeta):
         return self._cycle_duration
 
 
-class TimedLoad(CyclicalLoad):
+cdef class TimedLoad(CyclicalLoad):
     """
     Model for loads that have a relatively fixed start time and duration
 
@@ -83,20 +81,19 @@ class TimedLoad(CyclicalLoad):
     """
 
     def __init__(self, power_consumption: float, start_time: time,
-                 cycle_duration: float, time_delta: pd.DateOffset=None, execution_date: date=None):
+                 cycle_duration: float, time_delta=None, execution_date=None):
 
         super().__init__(power_consumption, start_time, cycle_duration, time_delta, execution_date)
 
 
-class StaggeredLoad(CyclicalLoad):
+cdef class StaggeredLoad(CyclicalLoad):
     """
     Model for loads that can be freely moved throughout a day by and optimisation algorithm.
 
     e.g.: dishwasher, washing machine , ...
     """
-
     def __init__(self, power_consumption: float, original_start_time,
-                 cycle_duration: float, execution_date: date=None, time_delta: pd.DateOffset=None, constraints=None):
+                 cycle_duration: float, execution_date=None, time_delta=None, constraints=None):
 
         super().__init__(power_consumption, original_start_time, cycle_duration, time_delta, execution_date)
 
