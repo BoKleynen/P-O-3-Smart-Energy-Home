@@ -4,12 +4,12 @@
 {
     "distutils": {
         "depends": [],
-        "name": "house.power_generators",
+        "name": "power_generators",
         "sources": [
-            "src/house/power_generators.pyx"
+            "cython_src/power_generators.pyx"
         ]
     },
-    "module_name": "house.power_generators"
+    "module_name": "power_generators"
 }
 END: Cython Metadata */
 
@@ -531,8 +531,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE__house__power_generators
-#define __PYX_HAVE_API__house__power_generators
+#define __PYX_HAVE__power_generators
+#define __PYX_HAVE_API__power_generators
 #include <string.h>
 #include <stdio.h>
 #include "numpy/arrayobject.h"
@@ -763,7 +763,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "src/house/power_generators.pyx",
+  "cython_src/power_generators.pyx",
   "stringsource",
   "__init__.pxd",
   "type.pxd",
@@ -1019,8 +1019,8 @@ static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(do
 
 
 /*--- Type declarations ---*/
-struct __pyx_obj_5house_16power_generators_Windmill;
-struct __pyx_obj_5house_16power_generators_SolarPanel;
+struct __pyx_obj_16power_generators_Windmill;
+struct __pyx_obj_16power_generators_SolarPanel;
 
 /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":782
  * ctypedef npy_longdouble longdouble_t
@@ -1058,16 +1058,16 @@ typedef npy_clongdouble __pyx_t_5numpy_clongdouble_t;
  */
 typedef npy_cdouble __pyx_t_5numpy_complex_t;
 
-/* "house/power_generators.pxd":3
- * cimport numpy as cnp
+/* "power_generators.pxd":4
+ * 
  * 
  * cdef class Windmill:             # <<<<<<<<<<<<<<
  *     cdef float _area, _min_wind_speed, _max_wind_speed, price
  *     cdef int _nb_windmill
  */
-struct __pyx_obj_5house_16power_generators_Windmill {
+struct __pyx_obj_16power_generators_Windmill {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5house_16power_generators_Windmill *__pyx_vtab;
+  struct __pyx_vtabstruct_16power_generators_Windmill *__pyx_vtab;
   float _area;
   float _min_wind_speed;
   float _max_wind_speed;
@@ -1076,16 +1076,16 @@ struct __pyx_obj_5house_16power_generators_Windmill {
 };
 
 
-/* "house/power_generators.pxd":13
+/* "power_generators.pxd":14
  * 
  * 
  * cdef class SolarPanel:             # <<<<<<<<<<<<<<
  *     cdef float _tilt_angle, _azimuth, _peak_power, _area, _latitude, _price
  *     cdef int _nb_solar_panel
  */
-struct __pyx_obj_5house_16power_generators_SolarPanel {
+struct __pyx_obj_16power_generators_SolarPanel {
   PyObject_HEAD
-  struct __pyx_vtabstruct_5house_16power_generators_SolarPanel *__pyx_vtab;
+  struct __pyx_vtabstruct_16power_generators_SolarPanel *__pyx_vtab;
   float _tilt_angle;
   float _azimuth;
   float _peak_power;
@@ -1097,7 +1097,7 @@ struct __pyx_obj_5house_16power_generators_SolarPanel {
 
 
 
-/* "house/power_generators.pyx":6
+/* "power_generators.pyx":6
  * 
  * 
  * cdef class Windmill:             # <<<<<<<<<<<<<<
@@ -1105,15 +1105,15 @@ struct __pyx_obj_5house_16power_generators_SolarPanel {
  *         if area < 0:
  */
 
-struct __pyx_vtabstruct_5house_16power_generators_Windmill {
+struct __pyx_vtabstruct_16power_generators_Windmill {
   float (*_power_production)(float, float);
-  PyArrayObject *(*power_production)(struct __pyx_obj_5house_16power_generators_Windmill *, PyArrayObject *, int __pyx_skip_dispatch);
-  float (*peak_power)(struct __pyx_obj_5house_16power_generators_Windmill *, int __pyx_skip_dispatch);
+  PyArrayObject *(*power_production)(struct __pyx_obj_16power_generators_Windmill *, PyArrayObject *, int __pyx_skip_dispatch);
+  float (*peak_power)(struct __pyx_obj_16power_generators_Windmill *, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5house_16power_generators_Windmill *__pyx_vtabptr_5house_16power_generators_Windmill;
+static struct __pyx_vtabstruct_16power_generators_Windmill *__pyx_vtabptr_16power_generators_Windmill;
 
 
-/* "house/power_generators.pyx":53
+/* "power_generators.pyx":53
  * 
  * 
  * cdef class SolarPanel:             # <<<<<<<<<<<<<<
@@ -1121,11 +1121,11 @@ static struct __pyx_vtabstruct_5house_16power_generators_Windmill *__pyx_vtabptr
  *                  int nb_solar_panel=1, float price=0.0):
  */
 
-struct __pyx_vtabstruct_5house_16power_generators_SolarPanel {
-  PyArrayObject *(*incident_angle)(struct __pyx_obj_5house_16power_generators_SolarPanel *, int, int, int);
-  PyArrayObject *(*power_production)(struct __pyx_obj_5house_16power_generators_SolarPanel *, PyArrayObject *, int, int, int, int __pyx_skip_dispatch);
+struct __pyx_vtabstruct_16power_generators_SolarPanel {
+  PyArrayObject *(*incident_angle)(struct __pyx_obj_16power_generators_SolarPanel *, int, int, int);
+  PyArrayObject *(*power_production)(struct __pyx_obj_16power_generators_SolarPanel *, PyArrayObject *, int, int, int, int __pyx_skip_dispatch);
 };
-static struct __pyx_vtabstruct_5house_16power_generators_SolarPanel *__pyx_vtabptr_5house_16power_generators_SolarPanel;
+static struct __pyx_vtabstruct_16power_generators_SolarPanel *__pyx_vtabptr_16power_generators_SolarPanel;
 
 /* --- Runtime support code (head) --- */
 /* Refnanny.proto */
@@ -1267,24 +1267,6 @@ static CYTHON_INLINE void __Pyx_ErrFetchInState(PyThreadState *tstate, PyObject 
 
 /* RaiseException.proto */
 static void __Pyx_Raise(PyObject *type, PyObject *value, PyObject *tb, PyObject *cause);
-
-/* PyObjectSetAttrStr.proto */
-#if CYTHON_USE_TYPE_SLOTS
-#define __Pyx_PyObject_DelAttrStr(o,n) __Pyx_PyObject_SetAttrStr(o,n,NULL)
-static CYTHON_INLINE int __Pyx_PyObject_SetAttrStr(PyObject* obj, PyObject* attr_name, PyObject* value) {
-    PyTypeObject* tp = Py_TYPE(obj);
-    if (likely(tp->tp_setattro))
-        return tp->tp_setattro(obj, attr_name, value);
-#if PY_MAJOR_VERSION < 3
-    if (likely(tp->tp_setattr))
-        return tp->tp_setattr(obj, PyString_AS_STRING(attr_name), value);
-#endif
-    return PyObject_SetAttr(obj, attr_name, value);
-}
-#else
-#define __Pyx_PyObject_DelAttrStr(o,n)   PyObject_DelAttr(o,n)
-#define __Pyx_PyObject_SetAttrStr(o,n,v) PyObject_SetAttr(o,n,v)
-#endif
 
 /* IsLittleEndian.proto */
 static CYTHON_INLINE int __Pyx_Is_Little_Endian(void);
@@ -1678,11 +1660,11 @@ static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class
 /* InitStrings.proto */
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
-static float __pyx_f_5house_16power_generators_8Windmill__power_production(float __pyx_v_wind_speed, float __pyx_v_area); /* proto*/
-static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_production(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr, int __pyx_skip_dispatch); /* proto*/
-static float __pyx_f_5house_16power_generators_8Windmill_peak_power(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
-static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_angle(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day); /* proto*/
-static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_production(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day, int __pyx_skip_dispatch); /* proto*/
+static float __pyx_f_16power_generators_8Windmill__power_production(float __pyx_v_wind_speed, float __pyx_v_area); /* proto*/
+static PyArrayObject *__pyx_f_16power_generators_8Windmill_power_production(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr, int __pyx_skip_dispatch); /* proto*/
+static float __pyx_f_16power_generators_8Windmill_peak_power(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, int __pyx_skip_dispatch); /* proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day); /* proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'cpython.buffer' */
 
@@ -1715,22 +1697,22 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *, cha
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from 'house.power_generators' */
-static PyTypeObject *__pyx_ptype_5house_16power_generators_Windmill = 0;
-static PyTypeObject *__pyx_ptype_5house_16power_generators_SolarPanel = 0;
-static int __pyx_f_5house_16power_generators_day_of_year(int, int, int); /*proto*/
-static float __pyx_f_5house_16power_generators_solar_declination(int); /*proto*/
-static float __pyx_f_5house_16power_generators_hour_angle(int); /*proto*/
-static float __pyx_f_5house_16power_generators_solar_altitude(float, float, float, float); /*proto*/
-static float __pyx_f_5house_16power_generators_solar_azimuth(float, float, float, float); /*proto*/
-static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_Windmill__set_state(struct __pyx_obj_5house_16power_generators_Windmill *, PyObject *); /*proto*/
-static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_SolarPanel__set_state(struct __pyx_obj_5house_16power_generators_SolarPanel *, PyObject *); /*proto*/
+/* Module declarations from 'power_generators' */
+static PyTypeObject *__pyx_ptype_16power_generators_Windmill = 0;
+static PyTypeObject *__pyx_ptype_16power_generators_SolarPanel = 0;
+static int __pyx_f_16power_generators_day_of_year(int, int, int); /*proto*/
+static float __pyx_f_16power_generators_solar_declination(int); /*proto*/
+static float __pyx_f_16power_generators_hour_angle(int); /*proto*/
+static float __pyx_f_16power_generators_solar_altitude(float, float, float, float); /*proto*/
+static float __pyx_f_16power_generators_solar_azimuth(float, float, float, float); /*proto*/
+static PyObject *__pyx_f_16power_generators___pyx_unpickle_Windmill__set_state(struct __pyx_obj_16power_generators_Windmill *, PyObject *); /*proto*/
+static PyObject *__pyx_f_16power_generators___pyx_unpickle_SolarPanel__set_state(struct __pyx_obj_16power_generators_SolarPanel *, PyObject *); /*proto*/
 static __Pyx_TypeInfo __Pyx_TypeInfo_float = { "float", NULL, sizeof(float), { 0 }, 0, 'R', 0, 0 };
-#define __Pyx_MODULE_NAME "house.power_generators"
-extern int __pyx_module_is_main_house__power_generators;
-int __pyx_module_is_main_house__power_generators = 0;
+#define __Pyx_MODULE_NAME "power_generators"
+extern int __pyx_module_is_main_power_generators;
+int __pyx_module_is_main_power_generators = 0;
 
-/* Implementation of 'house.power_generators' */
+/* Implementation of 'power_generators' */
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_ValueError;
@@ -1757,7 +1739,6 @@ static const char __pyx_k_pickle[] = "pickle";
 static const char __pyx_k_reduce[] = "__reduce__";
 static const char __pyx_k_update[] = "update";
 static const char __pyx_k_azimuth[] = "azimuth";
-static const char __pyx_k_price_2[] = "_price";
 static const char __pyx_k_getstate[] = "__getstate__";
 static const char __pyx_k_latitude[] = "latitude";
 static const char __pyx_k_pyx_type[] = "__pyx_type";
@@ -1785,10 +1766,10 @@ static const char __pyx_k_nb_solar_panel[] = "nb_solar_panel";
 static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_plane_tilt_angle[] = "_plane_tilt_angle";
+static const char __pyx_k_power_generators[] = "power_generators";
 static const char __pyx_k_power_production[] = "power_production";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_pyx_unpickle_Windmill[] = "__pyx_unpickle_Windmill";
-static const char __pyx_k_house_power_generators[] = "house.power_generators";
 static const char __pyx_k_pyx_unpickle_SolarPanel[] = "__pyx_unpickle_SolarPanel";
 static const char __pyx_k_Area_should_be_non_negative[] = "Area should be non negative.";
 static const char __pyx_k_ndarray_is_not_C_contiguous[] = "ndarray is not C contiguous";
@@ -1836,7 +1817,6 @@ static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_dtype;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_house;
-static PyObject *__pyx_n_s_house_power_generators;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_irradiance_arr;
 static PyObject *__pyx_n_s_latitude;
@@ -1858,9 +1838,9 @@ static PyObject *__pyx_n_s_peak_power;
 static PyObject *__pyx_n_s_pickle;
 static PyObject *__pyx_n_s_plane_azimuth;
 static PyObject *__pyx_n_s_plane_tilt_angle;
+static PyObject *__pyx_n_s_power_generators;
 static PyObject *__pyx_n_s_power_production;
 static PyObject *__pyx_n_s_price;
-static PyObject *__pyx_n_s_price_2;
 static PyObject *__pyx_n_s_pyx_PickleError;
 static PyObject *__pyx_n_s_pyx_checksum;
 static PyObject *__pyx_n_s_pyx_result;
@@ -1882,29 +1862,27 @@ static PyObject *__pyx_kp_u_unknown_dtype_code_in_numpy_pxd;
 static PyObject *__pyx_n_s_update;
 static PyObject *__pyx_n_s_year;
 static PyObject *__pyx_n_s_zeros;
-static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, float __pyx_v_area, float __pyx_v_min_wind_speed, float __pyx_v_max_wind_speed, int __pyx_v_nb_windmill, float __pyx_v_price); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_5price___get__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_2power_production(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_4peak_power(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_6__reduce_cython__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, float __pyx_v_peak_power, float __pyx_v_tilt_angle, float __pyx_v_azimuth, float __pyx_v_latitude, float __pyx_v_area, int __pyx_v_nb_solar_panel, float __pyx_v_price); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_8latitude___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5price___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_2power_production(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4__reduce_cython__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cython__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
-static PyObject *__pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_16power_generators_8Windmill___init__(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, float __pyx_v_area, float __pyx_v_min_wind_speed, float __pyx_v_max_wind_speed, int __pyx_v_nb_windmill, CYTHON_UNUSED float __pyx_v_price); /* proto */
+static PyObject *__pyx_pf_16power_generators_8Windmill_2power_production(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr); /* proto */
+static PyObject *__pyx_pf_16power_generators_8Windmill_4peak_power(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_8Windmill_6__reduce_cython__(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_8Windmill_8__setstate_cython__(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static int __pyx_pf_16power_generators_10SolarPanel___init__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, float __pyx_v_peak_power, float __pyx_v_tilt_angle, float __pyx_v_azimuth, float __pyx_v_latitude, float __pyx_v_area, int __pyx_v_nb_solar_panel, CYTHON_UNUSED float __pyx_v_price); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_10tilt_angle___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_7azimuth___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_10peak_power___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_4area___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_5house___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_8latitude___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_2power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_4__reduce_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_6__setstate_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_16power_generators___pyx_unpickle_Windmill(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_16power_generators_2__pyx_unpickle_SolarPanel(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
 static void __pyx_pf_5numpy_7ndarray_2__releasebuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info); /* proto */
-static PyObject *__pyx_tp_new_5house_16power_generators_Windmill(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_tp_new_5house_16power_generators_SolarPanel(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_16power_generators_Windmill(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
+static PyObject *__pyx_tp_new_16power_generators_SolarPanel(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_288;
 static PyObject *__pyx_int_208092528;
 static PyObject *__pyx_int_240589765;
@@ -1932,7 +1910,7 @@ static PyObject *__pyx_tuple__22;
 static PyObject *__pyx_codeobj__21;
 static PyObject *__pyx_codeobj__23;
 
-/* "house/power_generators.pyx":7
+/* "power_generators.pyx":7
  * 
  * cdef class Windmill:
  *     def __init__(self, float area, float min_wind_speed, float max_wind_speed, int nb_windmill=1, float price=0.0):             # <<<<<<<<<<<<<<
@@ -1941,13 +1919,13 @@ static PyObject *__pyx_codeobj__23;
  */
 
 /* Python wrapper */
-static int __pyx_pw_5house_16power_generators_8Windmill_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5house_16power_generators_8Windmill_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_16power_generators_8Windmill_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_16power_generators_8Windmill_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_area;
   float __pyx_v_min_wind_speed;
   float __pyx_v_max_wind_speed;
   int __pyx_v_nb_windmill;
-  float __pyx_v_price;
+  CYTHON_UNUSED float __pyx_v_price;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
@@ -2035,18 +2013,18 @@ static int __pyx_pw_5house_16power_generators_8Windmill_1__init__(PyObject *__py
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 0, 3, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 7, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("house.power_generators.Windmill.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5house_16power_generators_8Windmill___init__(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v_self), __pyx_v_area, __pyx_v_min_wind_speed, __pyx_v_max_wind_speed, __pyx_v_nb_windmill, __pyx_v_price);
+  __pyx_r = __pyx_pf_16power_generators_8Windmill___init__(((struct __pyx_obj_16power_generators_Windmill *)__pyx_v_self), __pyx_v_area, __pyx_v_min_wind_speed, __pyx_v_max_wind_speed, __pyx_v_nb_windmill, __pyx_v_price);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, float __pyx_v_area, float __pyx_v_min_wind_speed, float __pyx_v_max_wind_speed, int __pyx_v_nb_windmill, float __pyx_v_price) {
+static int __pyx_pf_16power_generators_8Windmill___init__(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, float __pyx_v_area, float __pyx_v_min_wind_speed, float __pyx_v_max_wind_speed, int __pyx_v_nb_windmill, CYTHON_UNUSED float __pyx_v_price) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -2054,7 +2032,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   int __pyx_t_3;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "house/power_generators.pyx":8
+  /* "power_generators.pyx":8
  * cdef class Windmill:
  *     def __init__(self, float area, float min_wind_speed, float max_wind_speed, int nb_windmill=1, float price=0.0):
  *         if area < 0:             # <<<<<<<<<<<<<<
@@ -2064,7 +2042,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   __pyx_t_1 = ((__pyx_v_area < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "house/power_generators.pyx":9
+    /* "power_generators.pyx":9
  *     def __init__(self, float area, float min_wind_speed, float max_wind_speed, int nb_windmill=1, float price=0.0):
  *         if area < 0:
  *             raise Exception("Radius should be non negative.")             # <<<<<<<<<<<<<<
@@ -2077,7 +2055,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 9, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":8
+    /* "power_generators.pyx":8
  * cdef class Windmill:
  *     def __init__(self, float area, float min_wind_speed, float max_wind_speed, int nb_windmill=1, float price=0.0):
  *         if area < 0:             # <<<<<<<<<<<<<<
@@ -2086,7 +2064,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   }
 
-  /* "house/power_generators.pyx":10
+  /* "power_generators.pyx":10
  *         if area < 0:
  *             raise Exception("Radius should be non negative.")
  *         if min_wind_speed < 0:             # <<<<<<<<<<<<<<
@@ -2096,7 +2074,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   __pyx_t_1 = ((__pyx_v_min_wind_speed < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "house/power_generators.pyx":11
+    /* "power_generators.pyx":11
  *             raise Exception("Radius should be non negative.")
  *         if min_wind_speed < 0:
  *             raise Exception("Minimal wind speed should be non negative")             # <<<<<<<<<<<<<<
@@ -2109,7 +2087,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 11, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":10
+    /* "power_generators.pyx":10
  *         if area < 0:
  *             raise Exception("Radius should be non negative.")
  *         if min_wind_speed < 0:             # <<<<<<<<<<<<<<
@@ -2118,7 +2096,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   }
 
-  /* "house/power_generators.pyx":12
+  /* "power_generators.pyx":12
  *         if min_wind_speed < 0:
  *             raise Exception("Minimal wind speed should be non negative")
  *         if max_wind_speed < min_wind_speed:             # <<<<<<<<<<<<<<
@@ -2128,7 +2106,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   __pyx_t_1 = ((__pyx_v_max_wind_speed < __pyx_v_min_wind_speed) != 0);
   if (__pyx_t_1) {
 
-    /* "house/power_generators.pyx":13
+    /* "power_generators.pyx":13
  *             raise Exception("Minimal wind speed should be non negative")
  *         if max_wind_speed < min_wind_speed:
  *             raise Exception("Maximal wind speed should be greater than the minimal wind speed")             # <<<<<<<<<<<<<<
@@ -2141,7 +2119,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 13, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":12
+    /* "power_generators.pyx":12
  *         if min_wind_speed < 0:
  *             raise Exception("Minimal wind speed should be non negative")
  *         if max_wind_speed < min_wind_speed:             # <<<<<<<<<<<<<<
@@ -2150,7 +2128,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   }
 
-  /* "house/power_generators.pyx":14
+  /* "power_generators.pyx":14
  *         if max_wind_speed < min_wind_speed:
  *             raise Exception("Maximal wind speed should be greater than the minimal wind speed")
  *         if not isinstance(nb_windmill, int):             # <<<<<<<<<<<<<<
@@ -2164,7 +2142,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   __pyx_t_3 = ((!(__pyx_t_1 != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "house/power_generators.pyx":15
+    /* "power_generators.pyx":15
  *             raise Exception("Maximal wind speed should be greater than the minimal wind speed")
  *         if not isinstance(nb_windmill, int):
  *             raise TypeError("The number of windmills must be an integer number")             # <<<<<<<<<<<<<<
@@ -2177,7 +2155,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 15, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":14
+    /* "power_generators.pyx":14
  *         if max_wind_speed < min_wind_speed:
  *             raise Exception("Maximal wind speed should be greater than the minimal wind speed")
  *         if not isinstance(nb_windmill, int):             # <<<<<<<<<<<<<<
@@ -2186,7 +2164,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   }
 
-  /* "house/power_generators.pyx":16
+  /* "power_generators.pyx":16
  *         if not isinstance(nb_windmill, int):
  *             raise TypeError("The number of windmills must be an integer number")
  *         if nb_windmill < 1:             # <<<<<<<<<<<<<<
@@ -2196,7 +2174,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   __pyx_t_3 = ((__pyx_v_nb_windmill < 1) != 0);
   if (__pyx_t_3) {
 
-    /* "house/power_generators.pyx":17
+    /* "power_generators.pyx":17
  *             raise TypeError("The number of windmills must be an integer number")
  *         if nb_windmill < 1:
  *             raise Exception("The number of windmills must be greater or equal to 1")             # <<<<<<<<<<<<<<
@@ -2209,7 +2187,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 17, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":16
+    /* "power_generators.pyx":16
  *         if not isinstance(nb_windmill, int):
  *             raise TypeError("The number of windmills must be an integer number")
  *         if nb_windmill < 1:             # <<<<<<<<<<<<<<
@@ -2218,7 +2196,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   }
 
-  /* "house/power_generators.pyx":19
+  /* "power_generators.pyx":19
  *             raise Exception("The number of windmills must be greater or equal to 1")
  * 
  *         self._area = area             # <<<<<<<<<<<<<<
@@ -2227,7 +2205,7 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   __pyx_v_self->_area = __pyx_v_area;
 
-  /* "house/power_generators.pyx":20
+  /* "power_generators.pyx":20
  * 
  *         self._area = area
  *         self._min_wind_speed = min_wind_speed             # <<<<<<<<<<<<<<
@@ -2236,37 +2214,25 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
  */
   __pyx_v_self->_min_wind_speed = __pyx_v_min_wind_speed;
 
-  /* "house/power_generators.pyx":21
+  /* "power_generators.pyx":21
  *         self._area = area
  *         self._min_wind_speed = min_wind_speed
  *         self._max_wind_speed = max_wind_speed             # <<<<<<<<<<<<<<
  *         self._nb_windmill = nb_windmill
- *         self._price = price
+ *         # self._price = price
  */
   __pyx_v_self->_max_wind_speed = __pyx_v_max_wind_speed;
 
-  /* "house/power_generators.pyx":22
+  /* "power_generators.pyx":22
  *         self._min_wind_speed = min_wind_speed
  *         self._max_wind_speed = max_wind_speed
  *         self._nb_windmill = nb_windmill             # <<<<<<<<<<<<<<
- *         self._price = price
+ *         # self._price = price
  * 
  */
   __pyx_v_self->_nb_windmill = __pyx_v_nb_windmill;
 
-  /* "house/power_generators.pyx":23
- *         self._max_wind_speed = max_wind_speed
- *         self._nb_windmill = nb_windmill
- *         self._price = price             # <<<<<<<<<<<<<<
- * 
- *     @property
- */
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_price); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (__Pyx_PyObject_SetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_price_2, __pyx_t_2) < 0) __PYX_ERR(0, 23, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
-  /* "house/power_generators.pyx":7
+  /* "power_generators.pyx":7
  * 
  * cdef class Windmill:
  *     def __init__(self, float area, float min_wind_speed, float max_wind_speed, int nb_windmill=1, float price=0.0):             # <<<<<<<<<<<<<<
@@ -2279,84 +2245,14 @@ static int __pyx_pf_5house_16power_generators_8Windmill___init__(struct __pyx_ob
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("house.power_generators.Windmill.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":26
- * 
- *     @property
- *     def price(self):             # <<<<<<<<<<<<<<
- *         return self._nb_windmill * self._price
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_5price_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_5price_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_8Windmill_5price___get__(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_5price___get__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "house/power_generators.pyx":27
- *     @property
- *     def price(self):
- *         return self._nb_windmill * self._price             # <<<<<<<<<<<<<<
- * 
- *     @staticmethod
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_nb_windmill); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_price_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 27, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
-  goto __pyx_L0;
-
-  /* "house/power_generators.pyx":26
- * 
- *     @property
- *     def price(self):             # <<<<<<<<<<<<<<
- *         return self._nb_windmill * self._price
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("house.power_generators.Windmill.price.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "house/power_generators.pyx":30
+/* "power_generators.pyx":30
  * 
  *     @staticmethod
  *     cdef float _power_production(float wind_speed, float area):             # <<<<<<<<<<<<<<
@@ -2364,12 +2260,12 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_5price___get__(str
  * 
  */
 
-static float __pyx_f_5house_16power_generators_8Windmill__power_production(float __pyx_v_wind_speed, float __pyx_v_area) {
+static float __pyx_f_16power_generators_8Windmill__power_production(float __pyx_v_wind_speed, float __pyx_v_area) {
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_power_production", 0);
 
-  /* "house/power_generators.pyx":31
+  /* "power_generators.pyx":31
  *     @staticmethod
  *     cdef float _power_production(float wind_speed, float area):
  *         return 0.6125 * area * pow(wind_speed, 3)             # <<<<<<<<<<<<<<
@@ -2379,7 +2275,7 @@ static float __pyx_f_5house_16power_generators_8Windmill__power_production(float
   __pyx_r = ((0.6125 * __pyx_v_area) * pow(__pyx_v_wind_speed, 3.0));
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":30
+  /* "power_generators.pyx":30
  * 
  *     @staticmethod
  *     cdef float _power_production(float wind_speed, float area):             # <<<<<<<<<<<<<<
@@ -2393,7 +2289,7 @@ static float __pyx_f_5house_16power_generators_8Windmill__power_production(float
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":33
+/* "power_generators.pyx":33
  *         return 0.6125 * area * pow(wind_speed, 3)
  * 
  *     cpdef cnp.ndarray[float, ndim=1] power_production(self, cnp.ndarray[float, ndim=1] wind_speed_arr):             # <<<<<<<<<<<<<<
@@ -2401,8 +2297,8 @@ static float __pyx_f_5house_16power_generators_8Windmill__power_production(float
  *         cdef cnp.ndarray[float, ndim=1] result_arr = np.zeros(288)
  */
 
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_v_wind_speed_arr); /*proto*/
-static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_production(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_16power_generators_8Windmill_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_v_wind_speed_arr); /*proto*/
+static PyArrayObject *__pyx_f_16power_generators_8Windmill_power_production(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr, int __pyx_skip_dispatch) {
   int __pyx_v_i;
   PyArrayObject *__pyx_v_result_arr = 0;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_result_arr;
@@ -2446,7 +2342,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_power_production); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_5house_16power_generators_8Windmill_3power_production)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_8Windmill_3power_production)) {
       __Pyx_XDECREF(((PyObject *)__pyx_r));
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
@@ -2501,7 +2397,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "house/power_generators.pyx":35
+  /* "power_generators.pyx":35
  *     cpdef cnp.ndarray[float, ndim=1] power_production(self, cnp.ndarray[float, ndim=1] wind_speed_arr):
  *         cdef int i
  *         cdef cnp.ndarray[float, ndim=1] result_arr = np.zeros(288)             # <<<<<<<<<<<<<<
@@ -2530,7 +2426,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
   __pyx_v_result_arr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "house/power_generators.pyx":37
+  /* "power_generators.pyx":37
  *         cdef cnp.ndarray[float, ndim=1] result_arr = np.zeros(288)
  * 
  *         for i in range(288):             # <<<<<<<<<<<<<<
@@ -2540,7 +2436,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
   for (__pyx_t_7 = 0; __pyx_t_7 < 0x120; __pyx_t_7+=1) {
     __pyx_v_i = __pyx_t_7;
 
-    /* "house/power_generators.pyx":38
+    /* "power_generators.pyx":38
  * 
  *         for i in range(288):
  *             if wind_speed_arr[i] < self._min_wind_speed:             # <<<<<<<<<<<<<<
@@ -2560,7 +2456,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
     __pyx_t_10 = (((*__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_wind_speed_arr.diminfo[0].strides)) < __pyx_v_self->_min_wind_speed) != 0);
     if (__pyx_t_10) {
 
-      /* "house/power_generators.pyx":39
+      /* "power_generators.pyx":39
  *         for i in range(288):
  *             if wind_speed_arr[i] < self._min_wind_speed:
  *                 result_arr[i] = 0             # <<<<<<<<<<<<<<
@@ -2579,7 +2475,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
       }
       *__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_result_arr.rcbuffer->pybuffer.buf, __pyx_t_11, __pyx_pybuffernd_result_arr.diminfo[0].strides) = 0.0;
 
-      /* "house/power_generators.pyx":38
+      /* "power_generators.pyx":38
  * 
  *         for i in range(288):
  *             if wind_speed_arr[i] < self._min_wind_speed:             # <<<<<<<<<<<<<<
@@ -2589,7 +2485,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
       goto __pyx_L5;
     }
 
-    /* "house/power_generators.pyx":41
+    /* "power_generators.pyx":41
  *                 result_arr[i] = 0
  * 
  *             elif wind_speed_arr[i] < self._max_wind_speed:             # <<<<<<<<<<<<<<
@@ -2609,7 +2505,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
     __pyx_t_10 = (((*__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer.buf, __pyx_t_12, __pyx_pybuffernd_wind_speed_arr.diminfo[0].strides)) < __pyx_v_self->_max_wind_speed) != 0);
     if (__pyx_t_10) {
 
-      /* "house/power_generators.pyx":42
+      /* "power_generators.pyx":42
  * 
  *             elif wind_speed_arr[i] < self._max_wind_speed:
  *                 result_arr[i] = Windmill._power_production(wind_speed_arr[i], self._area)             # <<<<<<<<<<<<<<
@@ -2636,9 +2532,9 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
         __Pyx_RaiseBufferIndexError(__pyx_t_9);
         __PYX_ERR(0, 42, __pyx_L1_error)
       }
-      *__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_result_arr.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_result_arr.diminfo[0].strides) = __pyx_f_5house_16power_generators_8Windmill__power_production((*__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_wind_speed_arr.diminfo[0].strides)), __pyx_v_self->_area);
+      *__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_result_arr.rcbuffer->pybuffer.buf, __pyx_t_14, __pyx_pybuffernd_result_arr.diminfo[0].strides) = __pyx_f_16power_generators_8Windmill__power_production((*__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_wind_speed_arr.diminfo[0].strides)), __pyx_v_self->_area);
 
-      /* "house/power_generators.pyx":41
+      /* "power_generators.pyx":41
  *                 result_arr[i] = 0
  * 
  *             elif wind_speed_arr[i] < self._max_wind_speed:             # <<<<<<<<<<<<<<
@@ -2648,7 +2544,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
       goto __pyx_L5;
     }
 
-    /* "house/power_generators.pyx":45
+    /* "power_generators.pyx":45
  * 
  *             else:
  *                 result_arr[i] = self.peak_power()             # <<<<<<<<<<<<<<
@@ -2666,12 +2562,12 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
         __Pyx_RaiseBufferIndexError(__pyx_t_9);
         __PYX_ERR(0, 45, __pyx_L1_error)
       }
-      *__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_result_arr.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_result_arr.diminfo[0].strides) = ((struct __pyx_vtabstruct_5house_16power_generators_Windmill *)__pyx_v_self->__pyx_vtab)->peak_power(__pyx_v_self, 0);
+      *__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_result_arr.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_result_arr.diminfo[0].strides) = ((struct __pyx_vtabstruct_16power_generators_Windmill *)__pyx_v_self->__pyx_vtab)->peak_power(__pyx_v_self, 0);
     }
     __pyx_L5:;
   }
 
-  /* "house/power_generators.pyx":47
+  /* "power_generators.pyx":47
  *                 result_arr[i] = self.peak_power()
  * 
  *         return result_arr             # <<<<<<<<<<<<<<
@@ -2683,7 +2579,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
   __pyx_r = ((PyArrayObject *)__pyx_v_result_arr);
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":33
+  /* "power_generators.pyx":33
  *         return 0.6125 * area * pow(wind_speed, 3)
  * 
  *     cpdef cnp.ndarray[float, ndim=1] power_production(self, cnp.ndarray[float, ndim=1] wind_speed_arr):             # <<<<<<<<<<<<<<
@@ -2705,7 +2601,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_result_arr.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("house.power_generators.Windmill.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -2719,13 +2615,13 @@ static PyArrayObject *__pyx_f_5house_16power_generators_8Windmill_power_producti
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_v_wind_speed_arr); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_v_wind_speed_arr) {
+static PyObject *__pyx_pw_16power_generators_8Windmill_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_v_wind_speed_arr); /*proto*/
+static PyObject *__pyx_pw_16power_generators_8Windmill_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_v_wind_speed_arr) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("power_production (wrapper)", 0);
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_wind_speed_arr), __pyx_ptype_5numpy_ndarray, 1, "wind_speed_arr", 0))) __PYX_ERR(0, 33, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5house_16power_generators_8Windmill_2power_production(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v_self), ((PyArrayObject *)__pyx_v_wind_speed_arr));
+  __pyx_r = __pyx_pf_16power_generators_8Windmill_2power_production(((struct __pyx_obj_16power_generators_Windmill *)__pyx_v_self), ((PyArrayObject *)__pyx_v_wind_speed_arr));
 
   /* function exit code */
   goto __pyx_L0;
@@ -2736,7 +2632,7 @@ static PyObject *__pyx_pw_5house_16power_generators_8Windmill_3power_production(
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_2power_production(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr) {
+static PyObject *__pyx_pf_16power_generators_8Windmill_2power_production(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_wind_speed_arr;
   __Pyx_Buffer __pyx_pybuffer_wind_speed_arr;
   PyObject *__pyx_r = NULL;
@@ -2753,7 +2649,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_2power_production(
   }
   __pyx_pybuffernd_wind_speed_arr.diminfo[0].strides = __pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_wind_speed_arr.diminfo[0].shape = __pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5house_16power_generators_8Windmill_power_production(__pyx_v_self, ((PyArrayObject *)__pyx_v_wind_speed_arr), 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_8Windmill_power_production(__pyx_v_self, ((PyArrayObject *)__pyx_v_wind_speed_arr), 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 33, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2768,7 +2664,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_2power_production(
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_wind_speed_arr.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("house.power_generators.Windmill.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -2779,7 +2675,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_2power_production(
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":49
+/* "power_generators.pyx":49
  *         return result_arr
  * 
  *     cpdef float peak_power(self):             # <<<<<<<<<<<<<<
@@ -2787,8 +2683,8 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_2power_production(
  * 
  */
 
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_5peak_power(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static float __pyx_f_5house_16power_generators_8Windmill_peak_power(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_16power_generators_8Windmill_5peak_power(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static float __pyx_f_16power_generators_8Windmill_peak_power(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, int __pyx_skip_dispatch) {
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2803,7 +2699,7 @@ static float __pyx_f_5house_16power_generators_8Windmill_peak_power(struct __pyx
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_peak_power); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_5house_16power_generators_8Windmill_5peak_power)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_8Windmill_5peak_power)) {
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_3 = __pyx_t_1; __pyx_t_4 = NULL;
       if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_3))) {
@@ -2832,17 +2728,17 @@ static float __pyx_f_5house_16power_generators_8Windmill_peak_power(struct __pyx
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "house/power_generators.pyx":50
+  /* "power_generators.pyx":50
  * 
  *     cpdef float peak_power(self):
  *         return Windmill._power_production(self._max_wind_speed, self._area)             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = __pyx_f_5house_16power_generators_8Windmill__power_production(__pyx_v_self->_max_wind_speed, __pyx_v_self->_area);
+  __pyx_r = __pyx_f_16power_generators_8Windmill__power_production(__pyx_v_self->_max_wind_speed, __pyx_v_self->_area);
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":49
+  /* "power_generators.pyx":49
  *         return result_arr
  * 
  *     cpdef float peak_power(self):             # <<<<<<<<<<<<<<
@@ -2856,7 +2752,7 @@ static float __pyx_f_5house_16power_generators_8Windmill_peak_power(struct __pyx
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_WriteUnraisable("house.power_generators.Windmill.peak_power", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("power_generators.Windmill.peak_power", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -2864,25 +2760,25 @@ static float __pyx_f_5house_16power_generators_8Windmill_peak_power(struct __pyx
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_5peak_power(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_5peak_power(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_16power_generators_8Windmill_5peak_power(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_16power_generators_8Windmill_5peak_power(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("peak_power (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_8Windmill_4peak_power(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_8Windmill_4peak_power(((struct __pyx_obj_16power_generators_Windmill *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_4peak_power(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_8Windmill_4peak_power(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("peak_power", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_5house_16power_generators_8Windmill_peak_power(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_16power_generators_8Windmill_peak_power(__pyx_v_self, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -2891,7 +2787,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_4peak_power(struct
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.Windmill.peak_power", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.peak_power", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2906,19 +2802,19 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_4peak_power(struct
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_16power_generators_8Windmill_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_16power_generators_8Windmill_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_8Windmill_6__reduce_cython__(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_8Windmill_6__reduce_cython__(((struct __pyx_obj_16power_generators_Windmill *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_6__reduce_cython__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_8Windmill_6__reduce_cython__(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self) {
   int __pyx_v_use_setstate;
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
@@ -3147,7 +3043,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_6__reduce_cython__
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("house.power_generators.Windmill.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -3165,19 +3061,19 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_6__reduce_cython__
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_8Windmill_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_16power_generators_8Windmill_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_16power_generators_8Windmill_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython__(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_16power_generators_8Windmill_8__setstate_cython__(((struct __pyx_obj_16power_generators_Windmill *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython__(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16power_generators_8Windmill_8__setstate_cython__(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -3189,7 +3085,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython
  *     __pyx_unpickle_Windmill__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 15, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5house_16power_generators___pyx_unpickle_Windmill__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16power_generators___pyx_unpickle_Windmill__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -3205,7 +3101,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.Windmill.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.Windmill.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3213,7 +3109,7 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":54
+/* "power_generators.pyx":54
  * 
  * cdef class SolarPanel:
  *     def __init__(self, float peak_power, float tilt_angle, float azimuth, float latitude, float area,             # <<<<<<<<<<<<<<
@@ -3222,15 +3118,15 @@ static PyObject *__pyx_pf_5house_16power_generators_8Windmill_8__setstate_cython
  */
 
 /* Python wrapper */
-static int __pyx_pw_5house_16power_generators_10SolarPanel_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static int __pyx_pw_5house_16power_generators_10SolarPanel_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static int __pyx_pw_16power_generators_10SolarPanel_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static int __pyx_pw_16power_generators_10SolarPanel_1__init__(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   float __pyx_v_peak_power;
   float __pyx_v_tilt_angle;
   float __pyx_v_azimuth;
   float __pyx_v_latitude;
   float __pyx_v_area;
   int __pyx_v_nb_solar_panel;
-  float __pyx_v_price;
+  CYTHON_UNUSED float __pyx_v_price;
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
@@ -3338,18 +3234,18 @@ static int __pyx_pw_5house_16power_generators_10SolarPanel_1__init__(PyObject *_
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__init__", 0, 5, 7, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 54, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return -1;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel___init__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_peak_power, __pyx_v_tilt_angle, __pyx_v_azimuth, __pyx_v_latitude, __pyx_v_area, __pyx_v_nb_solar_panel, __pyx_v_price);
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel___init__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_peak_power, __pyx_v_tilt_angle, __pyx_v_azimuth, __pyx_v_latitude, __pyx_v_area, __pyx_v_nb_solar_panel, __pyx_v_price);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, float __pyx_v_peak_power, float __pyx_v_tilt_angle, float __pyx_v_azimuth, float __pyx_v_latitude, float __pyx_v_area, int __pyx_v_nb_solar_panel, float __pyx_v_price) {
+static int __pyx_pf_16power_generators_10SolarPanel___init__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, float __pyx_v_peak_power, float __pyx_v_tilt_angle, float __pyx_v_azimuth, float __pyx_v_latitude, float __pyx_v_area, int __pyx_v_nb_solar_panel, CYTHON_UNUSED float __pyx_v_price) {
   int __pyx_r;
   __Pyx_RefNannyDeclarations
   int __pyx_t_1;
@@ -3358,7 +3254,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   double __pyx_t_4;
   __Pyx_RefNannySetupContext("__init__", 0);
 
-  /* "house/power_generators.pyx":57
+  /* "power_generators.pyx":57
  *                  int nb_solar_panel=1, float price=0.0):
  * 
  *         if peak_power < 0:             # <<<<<<<<<<<<<<
@@ -3368,7 +3264,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   __pyx_t_1 = ((__pyx_v_peak_power < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "house/power_generators.pyx":58
+    /* "power_generators.pyx":58
  * 
  *         if peak_power < 0:
  *             raise Exception("Peak power should be non negative.")             # <<<<<<<<<<<<<<
@@ -3381,7 +3277,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 58, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":57
+    /* "power_generators.pyx":57
  *                  int nb_solar_panel=1, float price=0.0):
  * 
  *         if peak_power < 0:             # <<<<<<<<<<<<<<
@@ -3390,7 +3286,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
   }
 
-  /* "house/power_generators.pyx":59
+  /* "power_generators.pyx":59
  *         if peak_power < 0:
  *             raise Exception("Peak power should be non negative.")
  *         if area < 0:             # <<<<<<<<<<<<<<
@@ -3400,7 +3296,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   __pyx_t_1 = ((__pyx_v_area < 0.0) != 0);
   if (__pyx_t_1) {
 
-    /* "house/power_generators.pyx":60
+    /* "power_generators.pyx":60
  *             raise Exception("Peak power should be non negative.")
  *         if area < 0:
  *             raise Exception("Area should be non negative.")             # <<<<<<<<<<<<<<
@@ -3413,7 +3309,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 60, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":59
+    /* "power_generators.pyx":59
  *         if peak_power < 0:
  *             raise Exception("Peak power should be non negative.")
  *         if area < 0:             # <<<<<<<<<<<<<<
@@ -3422,7 +3318,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
   }
 
-  /* "house/power_generators.pyx":61
+  /* "power_generators.pyx":61
  *         if area < 0:
  *             raise Exception("Area should be non negative.")
  *         if not isinstance(nb_solar_panel, int):             # <<<<<<<<<<<<<<
@@ -3436,7 +3332,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   __pyx_t_3 = ((!(__pyx_t_1 != 0)) != 0);
   if (__pyx_t_3) {
 
-    /* "house/power_generators.pyx":62
+    /* "power_generators.pyx":62
  *             raise Exception("Area should be non negative.")
  *         if not isinstance(nb_solar_panel, int):
  *             raise TypeError("The number of solar panels must be an integer number")             # <<<<<<<<<<<<<<
@@ -3449,7 +3345,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 62, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":61
+    /* "power_generators.pyx":61
  *         if area < 0:
  *             raise Exception("Area should be non negative.")
  *         if not isinstance(nb_solar_panel, int):             # <<<<<<<<<<<<<<
@@ -3458,7 +3354,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
   }
 
-  /* "house/power_generators.pyx":63
+  /* "power_generators.pyx":63
  *         if not isinstance(nb_solar_panel, int):
  *             raise TypeError("The number of solar panels must be an integer number")
  *         if nb_solar_panel < 1:             # <<<<<<<<<<<<<<
@@ -3468,7 +3364,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   __pyx_t_3 = ((__pyx_v_nb_solar_panel < 1) != 0);
   if (__pyx_t_3) {
 
-    /* "house/power_generators.pyx":64
+    /* "power_generators.pyx":64
  *             raise TypeError("The number of solar panels must be an integer number")
  *         if nb_solar_panel < 1:
  *             raise Exception("The number of solar panels must be greater than or equal to 1")             # <<<<<<<<<<<<<<
@@ -3481,7 +3377,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __PYX_ERR(0, 64, __pyx_L1_error)
 
-    /* "house/power_generators.pyx":63
+    /* "power_generators.pyx":63
  *         if not isinstance(nb_solar_panel, int):
  *             raise TypeError("The number of solar panels must be an integer number")
  *         if nb_solar_panel < 1:             # <<<<<<<<<<<<<<
@@ -3490,7 +3386,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
   }
 
-  /* "house/power_generators.pyx":66
+  /* "power_generators.pyx":66
  *             raise Exception("The number of solar panels must be greater than or equal to 1")
  * 
  *         self._tilt_angle = tilt_angle % (2*pi)             # <<<<<<<<<<<<<<
@@ -3504,7 +3400,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   }
   __pyx_v_self->_tilt_angle = __Pyx_mod_double(__pyx_v_tilt_angle, __pyx_t_4);
 
-  /* "house/power_generators.pyx":67
+  /* "power_generators.pyx":67
  * 
  *         self._tilt_angle = tilt_angle % (2*pi)
  *         self._azimuth = azimuth % (2*pi)             # <<<<<<<<<<<<<<
@@ -3518,7 +3414,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   }
   __pyx_v_self->_azimuth = __Pyx_mod_double(__pyx_v_azimuth, __pyx_t_4);
 
-  /* "house/power_generators.pyx":68
+  /* "power_generators.pyx":68
  *         self._tilt_angle = tilt_angle % (2*pi)
  *         self._azimuth = azimuth % (2*pi)
  *         self._peak_power = peak_power             # <<<<<<<<<<<<<<
@@ -3527,7 +3423,7 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
   __pyx_v_self->_peak_power = __pyx_v_peak_power;
 
-  /* "house/power_generators.pyx":69
+  /* "power_generators.pyx":69
  *         self._azimuth = azimuth % (2*pi)
  *         self._peak_power = peak_power
  *         self._area = area             # <<<<<<<<<<<<<<
@@ -3536,34 +3432,25 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
   __pyx_v_self->_area = __pyx_v_area;
 
-  /* "house/power_generators.pyx":70
+  /* "power_generators.pyx":70
  *         self._peak_power = peak_power
  *         self._area = area
  *         self._latitude = latitude             # <<<<<<<<<<<<<<
  *         self._nb_solar_panel = nb_solar_panel
- *         self._price = price
+ *         # self._price = price
  */
   __pyx_v_self->_latitude = __pyx_v_latitude;
 
-  /* "house/power_generators.pyx":71
+  /* "power_generators.pyx":71
  *         self._area = area
  *         self._latitude = latitude
  *         self._nb_solar_panel = nb_solar_panel             # <<<<<<<<<<<<<<
- *         self._price = price
+ *         # self._price = price
  * 
  */
   __pyx_v_self->_nb_solar_panel = __pyx_v_nb_solar_panel;
 
-  /* "house/power_generators.pyx":72
- *         self._latitude = latitude
- *         self._nb_solar_panel = nb_solar_panel
- *         self._price = price             # <<<<<<<<<<<<<<
- * 
- *     @property
- */
-  __pyx_v_self->_price = __pyx_v_price;
-
-  /* "house/power_generators.pyx":54
+  /* "power_generators.pyx":54
  * 
  * cdef class SolarPanel:
  *     def __init__(self, float peak_power, float tilt_angle, float azimuth, float latitude, float area,             # <<<<<<<<<<<<<<
@@ -3576,14 +3463,14 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.__init__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = -1;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":75
+/* "power_generators.pyx":75
  * 
  *     @property
  *     def tilt_angle(self):             # <<<<<<<<<<<<<<
@@ -3592,25 +3479,25 @@ static int __pyx_pf_5house_16power_generators_10SolarPanel___init__(struct __pyx
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_10tilt_angle_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_10tilt_angle_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_10tilt_angle_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_10tilt_angle_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_10tilt_angle___get__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_10tilt_angle___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "house/power_generators.pyx":76
+  /* "power_generators.pyx":76
  *     @property
  *     def tilt_angle(self):
  *         return self._tilt_angle             # <<<<<<<<<<<<<<
@@ -3624,7 +3511,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":75
+  /* "power_generators.pyx":75
  * 
  *     @property
  *     def tilt_angle(self):             # <<<<<<<<<<<<<<
@@ -3635,7 +3522,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.tilt_angle.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.tilt_angle.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3643,7 +3530,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":79
+/* "power_generators.pyx":79
  * 
  *     @property
  *     def azimuth(self):             # <<<<<<<<<<<<<<
@@ -3652,25 +3539,25 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10tilt_angle___
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_7azimuth_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_7azimuth_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7azimuth_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7azimuth_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_7azimuth___get__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_7azimuth___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "house/power_generators.pyx":80
+  /* "power_generators.pyx":80
  *     @property
  *     def azimuth(self):
  *         return self._azimuth             # <<<<<<<<<<<<<<
@@ -3684,7 +3571,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get_
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":79
+  /* "power_generators.pyx":79
  * 
  *     @property
  *     def azimuth(self):             # <<<<<<<<<<<<<<
@@ -3695,7 +3582,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get_
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.azimuth.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.azimuth.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3703,7 +3590,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get_
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":83
+/* "power_generators.pyx":83
  * 
  *     @property
  *     def peak_power(self):             # <<<<<<<<<<<<<<
@@ -3712,25 +3599,25 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_7azimuth___get_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_10peak_power_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_10peak_power_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_10peak_power_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_10peak_power_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_10peak_power___get__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_10peak_power___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "house/power_generators.pyx":84
+  /* "power_generators.pyx":84
  *     @property
  *     def peak_power(self):
  *         return self._peak_power             # <<<<<<<<<<<<<<
@@ -3744,7 +3631,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":83
+  /* "power_generators.pyx":83
  * 
  *     @property
  *     def peak_power(self):             # <<<<<<<<<<<<<<
@@ -3755,7 +3642,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.peak_power.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.peak_power.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3763,7 +3650,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":87
+/* "power_generators.pyx":87
  * 
  *     @property
  *     def area(self):             # <<<<<<<<<<<<<<
@@ -3772,25 +3659,25 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_10peak_power___
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_4area_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_4area_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_4area_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_4area_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_4area___get__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_4area___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "house/power_generators.pyx":88
+  /* "power_generators.pyx":88
  *     @property
  *     def area(self):
  *         return self._area             # <<<<<<<<<<<<<<
@@ -3804,7 +3691,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(s
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":87
+  /* "power_generators.pyx":87
  * 
  *     @property
  *     def area(self):             # <<<<<<<<<<<<<<
@@ -3815,7 +3702,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(s
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.area.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.area.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3823,7 +3710,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(s
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":91
+/* "power_generators.pyx":91
  * 
  *     @property
  *     def house(self):             # <<<<<<<<<<<<<<
@@ -3832,25 +3719,25 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4area___get__(s
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_5house_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_5house_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5house_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5house_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_5house___get__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_5house___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "house/power_generators.pyx":92
+  /* "power_generators.pyx":92
  *     @property
  *     def house(self):
  *         return self.house             # <<<<<<<<<<<<<<
@@ -3864,7 +3751,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":91
+  /* "power_generators.pyx":91
  * 
  *     @property
  *     def house(self):             # <<<<<<<<<<<<<<
@@ -3875,7 +3762,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.house.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.house.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3883,7 +3770,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":95
+/* "power_generators.pyx":95
  * 
  *     @property
  *     def latitude(self):             # <<<<<<<<<<<<<<
@@ -3892,30 +3779,30 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5house___get__(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_8latitude_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_8latitude_1__get__(PyObject *__pyx_v_self) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_8latitude_1__get__(PyObject *__pyx_v_self); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_8latitude_1__get__(PyObject *__pyx_v_self) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_8latitude___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_8latitude___get__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_8latitude___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_8latitude___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("__get__", 0);
 
-  /* "house/power_generators.pyx":96
+  /* "power_generators.pyx":96
  *     @property
  *     def latitude(self):
  *         return self._latitude             # <<<<<<<<<<<<<<
  * 
- *     @property
+ *     # @property
  */
   __Pyx_XDECREF(__pyx_r);
   __pyx_t_1 = PyFloat_FromDouble(__pyx_v_self->_latitude); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 96, __pyx_L1_error)
@@ -3924,7 +3811,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_8latitude___get
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":95
+  /* "power_generators.pyx":95
  * 
  *     @property
  *     def latitude(self):             # <<<<<<<<<<<<<<
@@ -3935,7 +3822,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_8latitude___get
   /* function exit code */
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.latitude.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.latitude.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3943,85 +3830,15 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_8latitude___get
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":99
- * 
- *     @property
- *     def price(self):             # <<<<<<<<<<<<<<
- *         return self._nb_solar_panel * self.price
- * 
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_5price_1__get__(PyObject *__pyx_v_self); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_5price_1__get__(PyObject *__pyx_v_self) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("__get__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_5price___get__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_5price___get__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  __Pyx_RefNannySetupContext("__get__", 0);
-
-  /* "house/power_generators.pyx":100
- *     @property
- *     def price(self):
- *         return self._nb_solar_panel * self.price             # <<<<<<<<<<<<<<
- * 
- *     cdef cnp.ndarray[float, ndim=1] incident_angle(self, int year, int month, int day):
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->_nb_solar_panel); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 100, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_price); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 100, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyNumber_Multiply(__pyx_t_1, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 100, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_r = __pyx_t_3;
-  __pyx_t_3 = 0;
-  goto __pyx_L0;
-
-  /* "house/power_generators.pyx":99
- * 
- *     @property
- *     def price(self):             # <<<<<<<<<<<<<<
- *         return self._nb_solar_panel * self.price
- * 
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.price.__get__", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "house/power_generators.pyx":102
- *         return self._nb_solar_panel * self.price
+/* "power_generators.pyx":102
+ *     #     return self._nb_solar_panel * self.price
  * 
  *     cdef cnp.ndarray[float, ndim=1] incident_angle(self, int year, int month, int day):             # <<<<<<<<<<<<<<
  *         cdef float s_altitude
  *         cdef float h_angle
  */
 
-static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_angle(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day) {
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day) {
   float __pyx_v_s_altitude;
   float __pyx_v_h_angle;
   float __pyx_v_s_declination;
@@ -4039,16 +3856,16 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
   double __pyx_t_8;
   __Pyx_RefNannySetupContext("incident_angle", 0);
 
-  /* "house/power_generators.pyx":105
+  /* "power_generators.pyx":105
  *         cdef float s_altitude
  *         cdef float h_angle
  *         cdef float s_declination = solar_declination(day_of_year(year, month, day))             # <<<<<<<<<<<<<<
  *         cdef cnp.ndarray res_arr = np.zeros([288], dtype=float)
  *         cdef int i
  */
-  __pyx_v_s_declination = __pyx_f_5house_16power_generators_solar_declination(__pyx_f_5house_16power_generators_day_of_year(__pyx_v_year, __pyx_v_month, __pyx_v_day));
+  __pyx_v_s_declination = __pyx_f_16power_generators_solar_declination(__pyx_f_16power_generators_day_of_year(__pyx_v_year, __pyx_v_month, __pyx_v_day));
 
-  /* "house/power_generators.pyx":106
+  /* "power_generators.pyx":106
  *         cdef float h_angle
  *         cdef float s_declination = solar_declination(day_of_year(year, month, day))
  *         cdef cnp.ndarray res_arr = np.zeros([288], dtype=float)             # <<<<<<<<<<<<<<
@@ -4082,7 +3899,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
   __pyx_v_res_arr = ((PyArrayObject *)__pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "house/power_generators.pyx":109
+  /* "power_generators.pyx":109
  *         cdef int i
  * 
  *         for i in range(288):             # <<<<<<<<<<<<<<
@@ -4092,32 +3909,32 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
   for (__pyx_t_5 = 0; __pyx_t_5 < 0x120; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "house/power_generators.pyx":110
+    /* "power_generators.pyx":110
  * 
  *         for i in range(288):
  *             h_angle = hour_angle(300*i)             # <<<<<<<<<<<<<<
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
  *             res_arr[i] = acos(
  */
-    __pyx_v_h_angle = __pyx_f_5house_16power_generators_hour_angle((0x12C * __pyx_v_i));
+    __pyx_v_h_angle = __pyx_f_16power_generators_hour_angle((0x12C * __pyx_v_i));
 
-    /* "house/power_generators.pyx":111
+    /* "power_generators.pyx":111
  *         for i in range(288):
  *             h_angle = hour_angle(300*i)
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)             # <<<<<<<<<<<<<<
  *             res_arr[i] = acos(
  *                 cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._plane_azimuth)
  */
-    __pyx_v_s_altitude = __pyx_f_5house_16power_generators_solar_altitude((0x12C * __pyx_v_i), __pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle);
+    __pyx_v_s_altitude = __pyx_f_16power_generators_solar_altitude((0x12C * __pyx_v_i), __pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle);
 
-    /* "house/power_generators.pyx":113
+    /* "power_generators.pyx":113
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
  *             res_arr[i] = acos(
  *                 cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._plane_azimuth)             # <<<<<<<<<<<<<<
  *                 * sin(self._plane_tilt_angle) + sin(s_altitude) * cos(self._plane_tilt_angle)
  *             )
  */
-    __pyx_t_4 = PyFloat_FromDouble(__pyx_f_5house_16power_generators_solar_azimuth(__pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle, __pyx_v_s_altitude)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_4 = PyFloat_FromDouble(__pyx_f_16power_generators_solar_azimuth(__pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle, __pyx_v_s_altitude)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_plane_azimuth); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
@@ -4128,7 +3945,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
     __pyx_t_6 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_6 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 113, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "house/power_generators.pyx":114
+    /* "power_generators.pyx":114
  *             res_arr[i] = acos(
  *                 cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._plane_azimuth)
  *                 * sin(self._plane_tilt_angle) + sin(s_altitude) * cos(self._plane_tilt_angle)             # <<<<<<<<<<<<<<
@@ -4144,7 +3961,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
     __pyx_t_8 = __pyx_PyFloat_AsDouble(__pyx_t_3); if (unlikely((__pyx_t_8 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 114, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-    /* "house/power_generators.pyx":112
+    /* "power_generators.pyx":112
  *             h_angle = hour_angle(300*i)
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
  *             res_arr[i] = acos(             # <<<<<<<<<<<<<<
@@ -4157,7 +3974,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
 
-  /* "house/power_generators.pyx":117
+  /* "power_generators.pyx":117
  *             )
  * 
  *         return res_arr             # <<<<<<<<<<<<<<
@@ -4169,8 +3986,8 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
   __pyx_r = ((PyArrayObject *)__pyx_v_res_arr);
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":102
- *         return self._nb_solar_panel * self.price
+  /* "power_generators.pyx":102
+ *     #     return self._nb_solar_panel * self.price
  * 
  *     cdef cnp.ndarray[float, ndim=1] incident_angle(self, int year, int month, int day):             # <<<<<<<<<<<<<<
  *         cdef float s_altitude
@@ -4183,7 +4000,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.incident_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.incident_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XDECREF((PyObject *)__pyx_v_res_arr);
@@ -4192,7 +4009,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":119
+/* "power_generators.pyx":119
  *         return res_arr
  * 
  *     cpdef cnp.ndarray[float, ndim=1] power_production(self, cnp.ndarray[float, ndim=1] irradiance_arr,             # <<<<<<<<<<<<<<
@@ -4200,8 +4017,8 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_incident_an
  *         cdef int i
  */
 
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_production(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day, int __pyx_skip_dispatch) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day, int __pyx_skip_dispatch) {
   int __pyx_v_i;
   PyArrayObject *__pyx_v_cos_incident_angle = 0;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_cos_incident_angle;
@@ -4247,7 +4064,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
     __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_power_production); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_5house_16power_generators_10SolarPanel_3power_production)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_3power_production)) {
       __Pyx_XDECREF(((PyObject *)__pyx_r));
       __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 119, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
@@ -4322,14 +4139,14 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "house/power_generators.pyx":122
+  /* "power_generators.pyx":122
  *                                                       int year, int month, int day):
  *         cdef int i
  *         cdef cnp.ndarray[float, ndim=1] cos_incident_angle = self.incident_angle(year, month, day)             # <<<<<<<<<<<<<<
  * 
  *         for i in range(288):
  */
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_5house_16power_generators_SolarPanel *)__pyx_v_self->__pyx_vtab)->incident_angle(__pyx_v_self, __pyx_v_year, __pyx_v_month, __pyx_v_day)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_16power_generators_SolarPanel *)__pyx_v_self->__pyx_vtab)->incident_angle(__pyx_v_self, __pyx_v_year, __pyx_v_month, __pyx_v_day)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 122, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -4342,7 +4159,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
   __pyx_v_cos_incident_angle = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "house/power_generators.pyx":124
+  /* "power_generators.pyx":124
  *         cdef cnp.ndarray[float, ndim=1] cos_incident_angle = self.incident_angle(year, month, day)
  * 
  *         for i in range(288):             # <<<<<<<<<<<<<<
@@ -4352,7 +4169,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
   for (__pyx_t_8 = 0; __pyx_t_8 < 0x120; __pyx_t_8+=1) {
     __pyx_v_i = __pyx_t_8;
 
-    /* "house/power_generators.pyx":125
+    /* "power_generators.pyx":125
  * 
  *         for i in range(288):
  *             cos_incident_angle[i] = max(cos(cos_incident_angle[i]), 0)             # <<<<<<<<<<<<<<
@@ -4389,7 +4206,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
     *__Pyx_BufPtrStrided1d(float *, __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.buf, __pyx_t_15, __pyx_pybuffernd_cos_incident_angle.diminfo[0].strides) = __pyx_t_14;
   }
 
-  /* "house/power_generators.pyx":127
+  /* "power_generators.pyx":127
  *             cos_incident_angle[i] = max(cos(cos_incident_angle[i]), 0)
  * 
  *         return self._nb_solar_panel * self._peak_power/(1000 * self._area) * irradiance_arr * cos_incident_angle             # <<<<<<<<<<<<<<
@@ -4416,7 +4233,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":119
+  /* "power_generators.pyx":119
  *         return res_arr
  * 
  *     cpdef cnp.ndarray[float, ndim=1] power_production(self, cnp.ndarray[float, ndim=1] irradiance_arr,             # <<<<<<<<<<<<<<
@@ -4441,7 +4258,7 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4455,8 +4272,8 @@ static PyArrayObject *__pyx_f_5house_16power_generators_10SolarPanel_power_produ
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_irradiance_arr = 0;
   int __pyx_v_year;
   int __pyx_v_month;
@@ -4526,12 +4343,12 @@ static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_3power_producti
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("power_production", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 119, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_irradiance_arr), __pyx_ptype_5numpy_ndarray, 1, "irradiance_arr", 0))) __PYX_ERR(0, 119, __pyx_L1_error)
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_2power_production(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_irradiance_arr, __pyx_v_year, __pyx_v_month, __pyx_v_day);
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_2power_production(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_irradiance_arr, __pyx_v_year, __pyx_v_month, __pyx_v_day);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4542,7 +4359,7 @@ static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_3power_producti
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_2power_production(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_2power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_year, int __pyx_v_month, int __pyx_v_day) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_irradiance_arr;
   __Pyx_Buffer __pyx_pybuffer_irradiance_arr;
   PyObject *__pyx_r = NULL;
@@ -4559,7 +4376,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_2power_producti
   }
   __pyx_pybuffernd_irradiance_arr.diminfo[0].strides = __pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_irradiance_arr.diminfo[0].shape = __pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_5house_16power_generators_10SolarPanel_power_production(__pyx_v_self, ((PyArrayObject *)__pyx_v_irradiance_arr), __pyx_v_year, __pyx_v_month, __pyx_v_day, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_10SolarPanel_power_production(__pyx_v_self, ((PyArrayObject *)__pyx_v_irradiance_arr), __pyx_v_year, __pyx_v_month, __pyx_v_day, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4574,7 +4391,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_2power_producti
     __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
     __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer);
   __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   goto __pyx_L2;
   __pyx_L0:;
@@ -4592,19 +4409,19 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_2power_producti
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_4__reduce_cython__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_4__reduce_cython__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4__reduce_cython__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_4__reduce_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   int __pyx_v_use_setstate;
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
@@ -4847,7 +4664,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4__reduce_cytho
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
   __Pyx_XDECREF(__pyx_t_8);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.__reduce_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_state);
@@ -4865,19 +4682,19 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_4__reduce_cytho
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_5house_16power_generators_10SolarPanel_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cython__(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_6__setstate_cython__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cython__(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_6__setstate_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4889,7 +4706,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cyt
  *     __pyx_unpickle_SolarPanel__set_state(self, __pyx_state)             # <<<<<<<<<<<<<<
  */
   if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 15, __pyx_L1_error)
-  __pyx_t_1 = __pyx_f_5house_16power_generators___pyx_unpickle_SolarPanel__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_16power_generators___pyx_unpickle_SolarPanel__set_state(__pyx_v_self, ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 15, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
@@ -4905,7 +4722,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cyt
   goto __pyx_L0;
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("house.power_generators.SolarPanel.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.SolarPanel.__setstate_cython__", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -4913,7 +4730,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cyt
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":130
+/* "power_generators.pyx":130
  * 
  * 
  * cdef int day_of_year(int year, int month, int day):             # <<<<<<<<<<<<<<
@@ -4921,7 +4738,7 @@ static PyObject *__pyx_pf_5house_16power_generators_10SolarPanel_6__setstate_cyt
  *     if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
  */
 
-static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int __pyx_v_month, int __pyx_v_day) {
+static int __pyx_f_16power_generators_day_of_year(int __pyx_v_year, int __pyx_v_month, int __pyx_v_day) {
   int __pyx_v_days[13];
   int __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -4931,7 +4748,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
   int __pyx_t_4[13];
   __Pyx_RefNannySetupContext("day_of_year", 0);
 
-  /* "house/power_generators.pyx":132
+  /* "power_generators.pyx":132
  * cdef int day_of_year(int year, int month, int day):
  *     cdef int days[13]
  *     if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):             # <<<<<<<<<<<<<<
@@ -4955,7 +4772,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "house/power_generators.pyx":133
+    /* "power_generators.pyx":133
  *     cdef int days[13]
  *     if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):
  *         days[:] = [0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]             # <<<<<<<<<<<<<<
@@ -4977,7 +4794,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
     __pyx_t_3[12] = 0x14F;
     memcpy(&(__pyx_v_days[0]), __pyx_t_3, sizeof(__pyx_v_days[0]) * (13));
 
-    /* "house/power_generators.pyx":132
+    /* "power_generators.pyx":132
  * cdef int day_of_year(int year, int month, int day):
  *     cdef int days[13]
  *     if (year % 4 == 0 and year % 100 != 0) or (year % 400 == 0):             # <<<<<<<<<<<<<<
@@ -4987,7 +4804,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
     goto __pyx_L3;
   }
 
-  /* "house/power_generators.pyx":135
+  /* "power_generators.pyx":135
  *         days[:] = [0, 0, 31, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
  *     else:
  *         days[:] = [0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]             # <<<<<<<<<<<<<<
@@ -5012,7 +4829,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
   }
   __pyx_L3:;
 
-  /* "house/power_generators.pyx":137
+  /* "power_generators.pyx":137
  *         days[:] = [0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334]
  * 
  *     return days[month] + day             # <<<<<<<<<<<<<<
@@ -5022,7 +4839,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
   __pyx_r = ((__pyx_v_days[__pyx_v_month]) + __pyx_v_day);
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":130
+  /* "power_generators.pyx":130
  * 
  * 
  * cdef int day_of_year(int year, int month, int day):             # <<<<<<<<<<<<<<
@@ -5036,7 +4853,7 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":139
+/* "power_generators.pyx":139
  *     return days[month] + day
  * 
  * cdef float solar_declination(int day_of_year):             # <<<<<<<<<<<<<<
@@ -5044,12 +4861,12 @@ static int __pyx_f_5house_16power_generators_day_of_year(int __pyx_v_year, int _
  * 
  */
 
-static float __pyx_f_5house_16power_generators_solar_declination(int __pyx_v_day_of_year) {
+static float __pyx_f_16power_generators_solar_declination(int __pyx_v_day_of_year) {
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("solar_declination", 0);
 
-  /* "house/power_generators.pyx":140
+  /* "power_generators.pyx":140
  * 
  * cdef float solar_declination(int day_of_year):
  *     return -0.409105177 * cos(0.017214206 * (day_of_year + 10))             # <<<<<<<<<<<<<<
@@ -5059,7 +4876,7 @@ static float __pyx_f_5house_16power_generators_solar_declination(int __pyx_v_day
   __pyx_r = (-0.409105177 * cos((0.017214206 * (__pyx_v_day_of_year + 10))));
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":139
+  /* "power_generators.pyx":139
  *     return days[month] + day
  * 
  * cdef float solar_declination(int day_of_year):             # <<<<<<<<<<<<<<
@@ -5073,7 +4890,7 @@ static float __pyx_f_5house_16power_generators_solar_declination(int __pyx_v_day
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":143
+/* "power_generators.pyx":143
  * 
  * 
  * cdef float hour_angle(int second_of_the_day):             # <<<<<<<<<<<<<<
@@ -5081,12 +4898,12 @@ static float __pyx_f_5house_16power_generators_solar_declination(int __pyx_v_day
  * 
  */
 
-static float __pyx_f_5house_16power_generators_hour_angle(int __pyx_v_second_of_the_day) {
+static float __pyx_f_16power_generators_hour_angle(int __pyx_v_second_of_the_day) {
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("hour_angle", 0);
 
-  /* "house/power_generators.pyx":144
+  /* "power_generators.pyx":144
  * 
  * cdef float hour_angle(int second_of_the_day):
  *     return pi / 43200 * (second_of_the_day - 43200)             # <<<<<<<<<<<<<<
@@ -5096,7 +4913,7 @@ static float __pyx_f_5house_16power_generators_hour_angle(int __pyx_v_second_of_
   __pyx_r = ((M_PI / 43200.0) * (__pyx_v_second_of_the_day - 0xA8C0));
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":143
+  /* "power_generators.pyx":143
  * 
  * 
  * cdef float hour_angle(int second_of_the_day):             # <<<<<<<<<<<<<<
@@ -5110,7 +4927,7 @@ static float __pyx_f_5house_16power_generators_hour_angle(int __pyx_v_second_of_
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":147
+/* "power_generators.pyx":147
  * 
  * 
  * cdef float solar_altitude(float second_of_the_day, float latitude, float solar_declination, float hour_angle):             # <<<<<<<<<<<<<<
@@ -5118,12 +4935,12 @@ static float __pyx_f_5house_16power_generators_hour_angle(int __pyx_v_second_of_
  *         cos(solar_declination) * cos(latitude) * cos(hour_angle)
  */
 
-static float __pyx_f_5house_16power_generators_solar_altitude(CYTHON_UNUSED float __pyx_v_second_of_the_day, float __pyx_v_latitude, float __pyx_v_solar_declination, float __pyx_v_hour_angle) {
+static float __pyx_f_16power_generators_solar_altitude(CYTHON_UNUSED float __pyx_v_second_of_the_day, float __pyx_v_latitude, float __pyx_v_solar_declination, float __pyx_v_hour_angle) {
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("solar_altitude", 0);
 
-  /* "house/power_generators.pyx":148
+  /* "power_generators.pyx":148
  * 
  * cdef float solar_altitude(float second_of_the_day, float latitude, float solar_declination, float hour_angle):
  *     return asin(             # <<<<<<<<<<<<<<
@@ -5133,7 +4950,7 @@ static float __pyx_f_5house_16power_generators_solar_altitude(CYTHON_UNUSED floa
   __pyx_r = asin((((cos(__pyx_v_solar_declination) * cos(__pyx_v_latitude)) * cos(__pyx_v_hour_angle)) + (sin(__pyx_v_solar_declination) * sin(__pyx_v_latitude))));
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":147
+  /* "power_generators.pyx":147
  * 
  * 
  * cdef float solar_altitude(float second_of_the_day, float latitude, float solar_declination, float hour_angle):             # <<<<<<<<<<<<<<
@@ -5147,7 +4964,7 @@ static float __pyx_f_5house_16power_generators_solar_altitude(CYTHON_UNUSED floa
   return __pyx_r;
 }
 
-/* "house/power_generators.pyx":154
+/* "power_generators.pyx":154
  * 
  * 
  * cdef float solar_azimuth(float latitude, float solar_declination, float hour_angle, float solar_altitude):             # <<<<<<<<<<<<<<
@@ -5155,14 +4972,14 @@ static float __pyx_f_5house_16power_generators_solar_altitude(CYTHON_UNUSED floa
  *         cos(solar_declination) * sin(hour_angle) / cos(solar_altitude)
  */
 
-static float __pyx_f_5house_16power_generators_solar_azimuth(CYTHON_UNUSED float __pyx_v_latitude, float __pyx_v_solar_declination, float __pyx_v_hour_angle, float __pyx_v_solar_altitude) {
+static float __pyx_f_16power_generators_solar_azimuth(CYTHON_UNUSED float __pyx_v_latitude, float __pyx_v_solar_declination, float __pyx_v_hour_angle, float __pyx_v_solar_altitude) {
   float __pyx_r;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
   double __pyx_t_2;
   __Pyx_RefNannySetupContext("solar_azimuth", 0);
 
-  /* "house/power_generators.pyx":156
+  /* "power_generators.pyx":156
  * cdef float solar_azimuth(float latitude, float solar_declination, float hour_angle, float solar_altitude):
  *     return asin(
  *         cos(solar_declination) * sin(hour_angle) / cos(solar_altitude)             # <<<<<<<<<<<<<<
@@ -5175,7 +4992,7 @@ static float __pyx_f_5house_16power_generators_solar_azimuth(CYTHON_UNUSED float
     __PYX_ERR(0, 156, __pyx_L1_error)
   }
 
-  /* "house/power_generators.pyx":155
+  /* "power_generators.pyx":155
  * 
  * cdef float solar_azimuth(float latitude, float solar_declination, float hour_angle, float solar_altitude):
  *     return asin(             # <<<<<<<<<<<<<<
@@ -5185,7 +5002,7 @@ static float __pyx_f_5house_16power_generators_solar_azimuth(CYTHON_UNUSED float
   __pyx_r = asin((__pyx_t_1 / __pyx_t_2));
   goto __pyx_L0;
 
-  /* "house/power_generators.pyx":154
+  /* "power_generators.pyx":154
  * 
  * 
  * cdef float solar_azimuth(float latitude, float solar_declination, float hour_angle, float solar_altitude):             # <<<<<<<<<<<<<<
@@ -5195,7 +5012,7 @@ static float __pyx_f_5house_16power_generators_solar_azimuth(CYTHON_UNUSED float
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("house.power_generators.solar_azimuth", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
+  __Pyx_WriteUnraisable("power_generators.solar_azimuth", __pyx_clineno, __pyx_lineno, __pyx_filename, 1, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
@@ -5209,9 +5026,9 @@ static float __pyx_f_5house_16power_generators_solar_azimuth(CYTHON_UNUSED float
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_1__pyx_unpickle_Windmill(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5house_16power_generators_1__pyx_unpickle_Windmill = {"__pyx_unpickle_Windmill", (PyCFunction)__pyx_pw_5house_16power_generators_1__pyx_unpickle_Windmill, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5house_16power_generators_1__pyx_unpickle_Windmill(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16power_generators_1__pyx_unpickle_Windmill(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_16power_generators_1__pyx_unpickle_Windmill = {"__pyx_unpickle_Windmill", (PyCFunction)__pyx_pw_16power_generators_1__pyx_unpickle_Windmill, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_16power_generators_1__pyx_unpickle_Windmill(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -5270,18 +5087,18 @@ static PyObject *__pyx_pw_5house_16power_generators_1__pyx_unpickle_Windmill(PyO
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_Windmill", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("house.power_generators.__pyx_unpickle_Windmill", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.__pyx_unpickle_Windmill", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_16power_generators___pyx_unpickle_Windmill(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16power_generators___pyx_unpickle_Windmill(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = NULL;
   PyObject *__pyx_v___pyx_result = NULL;
   PyObject *__pyx_r = NULL;
@@ -5404,7 +5221,7 @@ static PyObject *__pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(CYTH
  *     if __pyx_state is not None:
  *         __pyx_unpickle_Windmill__set_state(<Windmill> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5house_16power_generators_Windmill), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_16power_generators_Windmill), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -5471,7 +5288,7 @@ static PyObject *__pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(CYTH
  * cdef __pyx_unpickle_Windmill__set_state(Windmill __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 7, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_5house_16power_generators___pyx_unpickle_Windmill__set_state(((struct __pyx_obj_5house_16power_generators_Windmill *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_16power_generators___pyx_unpickle_Windmill__set_state(((struct __pyx_obj_16power_generators_Windmill *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -5509,7 +5326,7 @@ static PyObject *__pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(CYTH
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("house.power_generators.__pyx_unpickle_Windmill", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.__pyx_unpickle_Windmill", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -5527,7 +5344,7 @@ static PyObject *__pyx_pf_5house_16power_generators___pyx_unpickle_Windmill(CYTH
  *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_Windmill__set_state(struct __pyx_obj_5house_16power_generators_Windmill *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_16power_generators___pyx_unpickle_Windmill__set_state(struct __pyx_obj_16power_generators_Windmill *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -5708,7 +5525,7 @@ static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_Windmill__set_
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_AddTraceback("house.power_generators.__pyx_unpickle_Windmill__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.__pyx_unpickle_Windmill__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -5723,9 +5540,9 @@ static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_Windmill__set_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_5house_16power_generators_3__pyx_unpickle_SolarPanel(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_5house_16power_generators_3__pyx_unpickle_SolarPanel = {"__pyx_unpickle_SolarPanel", (PyCFunction)__pyx_pw_5house_16power_generators_3__pyx_unpickle_SolarPanel, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_5house_16power_generators_3__pyx_unpickle_SolarPanel(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16power_generators_3__pyx_unpickle_SolarPanel(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_16power_generators_3__pyx_unpickle_SolarPanel = {"__pyx_unpickle_SolarPanel", (PyCFunction)__pyx_pw_16power_generators_3__pyx_unpickle_SolarPanel, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_16power_generators_3__pyx_unpickle_SolarPanel(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v___pyx_type = 0;
   long __pyx_v___pyx_checksum;
   PyObject *__pyx_v___pyx_state = 0;
@@ -5784,18 +5601,18 @@ static PyObject *__pyx_pw_5house_16power_generators_3__pyx_unpickle_SolarPanel(P
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("__pyx_unpickle_SolarPanel", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(1, 1, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("house.power_generators.__pyx_unpickle_SolarPanel", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.__pyx_unpickle_SolarPanel", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
+  __pyx_r = __pyx_pf_16power_generators_2__pyx_unpickle_SolarPanel(__pyx_self, __pyx_v___pyx_type, __pyx_v___pyx_checksum, __pyx_v___pyx_state);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16power_generators_2__pyx_unpickle_SolarPanel(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_v___pyx_PickleError = NULL;
   PyObject *__pyx_v___pyx_result = NULL;
   PyObject *__pyx_r = NULL;
@@ -5918,7 +5735,7 @@ static PyObject *__pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(C
  *     if __pyx_state is not None:
  *         __pyx_unpickle_SolarPanel__set_state(<SolarPanel> __pyx_result, __pyx_state)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_5house_16power_generators_SolarPanel), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_ptype_16power_generators_SolarPanel), __pyx_n_s_new); if (unlikely(!__pyx_t_2)) __PYX_ERR(1, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_6 = NULL;
   if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -5985,7 +5802,7 @@ static PyObject *__pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(C
  * cdef __pyx_unpickle_SolarPanel__set_state(SolarPanel __pyx_result, tuple __pyx_state):
  */
     if (!(likely(PyTuple_CheckExact(__pyx_v___pyx_state))||((__pyx_v___pyx_state) == Py_None)||(PyErr_Format(PyExc_TypeError, "Expected %.16s, got %.200s", "tuple", Py_TYPE(__pyx_v___pyx_state)->tp_name), 0))) __PYX_ERR(1, 7, __pyx_L1_error)
-    __pyx_t_3 = __pyx_f_5house_16power_generators___pyx_unpickle_SolarPanel__set_state(((struct __pyx_obj_5house_16power_generators_SolarPanel *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
+    __pyx_t_3 = __pyx_f_16power_generators___pyx_unpickle_SolarPanel__set_state(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v___pyx_result), ((PyObject*)__pyx_v___pyx_state)); if (unlikely(!__pyx_t_3)) __PYX_ERR(1, 7, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
@@ -6023,7 +5840,7 @@ static PyObject *__pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(C
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("house.power_generators.__pyx_unpickle_SolarPanel", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.__pyx_unpickle_SolarPanel", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v___pyx_PickleError);
@@ -6041,7 +5858,7 @@ static PyObject *__pyx_pf_5house_16power_generators_2__pyx_unpickle_SolarPanel(C
  *     if len(__pyx_state) > 7 and hasattr(__pyx_result, '__dict__'):
  */
 
-static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_SolarPanel__set_state(struct __pyx_obj_5house_16power_generators_SolarPanel *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_f_16power_generators___pyx_unpickle_SolarPanel__set_state(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v___pyx_result, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -6240,7 +6057,7 @@ static PyObject *__pyx_f_5house_16power_generators___pyx_unpickle_SolarPanel__se
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_AddTraceback("house.power_generators.__pyx_unpickle_SolarPanel__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("power_generators.__pyx_unpickle_SolarPanel__set_state", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -8829,10 +8646,10 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
-static struct __pyx_vtabstruct_5house_16power_generators_Windmill __pyx_vtable_5house_16power_generators_Windmill;
+static struct __pyx_vtabstruct_16power_generators_Windmill __pyx_vtable_16power_generators_Windmill;
 
-static PyObject *__pyx_tp_new_5house_16power_generators_Windmill(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5house_16power_generators_Windmill *p;
+static PyObject *__pyx_tp_new_16power_generators_Windmill(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_16power_generators_Windmill *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -8840,12 +8657,12 @@ static PyObject *__pyx_tp_new_5house_16power_generators_Windmill(PyTypeObject *t
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5house_16power_generators_Windmill *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5house_16power_generators_Windmill;
+  p = ((struct __pyx_obj_16power_generators_Windmill *)o);
+  p->__pyx_vtab = __pyx_vtabptr_16power_generators_Windmill;
   return o;
 }
 
-static void __pyx_tp_dealloc_5house_16power_generators_Windmill(PyObject *o) {
+static void __pyx_tp_dealloc_16power_generators_Windmill(PyObject *o) {
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -8854,29 +8671,20 @@ static void __pyx_tp_dealloc_5house_16power_generators_Windmill(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_8Windmill_price(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_8Windmill_5price_1__get__(o);
-}
-
-static PyMethodDef __pyx_methods_5house_16power_generators_Windmill[] = {
-  {"power_production", (PyCFunction)__pyx_pw_5house_16power_generators_8Windmill_3power_production, METH_O, 0},
-  {"peak_power", (PyCFunction)__pyx_pw_5house_16power_generators_8Windmill_5peak_power, METH_NOARGS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5house_16power_generators_8Windmill_7__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5house_16power_generators_8Windmill_9__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_16power_generators_Windmill[] = {
+  {"power_production", (PyCFunction)__pyx_pw_16power_generators_8Windmill_3power_production, METH_O, 0},
+  {"peak_power", (PyCFunction)__pyx_pw_16power_generators_8Windmill_5peak_power, METH_NOARGS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_16power_generators_8Windmill_7__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_16power_generators_8Windmill_9__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5house_16power_generators_Windmill[] = {
-  {(char *)"price", __pyx_getprop_5house_16power_generators_8Windmill_price, 0, (char *)0, 0},
-  {0, 0, 0, 0, 0}
-};
-
-static PyTypeObject __pyx_type_5house_16power_generators_Windmill = {
+static PyTypeObject __pyx_type_16power_generators_Windmill = {
   PyVarObject_HEAD_INIT(0, 0)
-  "house.power_generators.Windmill", /*tp_name*/
-  sizeof(struct __pyx_obj_5house_16power_generators_Windmill), /*tp_basicsize*/
+  "power_generators.Windmill", /*tp_name*/
+  sizeof(struct __pyx_obj_16power_generators_Windmill), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5house_16power_generators_Windmill, /*tp_dealloc*/
+  __pyx_tp_dealloc_16power_generators_Windmill, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -8904,17 +8712,17 @@ static PyTypeObject __pyx_type_5house_16power_generators_Windmill = {
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5house_16power_generators_Windmill, /*tp_methods*/
+  __pyx_methods_16power_generators_Windmill, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5house_16power_generators_Windmill, /*tp_getset*/
+  0, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_5house_16power_generators_8Windmill_1__init__, /*tp_init*/
+  __pyx_pw_16power_generators_8Windmill_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5house_16power_generators_Windmill, /*tp_new*/
+  __pyx_tp_new_16power_generators_Windmill, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -8928,10 +8736,10 @@ static PyTypeObject __pyx_type_5house_16power_generators_Windmill = {
   0, /*tp_finalize*/
   #endif
 };
-static struct __pyx_vtabstruct_5house_16power_generators_SolarPanel __pyx_vtable_5house_16power_generators_SolarPanel;
+static struct __pyx_vtabstruct_16power_generators_SolarPanel __pyx_vtable_16power_generators_SolarPanel;
 
-static PyObject *__pyx_tp_new_5house_16power_generators_SolarPanel(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
-  struct __pyx_obj_5house_16power_generators_SolarPanel *p;
+static PyObject *__pyx_tp_new_16power_generators_SolarPanel(PyTypeObject *t, CYTHON_UNUSED PyObject *a, CYTHON_UNUSED PyObject *k) {
+  struct __pyx_obj_16power_generators_SolarPanel *p;
   PyObject *o;
   if (likely((t->tp_flags & Py_TPFLAGS_IS_ABSTRACT) == 0)) {
     o = (*t->tp_alloc)(t, 0);
@@ -8939,12 +8747,12 @@ static PyObject *__pyx_tp_new_5house_16power_generators_SolarPanel(PyTypeObject 
     o = (PyObject *) PyBaseObject_Type.tp_new(t, __pyx_empty_tuple, 0);
   }
   if (unlikely(!o)) return 0;
-  p = ((struct __pyx_obj_5house_16power_generators_SolarPanel *)o);
-  p->__pyx_vtab = __pyx_vtabptr_5house_16power_generators_SolarPanel;
+  p = ((struct __pyx_obj_16power_generators_SolarPanel *)o);
+  p->__pyx_vtab = __pyx_vtabptr_16power_generators_SolarPanel;
   return o;
 }
 
-static void __pyx_tp_dealloc_5house_16power_generators_SolarPanel(PyObject *o) {
+static void __pyx_tp_dealloc_16power_generators_SolarPanel(PyObject *o) {
   #if CYTHON_USE_TP_FINALIZE
   if (unlikely(PyType_HasFeature(Py_TYPE(o), Py_TPFLAGS_HAVE_FINALIZE) && Py_TYPE(o)->tp_finalize) && (!PyType_IS_GC(Py_TYPE(o)) || !_PyGC_FINALIZED(o))) {
     if (PyObject_CallFinalizerFromDealloc(o)) return;
@@ -8953,58 +8761,53 @@ static void __pyx_tp_dealloc_5house_16power_generators_SolarPanel(PyObject *o) {
   (*Py_TYPE(o)->tp_free)(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_tilt_angle(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_10tilt_angle_1__get__(o);
+static PyObject *__pyx_getprop_16power_generators_10SolarPanel_tilt_angle(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_16power_generators_10SolarPanel_10tilt_angle_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_azimuth(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_7azimuth_1__get__(o);
+static PyObject *__pyx_getprop_16power_generators_10SolarPanel_azimuth(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_16power_generators_10SolarPanel_7azimuth_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_peak_power(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_10peak_power_1__get__(o);
+static PyObject *__pyx_getprop_16power_generators_10SolarPanel_peak_power(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_16power_generators_10SolarPanel_10peak_power_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_area(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_4area_1__get__(o);
+static PyObject *__pyx_getprop_16power_generators_10SolarPanel_area(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_16power_generators_10SolarPanel_4area_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_house(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_5house_1__get__(o);
+static PyObject *__pyx_getprop_16power_generators_10SolarPanel_house(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_16power_generators_10SolarPanel_5house_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_latitude(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_8latitude_1__get__(o);
+static PyObject *__pyx_getprop_16power_generators_10SolarPanel_latitude(PyObject *o, CYTHON_UNUSED void *x) {
+  return __pyx_pw_16power_generators_10SolarPanel_8latitude_1__get__(o);
 }
 
-static PyObject *__pyx_getprop_5house_16power_generators_10SolarPanel_price(PyObject *o, CYTHON_UNUSED void *x) {
-  return __pyx_pw_5house_16power_generators_10SolarPanel_5price_1__get__(o);
-}
-
-static PyMethodDef __pyx_methods_5house_16power_generators_SolarPanel[] = {
-  {"power_production", (PyCFunction)__pyx_pw_5house_16power_generators_10SolarPanel_3power_production, METH_VARARGS|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_5house_16power_generators_10SolarPanel_5__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_5house_16power_generators_10SolarPanel_7__setstate_cython__, METH_O, 0},
+static PyMethodDef __pyx_methods_16power_generators_SolarPanel[] = {
+  {"power_production", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_3power_production, METH_VARARGS|METH_KEYWORDS, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_5__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_7__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
-static struct PyGetSetDef __pyx_getsets_5house_16power_generators_SolarPanel[] = {
-  {(char *)"tilt_angle", __pyx_getprop_5house_16power_generators_10SolarPanel_tilt_angle, 0, (char *)0, 0},
-  {(char *)"azimuth", __pyx_getprop_5house_16power_generators_10SolarPanel_azimuth, 0, (char *)0, 0},
-  {(char *)"peak_power", __pyx_getprop_5house_16power_generators_10SolarPanel_peak_power, 0, (char *)0, 0},
-  {(char *)"area", __pyx_getprop_5house_16power_generators_10SolarPanel_area, 0, (char *)0, 0},
-  {(char *)"house", __pyx_getprop_5house_16power_generators_10SolarPanel_house, 0, (char *)0, 0},
-  {(char *)"latitude", __pyx_getprop_5house_16power_generators_10SolarPanel_latitude, 0, (char *)0, 0},
-  {(char *)"price", __pyx_getprop_5house_16power_generators_10SolarPanel_price, 0, (char *)0, 0},
+static struct PyGetSetDef __pyx_getsets_16power_generators_SolarPanel[] = {
+  {(char *)"tilt_angle", __pyx_getprop_16power_generators_10SolarPanel_tilt_angle, 0, (char *)0, 0},
+  {(char *)"azimuth", __pyx_getprop_16power_generators_10SolarPanel_azimuth, 0, (char *)0, 0},
+  {(char *)"peak_power", __pyx_getprop_16power_generators_10SolarPanel_peak_power, 0, (char *)0, 0},
+  {(char *)"area", __pyx_getprop_16power_generators_10SolarPanel_area, 0, (char *)0, 0},
+  {(char *)"house", __pyx_getprop_16power_generators_10SolarPanel_house, 0, (char *)0, 0},
+  {(char *)"latitude", __pyx_getprop_16power_generators_10SolarPanel_latitude, 0, (char *)0, 0},
   {0, 0, 0, 0, 0}
 };
 
-static PyTypeObject __pyx_type_5house_16power_generators_SolarPanel = {
+static PyTypeObject __pyx_type_16power_generators_SolarPanel = {
   PyVarObject_HEAD_INIT(0, 0)
-  "house.power_generators.SolarPanel", /*tp_name*/
-  sizeof(struct __pyx_obj_5house_16power_generators_SolarPanel), /*tp_basicsize*/
+  "power_generators.SolarPanel", /*tp_name*/
+  sizeof(struct __pyx_obj_16power_generators_SolarPanel), /*tp_basicsize*/
   0, /*tp_itemsize*/
-  __pyx_tp_dealloc_5house_16power_generators_SolarPanel, /*tp_dealloc*/
+  __pyx_tp_dealloc_16power_generators_SolarPanel, /*tp_dealloc*/
   0, /*tp_print*/
   0, /*tp_getattr*/
   0, /*tp_setattr*/
@@ -9032,17 +8835,17 @@ static PyTypeObject __pyx_type_5house_16power_generators_SolarPanel = {
   0, /*tp_weaklistoffset*/
   0, /*tp_iter*/
   0, /*tp_iternext*/
-  __pyx_methods_5house_16power_generators_SolarPanel, /*tp_methods*/
+  __pyx_methods_16power_generators_SolarPanel, /*tp_methods*/
   0, /*tp_members*/
-  __pyx_getsets_5house_16power_generators_SolarPanel, /*tp_getset*/
+  __pyx_getsets_16power_generators_SolarPanel, /*tp_getset*/
   0, /*tp_base*/
   0, /*tp_dict*/
   0, /*tp_descr_get*/
   0, /*tp_descr_set*/
   0, /*tp_dictoffset*/
-  __pyx_pw_5house_16power_generators_10SolarPanel_1__init__, /*tp_init*/
+  __pyx_pw_16power_generators_10SolarPanel_1__init__, /*tp_init*/
   0, /*tp_alloc*/
-  __pyx_tp_new_5house_16power_generators_SolarPanel, /*tp_new*/
+  __pyx_tp_new_16power_generators_SolarPanel, /*tp_new*/
   0, /*tp_free*/
   0, /*tp_is_gc*/
   0, /*tp_bases*/
@@ -9121,7 +8924,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_dtype, __pyx_k_dtype, sizeof(__pyx_k_dtype), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_house, __pyx_k_house, sizeof(__pyx_k_house), 0, 0, 1, 1},
-  {&__pyx_n_s_house_power_generators, __pyx_k_house_power_generators, sizeof(__pyx_k_house_power_generators), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_irradiance_arr, __pyx_k_irradiance_arr, sizeof(__pyx_k_irradiance_arr), 0, 0, 1, 1},
   {&__pyx_n_s_latitude, __pyx_k_latitude, sizeof(__pyx_k_latitude), 0, 0, 1, 1},
@@ -9143,9 +8945,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_pickle, __pyx_k_pickle, sizeof(__pyx_k_pickle), 0, 0, 1, 1},
   {&__pyx_n_s_plane_azimuth, __pyx_k_plane_azimuth, sizeof(__pyx_k_plane_azimuth), 0, 0, 1, 1},
   {&__pyx_n_s_plane_tilt_angle, __pyx_k_plane_tilt_angle, sizeof(__pyx_k_plane_tilt_angle), 0, 0, 1, 1},
+  {&__pyx_n_s_power_generators, __pyx_k_power_generators, sizeof(__pyx_k_power_generators), 0, 0, 1, 1},
   {&__pyx_n_s_power_production, __pyx_k_power_production, sizeof(__pyx_k_power_production), 0, 0, 1, 1},
   {&__pyx_n_s_price, __pyx_k_price, sizeof(__pyx_k_price), 0, 0, 1, 1},
-  {&__pyx_n_s_price_2, __pyx_k_price_2, sizeof(__pyx_k_price_2), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_PickleError, __pyx_k_pyx_PickleError, sizeof(__pyx_k_pyx_PickleError), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_checksum, __pyx_k_pyx_checksum, sizeof(__pyx_k_pyx_checksum), 0, 0, 1, 1},
   {&__pyx_n_s_pyx_result, __pyx_k_pyx_result, sizeof(__pyx_k_pyx_result), 0, 0, 1, 1},
@@ -9184,7 +8986,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "house/power_generators.pyx":9
+  /* "power_generators.pyx":9
  *     def __init__(self, float area, float min_wind_speed, float max_wind_speed, int nb_windmill=1, float price=0.0):
  *         if area < 0:
  *             raise Exception("Radius should be non negative.")             # <<<<<<<<<<<<<<
@@ -9195,7 +8997,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "house/power_generators.pyx":11
+  /* "power_generators.pyx":11
  *             raise Exception("Radius should be non negative.")
  *         if min_wind_speed < 0:
  *             raise Exception("Minimal wind speed should be non negative")             # <<<<<<<<<<<<<<
@@ -9206,7 +9008,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "house/power_generators.pyx":13
+  /* "power_generators.pyx":13
  *             raise Exception("Minimal wind speed should be non negative")
  *         if max_wind_speed < min_wind_speed:
  *             raise Exception("Maximal wind speed should be greater than the minimal wind speed")             # <<<<<<<<<<<<<<
@@ -9217,7 +9019,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
 
-  /* "house/power_generators.pyx":15
+  /* "power_generators.pyx":15
  *             raise Exception("Maximal wind speed should be greater than the minimal wind speed")
  *         if not isinstance(nb_windmill, int):
  *             raise TypeError("The number of windmills must be an integer number")             # <<<<<<<<<<<<<<
@@ -9228,7 +9030,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "house/power_generators.pyx":17
+  /* "power_generators.pyx":17
  *             raise TypeError("The number of windmills must be an integer number")
  *         if nb_windmill < 1:
  *             raise Exception("The number of windmills must be greater or equal to 1")             # <<<<<<<<<<<<<<
@@ -9239,7 +9041,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
 
-  /* "house/power_generators.pyx":35
+  /* "power_generators.pyx":35
  *     cpdef cnp.ndarray[float, ndim=1] power_production(self, cnp.ndarray[float, ndim=1] wind_speed_arr):
  *         cdef int i
  *         cdef cnp.ndarray[float, ndim=1] result_arr = np.zeros(288)             # <<<<<<<<<<<<<<
@@ -9250,7 +9052,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "house/power_generators.pyx":58
+  /* "power_generators.pyx":58
  * 
  *         if peak_power < 0:
  *             raise Exception("Peak power should be non negative.")             # <<<<<<<<<<<<<<
@@ -9261,7 +9063,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
 
-  /* "house/power_generators.pyx":60
+  /* "power_generators.pyx":60
  *             raise Exception("Peak power should be non negative.")
  *         if area < 0:
  *             raise Exception("Area should be non negative.")             # <<<<<<<<<<<<<<
@@ -9272,7 +9074,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__8);
   __Pyx_GIVEREF(__pyx_tuple__8);
 
-  /* "house/power_generators.pyx":62
+  /* "power_generators.pyx":62
  *             raise Exception("Area should be non negative.")
  *         if not isinstance(nb_solar_panel, int):
  *             raise TypeError("The number of solar panels must be an integer number")             # <<<<<<<<<<<<<<
@@ -9283,7 +9085,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
 
-  /* "house/power_generators.pyx":64
+  /* "power_generators.pyx":64
  *             raise TypeError("The number of solar panels must be an integer number")
  *         if nb_solar_panel < 1:
  *             raise Exception("The number of solar panels must be greater than or equal to 1")             # <<<<<<<<<<<<<<
@@ -9539,14 +9341,14 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main_house__power_generators) {
+  if (__pyx_module_is_main_power_generators) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "house.power_generators")) {
-      if (unlikely(PyDict_SetItemString(modules, "house.power_generators", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "power_generators")) {
+      if (unlikely(PyDict_SetItemString(modules, "power_generators", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -9557,31 +9359,31 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
   /*--- Global init code ---*/
   /*--- Variable export code ---*/
   /*--- Function export code ---*/
-  if (__Pyx_ExportFunction("day_of_year", (void (*)(void))__pyx_f_5house_16power_generators_day_of_year, "int (int, int, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("solar_declination", (void (*)(void))__pyx_f_5house_16power_generators_solar_declination, "float (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("hour_angle", (void (*)(void))__pyx_f_5house_16power_generators_hour_angle, "float (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("solar_altitude", (void (*)(void))__pyx_f_5house_16power_generators_solar_altitude, "float (float, float, float, float)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  if (__Pyx_ExportFunction("solar_azimuth", (void (*)(void))__pyx_f_5house_16power_generators_solar_azimuth, "float (float, float, float, float)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("day_of_year", (void (*)(void))__pyx_f_16power_generators_day_of_year, "int (int, int, int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("solar_declination", (void (*)(void))__pyx_f_16power_generators_solar_declination, "float (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("hour_angle", (void (*)(void))__pyx_f_16power_generators_hour_angle, "float (int)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("solar_altitude", (void (*)(void))__pyx_f_16power_generators_solar_altitude, "float (float, float, float, float)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (__Pyx_ExportFunction("solar_azimuth", (void (*)(void))__pyx_f_16power_generators_solar_azimuth, "float (float, float, float, float)") < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   /*--- Type init code ---*/
-  __pyx_vtabptr_5house_16power_generators_Windmill = &__pyx_vtable_5house_16power_generators_Windmill;
-  __pyx_vtable_5house_16power_generators_Windmill._power_production = (float (*)(float, float))__pyx_f_5house_16power_generators_8Windmill__power_production;
-  __pyx_vtable_5house_16power_generators_Windmill.power_production = (PyArrayObject *(*)(struct __pyx_obj_5house_16power_generators_Windmill *, PyArrayObject *, int __pyx_skip_dispatch))__pyx_f_5house_16power_generators_8Windmill_power_production;
-  __pyx_vtable_5house_16power_generators_Windmill.peak_power = (float (*)(struct __pyx_obj_5house_16power_generators_Windmill *, int __pyx_skip_dispatch))__pyx_f_5house_16power_generators_8Windmill_peak_power;
-  if (PyType_Ready(&__pyx_type_5house_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  __pyx_type_5house_16power_generators_Windmill.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_5house_16power_generators_Windmill.tp_dict, __pyx_vtabptr_5house_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "Windmill", (PyObject *)&__pyx_type_5house_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5house_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
-  __pyx_ptype_5house_16power_generators_Windmill = &__pyx_type_5house_16power_generators_Windmill;
-  __pyx_vtabptr_5house_16power_generators_SolarPanel = &__pyx_vtable_5house_16power_generators_SolarPanel;
-  __pyx_vtable_5house_16power_generators_SolarPanel.incident_angle = (PyArrayObject *(*)(struct __pyx_obj_5house_16power_generators_SolarPanel *, int, int, int))__pyx_f_5house_16power_generators_10SolarPanel_incident_angle;
-  __pyx_vtable_5house_16power_generators_SolarPanel.power_production = (PyArrayObject *(*)(struct __pyx_obj_5house_16power_generators_SolarPanel *, PyArrayObject *, int, int, int, int __pyx_skip_dispatch))__pyx_f_5house_16power_generators_10SolarPanel_power_production;
-  if (PyType_Ready(&__pyx_type_5house_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
-  __pyx_type_5house_16power_generators_SolarPanel.tp_print = 0;
-  if (__Pyx_SetVtable(__pyx_type_5house_16power_generators_SolarPanel.tp_dict, __pyx_vtabptr_5house_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
-  if (PyObject_SetAttrString(__pyx_m, "SolarPanel", (PyObject *)&__pyx_type_5house_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
-  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_5house_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
-  __pyx_ptype_5house_16power_generators_SolarPanel = &__pyx_type_5house_16power_generators_SolarPanel;
+  __pyx_vtabptr_16power_generators_Windmill = &__pyx_vtable_16power_generators_Windmill;
+  __pyx_vtable_16power_generators_Windmill._power_production = (float (*)(float, float))__pyx_f_16power_generators_8Windmill__power_production;
+  __pyx_vtable_16power_generators_Windmill.power_production = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_Windmill *, PyArrayObject *, int __pyx_skip_dispatch))__pyx_f_16power_generators_8Windmill_power_production;
+  __pyx_vtable_16power_generators_Windmill.peak_power = (float (*)(struct __pyx_obj_16power_generators_Windmill *, int __pyx_skip_dispatch))__pyx_f_16power_generators_8Windmill_peak_power;
+  if (PyType_Ready(&__pyx_type_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_type_16power_generators_Windmill.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_16power_generators_Windmill.tp_dict, __pyx_vtabptr_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "Windmill", (PyObject *)&__pyx_type_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_16power_generators_Windmill) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_ptype_16power_generators_Windmill = &__pyx_type_16power_generators_Windmill;
+  __pyx_vtabptr_16power_generators_SolarPanel = &__pyx_vtable_16power_generators_SolarPanel;
+  __pyx_vtable_16power_generators_SolarPanel.incident_angle = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, int, int, int))__pyx_f_16power_generators_10SolarPanel_incident_angle;
+  __pyx_vtable_16power_generators_SolarPanel.power_production = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, PyArrayObject *, int, int, int, int __pyx_skip_dispatch))__pyx_f_16power_generators_10SolarPanel_power_production;
+  if (PyType_Ready(&__pyx_type_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_type_16power_generators_SolarPanel.tp_print = 0;
+  if (__Pyx_SetVtable(__pyx_type_16power_generators_SolarPanel.tp_dict, __pyx_vtabptr_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (PyObject_SetAttrString(__pyx_m, "SolarPanel", (PyObject *)&__pyx_type_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
+  if (__Pyx_setup_reduce((PyObject*)&__pyx_type_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 53, __pyx_L1_error)
+  __pyx_ptype_16power_generators_SolarPanel = &__pyx_type_16power_generators_SolarPanel;
   /*--- Type import code ---*/
   __pyx_ptype_7cpython_4type_type = __Pyx_ImportType(__Pyx_BUILTIN_MODULE_NAME, "type", 
   #if CYTHON_COMPILING_IN_PYPY
@@ -9602,7 +9404,7 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "house/power_generators.pyx":2
+  /* "power_generators.pyx":2
  * cimport numpy as cnp
  * import numpy as np             # <<<<<<<<<<<<<<
  * from libc.math cimport sin, cos, asin, acos, pi, pow
@@ -9618,7 +9420,7 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
  *     if __pyx_checksum != 0xc673d70:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5house_16power_generators_1__pyx_unpickle_Windmill, NULL, __pyx_n_s_house_power_generators); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_16power_generators_1__pyx_unpickle_Windmill, NULL, __pyx_n_s_power_generators); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_Windmill, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -9630,12 +9432,12 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
  *     __pyx_result._area = __pyx_state[0]; __pyx_result._max_wind_speed = __pyx_state[1]; __pyx_result._min_wind_speed = __pyx_state[2]; __pyx_result._nb_windmill = __pyx_state[3]; __pyx_result.price = __pyx_state[4]
  *     if len(__pyx_state) > 5 and hasattr(__pyx_result, '__dict__'):
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_5house_16power_generators_3__pyx_unpickle_SolarPanel, NULL, __pyx_n_s_house_power_generators); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_16power_generators_3__pyx_unpickle_SolarPanel, NULL, __pyx_n_s_power_generators); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_pyx_unpickle_SolarPanel, __pyx_t_1) < 0) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "house/power_generators.pyx":1
+  /* "power_generators.pyx":1
  * cimport numpy as cnp             # <<<<<<<<<<<<<<
  * import numpy as np
  * from libc.math cimport sin, cos, asin, acos, pi, pow
@@ -9660,11 +9462,11 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init house.power_generators", 0, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init power_generators", 0, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init house.power_generators");
+    PyErr_SetString(PyExc_ImportError, "init power_generators");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

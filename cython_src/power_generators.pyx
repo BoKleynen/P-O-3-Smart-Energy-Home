@@ -20,11 +20,11 @@ cdef class Windmill:
         self._min_wind_speed = min_wind_speed
         self._max_wind_speed = max_wind_speed
         self._nb_windmill = nb_windmill
-        self._price = price
+        # self._price = price
 
-    @property
-    def price(self):
-        return self._nb_windmill * self._price
+    # @property
+    # def price(self):
+    #     return self._nb_windmill * self._price
 
     @staticmethod
     cdef float _power_production(float wind_speed, float area):
@@ -69,7 +69,7 @@ cdef class SolarPanel:
         self._area = area
         self._latitude = latitude
         self._nb_solar_panel = nb_solar_panel
-        self._price = price
+        # self._price = price
 
     @property
     def tilt_angle(self):
@@ -95,9 +95,9 @@ cdef class SolarPanel:
     def latitude(self):
         return self._latitude
 
-    @property
-    def price(self):
-        return self._nb_solar_panel * self.price
+    # @property
+    # def price(self):
+    #     return self._nb_solar_panel * self.price
 
     cdef cnp.ndarray[float, ndim=1] incident_angle(self, int year, int month, int day):
         cdef float s_altitude

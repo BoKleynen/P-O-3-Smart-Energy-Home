@@ -1,5 +1,6 @@
 cimport numpy as cnp
 
+
 cdef class Windmill:
     cdef float _area, _min_wind_speed, _max_wind_speed, price
     cdef int _nb_windmill

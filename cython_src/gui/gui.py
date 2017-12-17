@@ -2,8 +2,7 @@ from tkinter import *
 from math import pi
 from house.production.wind_mill import *
 from house.production.solar_panel import *
-from house.loads import *
-from house.battery import *
+from loads import *
 from house.house import *
 from house.battery import *
 from house.cars import *
