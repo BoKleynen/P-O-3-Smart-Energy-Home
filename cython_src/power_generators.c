@@ -1122,9 +1122,11 @@ static struct __pyx_vtabstruct_16power_generators_Windmill *__pyx_vtabptr_16powe
 
 struct __pyx_vtabstruct_16power_generators_SolarPanel {
   double (*incident_angle)(struct __pyx_obj_16power_generators_SolarPanel *, int, int);
-  PyArrayObject *(*day_incident_angle)(struct __pyx_obj_16power_generators_SolarPanel *, int);
+  PyArrayObject *(*day_incident_angle)(struct __pyx_obj_16power_generators_SolarPanel *, int, int __pyx_skip_dispatch);
   double (*power_production)(struct __pyx_obj_16power_generators_SolarPanel *, PyObject *, int, int, int __pyx_skip_dispatch);
   PyArrayObject *(*day_power_production)(struct __pyx_obj_16power_generators_SolarPanel *, PyArrayObject *, int, int __pyx_skip_dispatch);
+  PyArrayObject *(*day_solar_altitude)(struct __pyx_obj_16power_generators_SolarPanel *, int, int __pyx_skip_dispatch);
+  PyArrayObject *(*day_solar_azimuth)(struct __pyx_obj_16power_generators_SolarPanel *, int, int __pyx_skip_dispatch);
 };
 static struct __pyx_vtabstruct_16power_generators_SolarPanel *__pyx_vtabptr_16power_generators_SolarPanel;
 
@@ -1360,16 +1362,6 @@ static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *, PyObject *, PyObject *
 
 /* None.proto */
 static CYTHON_INLINE double __Pyx_mod_double(double, double);
-
-/* SetItemInt.proto */
-#define __Pyx_SetItemInt(o, i, v, type, is_signed, to_py_func, is_list, wraparound, boundscheck)\
-    (__Pyx_fits_Py_ssize_t(i, type, is_signed) ?\
-    __Pyx_SetItemInt_Fast(o, (Py_ssize_t)i, v, is_list, wraparound, boundscheck) :\
-    (is_list ? (PyErr_SetString(PyExc_IndexError, "list assignment index out of range"), -1) :\
-               __Pyx_SetItemInt_Generic(o, to_py_func(i), v)))
-static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v);
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v,
-                                               int is_list, int wraparound, int boundscheck);
 
 /* Import.proto */
 static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level);
@@ -1657,9 +1649,11 @@ static double __pyx_f_16power_generators_8Windmill_peak_power(struct __pyx_obj_1
 static double __pyx_f_16power_generators_8Windmill_power_production(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, double __pyx_v_wind_speed, int __pyx_skip_dispatch); /* proto*/
 static PyArrayObject *__pyx_f_16power_generators_8Windmill_day_power_production(struct __pyx_obj_16power_generators_Windmill *__pyx_v_self, PyArrayObject *__pyx_v_wind_speed_arr, int __pyx_skip_dispatch); /* proto*/
 static double __pyx_f_16power_generators_10SolarPanel_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_v_t); /* proto*/
-static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year); /* proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_skip_dispatch); /* proto*/
 static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v_irradiance, int __pyx_v_day_of_year, int __pyx_v_t, int __pyx_skip_dispatch); /* proto*/
 static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_day_of_year, int __pyx_skip_dispatch); /* proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_solar_altitude(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_skip_dispatch); /* proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_solar_azimuth(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_skip_dispatch); /* proto*/
 
 /* Module declarations from 'cpython.buffer' */
 
@@ -1758,7 +1752,10 @@ static const char __pyx_k_pyx_PickleError[] = "__pyx_PickleError";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_power_generators[] = "power_generators";
 static const char __pyx_k_power_production[] = "power_production";
+static const char __pyx_k_day_solar_azimuth[] = "day_solar_azimuth";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_day_incident_angle[] = "day_incident_angle";
+static const char __pyx_k_day_solar_altitude[] = "day_solar_altitude";
 static const char __pyx_k_day_power_production[] = "day_power_production";
 static const char __pyx_k_pyx_unpickle_Windmill[] = "__pyx_unpickle_Windmill";
 static const char __pyx_k_pyx_unpickle_SolarPanel[] = "__pyx_unpickle_SolarPanel";
@@ -1801,8 +1798,11 @@ static PyObject *__pyx_n_s_ValueError;
 static PyObject *__pyx_n_s_area;
 static PyObject *__pyx_n_s_azimuth;
 static PyObject *__pyx_n_s_cline_in_traceback;
+static PyObject *__pyx_n_s_day_incident_angle;
 static PyObject *__pyx_n_s_day_of_year;
 static PyObject *__pyx_n_s_day_power_production;
+static PyObject *__pyx_n_s_day_solar_altitude;
+static PyObject *__pyx_n_s_day_solar_azimuth;
 static PyObject *__pyx_n_s_dict;
 static PyObject *__pyx_n_s_getstate;
 static PyObject *__pyx_n_s_house;
@@ -1861,10 +1861,13 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_10peak_power___get__(s
 static PyObject *__pyx_pf_16power_generators_10SolarPanel_4area___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_16power_generators_10SolarPanel_5house___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_16power_generators_10SolarPanel_8latitude___get__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_2power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v_irradiance, int __pyx_v_day_of_year, int __pyx_v_t); /* proto */
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_4day_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_day_of_year); /* proto */
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_6__reduce_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_8__setstate_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_2day_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_4power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v_irradiance, int __pyx_v_day_of_year, int __pyx_v_t); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_6day_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_day_of_year); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_8day_solar_altitude(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_10day_solar_azimuth(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_12__reduce_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self); /* proto */
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_14__setstate_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_16power_generators___pyx_unpickle_Windmill(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_pf_16power_generators_2__pyx_unpickle_SolarPanel(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v___pyx_type, long __pyx_v___pyx_checksum, PyObject *__pyx_v___pyx_state); /* proto */
 static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, Py_buffer *__pyx_v_info, int __pyx_v_flags); /* proto */
@@ -1895,9 +1898,11 @@ static PyObject *__pyx_tuple__18;
 static PyObject *__pyx_tuple__19;
 static PyObject *__pyx_tuple__20;
 static PyObject *__pyx_tuple__21;
+static PyObject *__pyx_tuple__22;
 static PyObject *__pyx_tuple__23;
-static PyObject *__pyx_codeobj__22;
+static PyObject *__pyx_tuple__25;
 static PyObject *__pyx_codeobj__24;
+static PyObject *__pyx_codeobj__26;
 
 /* "power_generators.pyx":13
  *     cdef int _nb_windmill
@@ -3904,7 +3909,7 @@ static double __pyx_f_16power_generators_10SolarPanel_incident_angle(struct __py
  *         cdef double s_declination = solar_declination(day_of_year)
  *         cdef double s_altitude = solar_altitude(t, self._latitude, s_declination, h_angle)             # <<<<<<<<<<<<<<
  *         cdef cnp.ndarray res_arr = np.zeros(288)
- * 
+ *         return acos(cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._azimuth)
  */
   __pyx_v_s_altitude = __pyx_f_16power_generators_solar_altitude(__pyx_v_t, __pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle);
 
@@ -3912,8 +3917,8 @@ static double __pyx_f_16power_generators_10SolarPanel_incident_angle(struct __py
  *         cdef double s_declination = solar_declination(day_of_year)
  *         cdef double s_altitude = solar_altitude(t, self._latitude, s_declination, h_angle)
  *         cdef cnp.ndarray res_arr = np.zeros(288)             # <<<<<<<<<<<<<<
- * 
  *         return acos(cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._azimuth)
+ *                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle))
  */
   __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -3927,9 +3932,9 @@ static double __pyx_f_16power_generators_10SolarPanel_incident_angle(struct __py
   __pyx_v_res_arr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "power_generators.pyx":106
+  /* "power_generators.pyx":105
+ *         cdef double s_altitude = solar_altitude(t, self._latitude, s_declination, h_angle)
  *         cdef cnp.ndarray res_arr = np.zeros(288)
- * 
  *         return acos(cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._azimuth)             # <<<<<<<<<<<<<<
  *                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle))
  * 
@@ -3957,66 +3962,155 @@ static double __pyx_f_16power_generators_10SolarPanel_incident_angle(struct __py
   return __pyx_r;
 }
 
-/* "power_generators.pyx":109
+/* "power_generators.pyx":108
  *                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle))
  * 
- *     cdef cnp.ndarray[double, ndim=1] day_incident_angle(self, int day_of_year):             # <<<<<<<<<<<<<<
+ *     cpdef cnp.ndarray[double, ndim=1] day_incident_angle(self, int day_of_year):             # <<<<<<<<<<<<<<
  *         cdef double s_altitude
  *         cdef double h_angle
  */
 
-static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_3day_incident_angle(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year); /*proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_skip_dispatch) {
   double __pyx_v_s_altitude;
   double __pyx_v_h_angle;
   double __pyx_v_s_declination;
   PyArrayObject *__pyx_v_res_arr = 0;
   int __pyx_v_i;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_res_arr;
+  __Pyx_Buffer __pyx_pybuffer_res_arr;
   PyArrayObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   PyObject *__pyx_t_2 = NULL;
-  int __pyx_t_3;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyArrayObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  int __pyx_t_10;
   __Pyx_RefNannySetupContext("day_incident_angle", 0);
+  __pyx_pybuffer_res_arr.pybuffer.buf = NULL;
+  __pyx_pybuffer_res_arr.refcount = 0;
+  __pyx_pybuffernd_res_arr.data = NULL;
+  __pyx_pybuffernd_res_arr.rcbuffer = &__pyx_pybuffer_res_arr;
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_day_incident_angle); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_3day_incident_angle)) {
+      __Pyx_XDECREF(((PyObject *)__pyx_r));
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 108, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_4, function);
+        }
+      }
+      if (!__pyx_t_5) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        #if CYTHON_FAST_PYCALL
+        if (PyFunction_Check(__pyx_t_4)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        } else
+        #endif
+        #if CYTHON_FAST_PYCCALL
+        if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        } else
+        #endif
+        {
+          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
+          __Pyx_GIVEREF(__pyx_t_3);
+          PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
+          __pyx_t_3 = 0;
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 108, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        }
+      }
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 108, __pyx_L1_error)
+      __pyx_r = ((PyArrayObject *)__pyx_t_2);
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
 
-  /* "power_generators.pyx":112
+  /* "power_generators.pyx":111
  *         cdef double s_altitude
  *         cdef double h_angle
  *         cdef double s_declination = solar_declination(day_of_year)             # <<<<<<<<<<<<<<
- *         cdef cnp.ndarray res_arr = np.zeros(288)
+ *         cdef cnp.ndarray[double, ndim=1] res_arr = np.zeros(288)
  *         cdef int i
  */
   __pyx_v_s_declination = __pyx_f_16power_generators_solar_declination(__pyx_v_day_of_year);
 
-  /* "power_generators.pyx":113
+  /* "power_generators.pyx":112
  *         cdef double h_angle
  *         cdef double s_declination = solar_declination(day_of_year)
- *         cdef cnp.ndarray res_arr = np.zeros(288)             # <<<<<<<<<<<<<<
+ *         cdef cnp.ndarray[double, ndim=1] res_arr = np.zeros(288)             # <<<<<<<<<<<<<<
  *         cdef int i
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__11, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 113, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 112, __pyx_L1_error)
+  __pyx_t_7 = ((PyArrayObject *)__pyx_t_1);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_res_arr.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+      __pyx_v_res_arr = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_res_arr.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(0, 112, __pyx_L1_error)
+    } else {__pyx_pybuffernd_res_arr.diminfo[0].strides = __pyx_pybuffernd_res_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_res_arr.diminfo[0].shape = __pyx_pybuffernd_res_arr.rcbuffer->pybuffer.shape[0];
+    }
+  }
+  __pyx_t_7 = 0;
   __pyx_v_res_arr = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "power_generators.pyx":116
+  /* "power_generators.pyx":115
  *         cdef int i
  * 
  *         for i in range(288):             # <<<<<<<<<<<<<<
  *             h_angle = hour_angle(300*i)
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
  */
-  for (__pyx_t_3 = 0; __pyx_t_3 < 0x120; __pyx_t_3+=1) {
-    __pyx_v_i = __pyx_t_3;
+  for (__pyx_t_8 = 0; __pyx_t_8 < 0x120; __pyx_t_8+=1) {
+    __pyx_v_i = __pyx_t_8;
 
-    /* "power_generators.pyx":117
+    /* "power_generators.pyx":116
  * 
  *         for i in range(288):
  *             h_angle = hour_angle(300*i)             # <<<<<<<<<<<<<<
@@ -4025,7 +4119,7 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle
  */
     __pyx_v_h_angle = __pyx_f_16power_generators_hour_angle((0x12C * __pyx_v_i));
 
-    /* "power_generators.pyx":118
+    /* "power_generators.pyx":117
  *         for i in range(288):
  *             h_angle = hour_angle(300*i)
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)             # <<<<<<<<<<<<<<
@@ -4034,20 +4128,27 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle
  */
     __pyx_v_s_altitude = __pyx_f_16power_generators_solar_altitude((0x12C * __pyx_v_i), __pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle);
 
-    /* "power_generators.pyx":119
+    /* "power_generators.pyx":118
  *             h_angle = hour_angle(300*i)
  *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
  *             res_arr[i] = acos(             # <<<<<<<<<<<<<<
  *                 cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._azimuth)
  *                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle)
  */
-    __pyx_t_1 = PyFloat_FromDouble(acos((((cos(__pyx_v_s_altitude) * cos((__pyx_f_16power_generators_solar_azimuth(__pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle, __pyx_v_s_altitude) - __pyx_v_self->_azimuth))) * sin(__pyx_v_self->_tilt_angle)) + (sin(__pyx_v_s_altitude) * cos(__pyx_v_self->_tilt_angle))))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 119, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (unlikely(__Pyx_SetItemInt(((PyObject *)__pyx_v_res_arr), __pyx_v_i, __pyx_t_1, int, 1, __Pyx_PyInt_From_int, 0, 1, 1) < 0)) __PYX_ERR(0, 119, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+    __pyx_t_9 = __pyx_v_i;
+    __pyx_t_10 = -1;
+    if (__pyx_t_9 < 0) {
+      __pyx_t_9 += __pyx_pybuffernd_res_arr.diminfo[0].shape;
+      if (unlikely(__pyx_t_9 < 0)) __pyx_t_10 = 0;
+    } else if (unlikely(__pyx_t_9 >= __pyx_pybuffernd_res_arr.diminfo[0].shape)) __pyx_t_10 = 0;
+    if (unlikely(__pyx_t_10 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_10);
+      __PYX_ERR(0, 118, __pyx_L1_error)
+    }
+    *__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_res_arr.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_res_arr.diminfo[0].strides) = acos((((cos(__pyx_v_s_altitude) * cos((__pyx_f_16power_generators_solar_azimuth(__pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle, __pyx_v_s_altitude) - __pyx_v_self->_azimuth))) * sin(__pyx_v_self->_tilt_angle)) + (sin(__pyx_v_s_altitude) * cos(__pyx_v_self->_tilt_angle))));
   }
 
-  /* "power_generators.pyx":124
+  /* "power_generators.pyx":123
  *             )
  * 
  *         return res_arr             # <<<<<<<<<<<<<<
@@ -4059,10 +4160,10 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle
   __pyx_r = ((PyArrayObject *)__pyx_v_res_arr);
   goto __pyx_L0;
 
-  /* "power_generators.pyx":109
+  /* "power_generators.pyx":108
  *                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle))
  * 
- *     cdef cnp.ndarray[double, ndim=1] day_incident_angle(self, int day_of_year):             # <<<<<<<<<<<<<<
+ *     cpdef cnp.ndarray[double, ndim=1] day_incident_angle(self, int day_of_year):             # <<<<<<<<<<<<<<
  *         cdef double s_altitude
  *         cdef double h_angle
  */
@@ -4071,16 +4172,75 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle
   __pyx_L1_error:;
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_res_arr.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
   __Pyx_AddTraceback("power_generators.SolarPanel.day_incident_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
+  goto __pyx_L2;
   __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_res_arr.rcbuffer->pybuffer);
+  __pyx_L2:;
   __Pyx_XDECREF((PyObject *)__pyx_v_res_arr);
   __Pyx_XGIVEREF((PyObject *)__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "power_generators.pyx":126
+/* Python wrapper */
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_3day_incident_angle(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_3day_incident_angle(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year) {
+  int __pyx_v_day_of_year;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("day_incident_angle (wrapper)", 0);
+  assert(__pyx_arg_day_of_year); {
+    __pyx_v_day_of_year = __Pyx_PyInt_As_int(__pyx_arg_day_of_year); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_incident_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_2day_incident_angle(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), ((int)__pyx_v_day_of_year));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_2day_incident_angle(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("day_incident_angle", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_10SolarPanel_day_incident_angle(__pyx_v_self, __pyx_v_day_of_year, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_incident_angle", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "power_generators.pyx":125
  *         return res_arr
  * 
  *     cpdef double power_production(self, irradiance, int day_of_year, int t):             # <<<<<<<<<<<<<<
@@ -4088,7 +4248,7 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_incident_angle
  * 
  */
 
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v_irradiance, int __pyx_v_day_of_year, int __pyx_v_t, int __pyx_skip_dispatch) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
@@ -4107,12 +4267,12 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_power_production); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_power_production); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_3power_production)) {
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 126, __pyx_L1_error)
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_5power_production)) {
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_t); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_From_int(__pyx_v_t); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_5 = __pyx_t_1; __pyx_t_6 = NULL;
@@ -4130,7 +4290,7 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[4] = {__pyx_t_6, __pyx_v_irradiance, __pyx_t_3, __pyx_t_4};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4140,7 +4300,7 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
         PyObject *__pyx_temp[4] = {__pyx_t_6, __pyx_v_irradiance, __pyx_t_3, __pyx_t_4};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_7, 3+__pyx_t_7); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4148,7 +4308,7 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
       } else
       #endif
       {
-        __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_8 = PyTuple_New(3+__pyx_t_7); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 125, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         if (__pyx_t_6) {
           __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_6); __pyx_t_6 = NULL;
@@ -4162,12 +4322,12 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
         PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_7, __pyx_t_4);
         __pyx_t_3 = 0;
         __pyx_t_4 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_8, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 125, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-      __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_9 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L1_error)
+      __pyx_t_9 = __pyx_PyFloat_AsDouble(__pyx_t_2); if (unlikely((__pyx_t_9 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_r = __pyx_t_9;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4176,7 +4336,7 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "power_generators.pyx":127
+  /* "power_generators.pyx":126
  * 
  *     cpdef double power_production(self, irradiance, int day_of_year, int t):
  *         return self._nb_solar_panel * self._peak_power/(1000 * self._area) * irradiance * cos(self.incident_angle(day_of_year, t))             # <<<<<<<<<<<<<<
@@ -4187,25 +4347,25 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
   __pyx_t_10 = (1000.0 * __pyx_v_self->_area);
   if (unlikely(__pyx_t_10 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 127, __pyx_L1_error)
+    __PYX_ERR(0, 126, __pyx_L1_error)
   }
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_t_9 / __pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_t_9 / __pyx_t_10)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_v_irradiance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, __pyx_v_irradiance); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyFloat_FromDouble(cos(((struct __pyx_vtabstruct_16power_generators_SolarPanel *)__pyx_v_self->__pyx_vtab)->incident_angle(__pyx_v_self, __pyx_v_day_of_year, __pyx_v_t))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(cos(((struct __pyx_vtabstruct_16power_generators_SolarPanel *)__pyx_v_self->__pyx_vtab)->incident_angle(__pyx_v_self, __pyx_v_day_of_year, __pyx_v_t))); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_5 = PyNumber_Multiply(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_5 = PyNumber_Multiply(__pyx_t_2, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 127, __pyx_L1_error)
+  __pyx_t_10 = __pyx_PyFloat_AsDouble(__pyx_t_5); if (unlikely((__pyx_t_10 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __pyx_r = __pyx_t_10;
   goto __pyx_L0;
 
-  /* "power_generators.pyx":126
+  /* "power_generators.pyx":125
  *         return res_arr
  * 
  *     cpdef double power_production(self, irradiance, int day_of_year, int t):             # <<<<<<<<<<<<<<
@@ -4230,8 +4390,8 @@ static double __pyx_f_16power_generators_10SolarPanel_power_production(struct __
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_5power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_irradiance = 0;
   int __pyx_v_day_of_year;
   int __pyx_v_t;
@@ -4263,17 +4423,17 @@ static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyOb
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_day_of_year)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("power_production", 1, 3, 3, 1); __PYX_ERR(0, 126, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("power_production", 1, 3, 3, 1); __PYX_ERR(0, 125, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_t)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("power_production", 1, 3, 3, 2); __PYX_ERR(0, 126, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("power_production", 1, 3, 3, 2); __PYX_ERR(0, 125, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "power_production") < 0)) __PYX_ERR(0, 126, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "power_production") < 0)) __PYX_ERR(0, 125, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -4283,31 +4443,31 @@ static PyObject *__pyx_pw_16power_generators_10SolarPanel_3power_production(PyOb
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
     }
     __pyx_v_irradiance = values[0];
-    __pyx_v_day_of_year = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
-    __pyx_v_t = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_t == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 126, __pyx_L3_error)
+    __pyx_v_day_of_year = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
+    __pyx_v_t = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_t == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 125, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("power_production", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 126, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("power_production", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 125, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("power_generators.SolarPanel.power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_2power_production(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_irradiance, __pyx_v_day_of_year, __pyx_v_t);
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_4power_production(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_irradiance, __pyx_v_day_of_year, __pyx_v_t);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_2power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v_irradiance, int __pyx_v_day_of_year, int __pyx_v_t) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_4power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v_irradiance, int __pyx_v_day_of_year, int __pyx_v_t) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
   __Pyx_RefNannySetupContext("power_production", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_16power_generators_10SolarPanel_power_production(__pyx_v_self, __pyx_v_irradiance, __pyx_v_day_of_year, __pyx_v_t, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 126, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_f_16power_generators_10SolarPanel_power_production(__pyx_v_self, __pyx_v_irradiance, __pyx_v_day_of_year, __pyx_v_t, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 125, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4324,7 +4484,7 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_2power_production(stru
   return __pyx_r;
 }
 
-/* "power_generators.pyx":129
+/* "power_generators.pyx":128
  *         return self._nb_solar_panel * self._peak_power/(1000 * self._area) * irradiance * cos(self.incident_angle(day_of_year, t))
  * 
  *     cpdef cnp.ndarray[double, ndim=1] day_power_production(self, cnp.ndarray[double, ndim=1] irradiance_arr, int day_of_year):             # <<<<<<<<<<<<<<
@@ -4332,7 +4492,7 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_2power_production(stru
  *         cdef cnp.ndarray[double, ndim=1] cos_incident_angle = self.day_incident_angle(day_of_year)
  */
 
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_5day_power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7day_power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
 static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_day_of_year, int __pyx_skip_dispatch) {
   int __pyx_v_i;
   PyArrayObject *__pyx_v_cos_incident_angle = 0;
@@ -4349,12 +4509,11 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
   PyObject *__pyx_t_5 = NULL;
   int __pyx_t_6;
   PyObject *__pyx_t_7 = NULL;
-  long __pyx_t_8;
-  Py_ssize_t __pyx_t_9;
-  int __pyx_t_10;
+  Py_ssize_t __pyx_t_8;
+  int __pyx_t_9;
+  Py_ssize_t __pyx_t_10;
   double __pyx_t_11;
   double __pyx_t_12;
-  Py_ssize_t __pyx_t_13;
   __Pyx_RefNannySetupContext("day_power_production", 0);
   __pyx_pybuffer_cos_incident_angle.pybuffer.buf = NULL;
   __pyx_pybuffer_cos_incident_angle.refcount = 0;
@@ -4366,18 +4525,18 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
   __pyx_pybuffernd_irradiance_arr.rcbuffer = &__pyx_pybuffer_irradiance_arr;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_irradiance_arr, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 129, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_irradiance_arr, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
   }
   __pyx_pybuffernd_irradiance_arr.diminfo[0].strides = __pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_irradiance_arr.diminfo[0].shape = __pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer.shape[0];
   /* Check if called by wrapper */
   if (unlikely(__pyx_skip_dispatch)) ;
   /* Check if overridden in Python */
   else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_day_power_production); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_day_power_production); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_5day_power_production)) {
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_7day_power_production)) {
       __Pyx_XDECREF(((PyObject *)__pyx_r));
-      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 129, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_1);
       __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
@@ -4395,7 +4554,7 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[3] = {__pyx_t_5, ((PyObject *)__pyx_v_irradiance_arr), __pyx_t_3};
-        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -4404,14 +4563,14 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
         PyObject *__pyx_temp[3] = {__pyx_t_5, ((PyObject *)__pyx_v_irradiance_arr), __pyx_t_3};
-        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-__pyx_t_6, 2+__pyx_t_6); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
         __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       } else
       #endif
       {
-        __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 129, __pyx_L1_error)
+        __pyx_t_7 = PyTuple_New(2+__pyx_t_6); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 128, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_7);
         if (__pyx_t_5) {
           __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_t_5); __pyx_t_5 = NULL;
@@ -4422,12 +4581,12 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_t_3);
         __pyx_t_3 = 0;
-        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 129, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_7, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 128, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 129, __pyx_L1_error)
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 128, __pyx_L1_error)
       __pyx_r = ((PyArrayObject *)__pyx_t_2);
       __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -4436,101 +4595,94 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   }
 
-  /* "power_generators.pyx":131
+  /* "power_generators.pyx":130
  *     cpdef cnp.ndarray[double, ndim=1] day_power_production(self, cnp.ndarray[double, ndim=1] irradiance_arr, int day_of_year):
  *         cdef int i
  *         cdef cnp.ndarray[double, ndim=1] cos_incident_angle = self.day_incident_angle(day_of_year)             # <<<<<<<<<<<<<<
  * 
  *         for i in range(288):
  */
-  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_16power_generators_SolarPanel *)__pyx_v_self->__pyx_vtab)->day_incident_angle(__pyx_v_self, __pyx_v_day_of_year)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)((struct __pyx_vtabstruct_16power_generators_SolarPanel *)__pyx_v_self->__pyx_vtab)->day_incident_angle(__pyx_v_self, __pyx_v_day_of_year, 0)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 130, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
     if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer, (PyObject*)((PyArrayObject *)__pyx_t_1), &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
       __pyx_v_cos_incident_angle = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.buf = NULL;
-      __PYX_ERR(0, 131, __pyx_L1_error)
+      __PYX_ERR(0, 130, __pyx_L1_error)
     } else {__pyx_pybuffernd_cos_incident_angle.diminfo[0].strides = __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape = __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.shape[0];
     }
   }
   __pyx_v_cos_incident_angle = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "power_generators.pyx":133
+  /* "power_generators.pyx":132
  *         cdef cnp.ndarray[double, ndim=1] cos_incident_angle = self.day_incident_angle(day_of_year)
  * 
  *         for i in range(288):             # <<<<<<<<<<<<<<
- *             cos_incident_angle[i] = max(cos(cos_incident_angle[i]), 0)
+ *             cos_incident_angle[i] = fmax(cos(cos_incident_angle[i]), 0)
  * 
  */
   for (__pyx_t_6 = 0; __pyx_t_6 < 0x120; __pyx_t_6+=1) {
     __pyx_v_i = __pyx_t_6;
 
-    /* "power_generators.pyx":134
+    /* "power_generators.pyx":133
  * 
  *         for i in range(288):
- *             cos_incident_angle[i] = max(cos(cos_incident_angle[i]), 0)             # <<<<<<<<<<<<<<
+ *             cos_incident_angle[i] = fmax(cos(cos_incident_angle[i]), 0)             # <<<<<<<<<<<<<<
  * 
- *         return self._nb_solar_panel * self._peak_power/(1000 * self._area) * irradiance_arr * cos_incident_angle
+ *         return (self._nb_solar_panel * self._peak_power/(1000 * self._area)) * irradiance_arr * cos_incident_angle
  */
-    __pyx_t_8 = 0;
-    __pyx_t_9 = __pyx_v_i;
-    __pyx_t_10 = -1;
-    if (__pyx_t_9 < 0) {
-      __pyx_t_9 += __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape;
-      if (unlikely(__pyx_t_9 < 0)) __pyx_t_10 = 0;
-    } else if (unlikely(__pyx_t_9 >= __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape)) __pyx_t_10 = 0;
-    if (unlikely(__pyx_t_10 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_10);
-      __PYX_ERR(0, 134, __pyx_L1_error)
+    __pyx_t_8 = __pyx_v_i;
+    __pyx_t_9 = -1;
+    if (__pyx_t_8 < 0) {
+      __pyx_t_8 += __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape;
+      if (unlikely(__pyx_t_8 < 0)) __pyx_t_9 = 0;
+    } else if (unlikely(__pyx_t_8 >= __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape)) __pyx_t_9 = 0;
+    if (unlikely(__pyx_t_9 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_9);
+      __PYX_ERR(0, 133, __pyx_L1_error)
     }
-    __pyx_t_11 = cos((*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_cos_incident_angle.diminfo[0].strides)));
-    if (((__pyx_t_8 > __pyx_t_11) != 0)) {
-      __pyx_t_12 = __pyx_t_8;
-    } else {
-      __pyx_t_12 = __pyx_t_11;
+    __pyx_t_10 = __pyx_v_i;
+    __pyx_t_9 = -1;
+    if (__pyx_t_10 < 0) {
+      __pyx_t_10 += __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape;
+      if (unlikely(__pyx_t_10 < 0)) __pyx_t_9 = 0;
+    } else if (unlikely(__pyx_t_10 >= __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape)) __pyx_t_9 = 0;
+    if (unlikely(__pyx_t_9 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_9);
+      __PYX_ERR(0, 133, __pyx_L1_error)
     }
-    __pyx_t_13 = __pyx_v_i;
-    __pyx_t_10 = -1;
-    if (__pyx_t_13 < 0) {
-      __pyx_t_13 += __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape;
-      if (unlikely(__pyx_t_13 < 0)) __pyx_t_10 = 0;
-    } else if (unlikely(__pyx_t_13 >= __pyx_pybuffernd_cos_incident_angle.diminfo[0].shape)) __pyx_t_10 = 0;
-    if (unlikely(__pyx_t_10 != -1)) {
-      __Pyx_RaiseBufferIndexError(__pyx_t_10);
-      __PYX_ERR(0, 134, __pyx_L1_error)
-    }
-    *__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.buf, __pyx_t_13, __pyx_pybuffernd_cos_incident_angle.diminfo[0].strides) = __pyx_t_12;
+    *__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.buf, __pyx_t_10, __pyx_pybuffernd_cos_incident_angle.diminfo[0].strides) = fmax(cos((*__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_cos_incident_angle.rcbuffer->pybuffer.buf, __pyx_t_8, __pyx_pybuffernd_cos_incident_angle.diminfo[0].strides))), 0.0);
   }
 
-  /* "power_generators.pyx":136
- *             cos_incident_angle[i] = max(cos(cos_incident_angle[i]), 0)
+  /* "power_generators.pyx":135
+ *             cos_incident_angle[i] = fmax(cos(cos_incident_angle[i]), 0)
  * 
- *         return self._nb_solar_panel * self._peak_power/(1000 * self._area) * irradiance_arr * cos_incident_angle             # <<<<<<<<<<<<<<
+ *         return (self._nb_solar_panel * self._peak_power/(1000 * self._area)) * irradiance_arr * cos_incident_angle             # <<<<<<<<<<<<<<
  * 
- * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):
  */
   __Pyx_XDECREF(((PyObject *)__pyx_r));
-  __pyx_t_12 = (__pyx_v_self->_nb_solar_panel * __pyx_v_self->_peak_power);
-  __pyx_t_11 = (1000.0 * __pyx_v_self->_area);
-  if (unlikely(__pyx_t_11 == 0)) {
+  __pyx_t_11 = (__pyx_v_self->_nb_solar_panel * __pyx_v_self->_peak_power);
+  __pyx_t_12 = (1000.0 * __pyx_v_self->_area);
+  if (unlikely(__pyx_t_12 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 136, __pyx_L1_error)
+    __PYX_ERR(0, 135, __pyx_L1_error)
   }
-  __pyx_t_1 = PyFloat_FromDouble((__pyx_t_12 / __pyx_t_11)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = PyFloat_FromDouble((__pyx_t_11 / __pyx_t_12)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, ((PyObject *)__pyx_v_irradiance_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_2 = PyNumber_Multiply(__pyx_t_1, ((PyObject *)__pyx_v_irradiance_arr)); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, ((PyObject *)__pyx_v_cos_incident_angle)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = PyNumber_Multiply(__pyx_t_2, ((PyObject *)__pyx_v_cos_incident_angle)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 135, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 136, __pyx_L1_error)
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 135, __pyx_L1_error)
   __pyx_r = ((PyArrayObject *)__pyx_t_1);
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "power_generators.pyx":129
+  /* "power_generators.pyx":128
  *         return self._nb_solar_panel * self._peak_power/(1000 * self._area) * irradiance * cos(self.incident_angle(day_of_year, t))
  * 
  *     cpdef cnp.ndarray[double, ndim=1] day_power_production(self, cnp.ndarray[double, ndim=1] irradiance_arr, int day_of_year):             # <<<<<<<<<<<<<<
@@ -4567,8 +4719,8 @@ static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_power_producti
 }
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_5day_power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_5day_power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7day_power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_7day_power_production(PyObject *__pyx_v_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyArrayObject *__pyx_v_irradiance_arr = 0;
   int __pyx_v_day_of_year;
   PyObject *__pyx_r = 0;
@@ -4597,11 +4749,11 @@ static PyObject *__pyx_pw_16power_generators_10SolarPanel_5day_power_production(
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_day_of_year)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("day_power_production", 1, 2, 2, 1); __PYX_ERR(0, 129, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("day_power_production", 1, 2, 2, 1); __PYX_ERR(0, 128, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "day_power_production") < 0)) __PYX_ERR(0, 129, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "day_power_production") < 0)) __PYX_ERR(0, 128, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -4610,18 +4762,18 @@ static PyObject *__pyx_pw_16power_generators_10SolarPanel_5day_power_production(
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
     }
     __pyx_v_irradiance_arr = ((PyArrayObject *)values[0]);
-    __pyx_v_day_of_year = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 129, __pyx_L3_error)
+    __pyx_v_day_of_year = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 128, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("day_power_production", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 129, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("day_power_production", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 128, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("power_generators.SolarPanel.day_power_production", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_irradiance_arr), __pyx_ptype_5numpy_ndarray, 1, "irradiance_arr", 0))) __PYX_ERR(0, 129, __pyx_L1_error)
-  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_4day_power_production(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_irradiance_arr, __pyx_v_day_of_year);
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_irradiance_arr), __pyx_ptype_5numpy_ndarray, 1, "irradiance_arr", 0))) __PYX_ERR(0, 128, __pyx_L1_error)
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_6day_power_production(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), __pyx_v_irradiance_arr, __pyx_v_day_of_year);
 
   /* function exit code */
   goto __pyx_L0;
@@ -4632,7 +4784,7 @@ static PyObject *__pyx_pw_16power_generators_10SolarPanel_5day_power_production(
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_4day_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_day_of_year) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_6day_power_production(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyArrayObject *__pyx_v_irradiance_arr, int __pyx_v_day_of_year) {
   __Pyx_LocalBuf_ND __pyx_pybuffernd_irradiance_arr;
   __Pyx_Buffer __pyx_pybuffer_irradiance_arr;
   PyObject *__pyx_r = NULL;
@@ -4645,11 +4797,11 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_4day_power_production(
   __pyx_pybuffernd_irradiance_arr.rcbuffer = &__pyx_pybuffer_irradiance_arr;
   {
     __Pyx_BufFmt_StackElem __pyx_stack[1];
-    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_irradiance_arr, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 129, __pyx_L1_error)
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer, (PyObject*)__pyx_v_irradiance_arr, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES, 1, 0, __pyx_stack) == -1)) __PYX_ERR(0, 128, __pyx_L1_error)
   }
   __pyx_pybuffernd_irradiance_arr.diminfo[0].strides = __pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_irradiance_arr.diminfo[0].shape = __pyx_pybuffernd_irradiance_arr.rcbuffer->pybuffer.shape[0];
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_10SolarPanel_day_power_production(__pyx_v_self, __pyx_v_irradiance_arr, __pyx_v_day_of_year, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_10SolarPanel_day_power_production(__pyx_v_self, __pyx_v_irradiance_arr, __pyx_v_day_of_year, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 128, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -4675,6 +4827,552 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_4day_power_production(
   return __pyx_r;
 }
 
+/* "power_generators.pyx":137
+ *         return (self._nb_solar_panel * self._peak_power/(1000 * self._area)) * irradiance_arr * cos_incident_angle
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):             # <<<<<<<<<<<<<<
+ *         cdef double s_declination = solar_declination(day_of_year)
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+ */
+
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_9day_solar_altitude(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year); /*proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_solar_altitude(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_skip_dispatch) {
+  double __pyx_v_s_declination;
+  PyArrayObject *__pyx_v_arr = 0;
+  int __pyx_v_i;
+  double __pyx_v_h_angle;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
+  __Pyx_Buffer __pyx_pybuffer_arr;
+  PyArrayObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyArrayObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  int __pyx_t_10;
+  __Pyx_RefNannySetupContext("day_solar_altitude", 0);
+  __pyx_pybuffer_arr.pybuffer.buf = NULL;
+  __pyx_pybuffer_arr.refcount = 0;
+  __pyx_pybuffernd_arr.data = NULL;
+  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_day_solar_altitude); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_9day_solar_altitude)) {
+      __Pyx_XDECREF(((PyObject *)__pyx_r));
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 137, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_4, function);
+        }
+      }
+      if (!__pyx_t_5) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        #if CYTHON_FAST_PYCALL
+        if (PyFunction_Check(__pyx_t_4)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        } else
+        #endif
+        #if CYTHON_FAST_PYCCALL
+        if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        } else
+        #endif
+        {
+          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 137, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
+          __Pyx_GIVEREF(__pyx_t_3);
+          PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
+          __pyx_t_3 = 0;
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        }
+      }
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 137, __pyx_L1_error)
+      __pyx_r = ((PyArrayObject *)__pyx_t_2);
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "power_generators.pyx":138
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):
+ *         cdef double s_declination = solar_declination(day_of_year)             # <<<<<<<<<<<<<<
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+ *         cdef int i
+ */
+  __pyx_v_s_declination = __pyx_f_16power_generators_solar_declination(__pyx_v_day_of_year);
+
+  /* "power_generators.pyx":139
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):
+ *         cdef double s_declination = solar_declination(day_of_year)
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)             # <<<<<<<<<<<<<<
+ *         cdef int i
+ * 
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 139, __pyx_L1_error)
+  __pyx_t_7 = ((PyArrayObject *)__pyx_t_1);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+      __pyx_v_arr = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(0, 139, __pyx_L1_error)
+    } else {__pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0];
+    }
+  }
+  __pyx_t_7 = 0;
+  __pyx_v_arr = ((PyArrayObject *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "power_generators.pyx":142
+ *         cdef int i
+ * 
+ *         for i in range(288):             # <<<<<<<<<<<<<<
+ *             h_angle = hour_angle(300*i)
+ *             arr[i] = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+ */
+  for (__pyx_t_8 = 0; __pyx_t_8 < 0x120; __pyx_t_8+=1) {
+    __pyx_v_i = __pyx_t_8;
+
+    /* "power_generators.pyx":143
+ * 
+ *         for i in range(288):
+ *             h_angle = hour_angle(300*i)             # <<<<<<<<<<<<<<
+ *             arr[i] = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+ * 
+ */
+    __pyx_v_h_angle = __pyx_f_16power_generators_hour_angle((0x12C * __pyx_v_i));
+
+    /* "power_generators.pyx":144
+ *         for i in range(288):
+ *             h_angle = hour_angle(300*i)
+ *             arr[i] = solar_altitude(300*i, self._latitude, s_declination, h_angle)             # <<<<<<<<<<<<<<
+ * 
+ *         return arr
+ */
+    __pyx_t_9 = __pyx_v_i;
+    __pyx_t_10 = -1;
+    if (__pyx_t_9 < 0) {
+      __pyx_t_9 += __pyx_pybuffernd_arr.diminfo[0].shape;
+      if (unlikely(__pyx_t_9 < 0)) __pyx_t_10 = 0;
+    } else if (unlikely(__pyx_t_9 >= __pyx_pybuffernd_arr.diminfo[0].shape)) __pyx_t_10 = 0;
+    if (unlikely(__pyx_t_10 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_10);
+      __PYX_ERR(0, 144, __pyx_L1_error)
+    }
+    *__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_arr.diminfo[0].strides) = __pyx_f_16power_generators_solar_altitude((0x12C * __pyx_v_i), __pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle);
+  }
+
+  /* "power_generators.pyx":146
+ *             arr[i] = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+ * 
+ *         return arr             # <<<<<<<<<<<<<<
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_arr));
+  __pyx_r = ((PyArrayObject *)__pyx_v_arr);
+  goto __pyx_L0;
+
+  /* "power_generators.pyx":137
+ *         return (self._nb_solar_panel * self._peak_power/(1000 * self._area)) * irradiance_arr * cos_incident_angle
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):             # <<<<<<<<<<<<<<
+ *         cdef double s_declination = solar_declination(day_of_year)
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_solar_altitude", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_arr);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_9day_solar_altitude(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_9day_solar_altitude(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year) {
+  int __pyx_v_day_of_year;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("day_solar_altitude (wrapper)", 0);
+  assert(__pyx_arg_day_of_year); {
+    __pyx_v_day_of_year = __Pyx_PyInt_As_int(__pyx_arg_day_of_year); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 137, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_solar_altitude", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_8day_solar_altitude(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), ((int)__pyx_v_day_of_year));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_8day_solar_altitude(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("day_solar_altitude", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_10SolarPanel_day_solar_altitude(__pyx_v_self, __pyx_v_day_of_year, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_solar_altitude", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "power_generators.pyx":148
+ *         return arr
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):             # <<<<<<<<<<<<<<
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+ *         cdef double s_declination = solar_declination(day_of_year)
+ */
+
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_11day_solar_azimuth(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year); /*proto*/
+static PyArrayObject *__pyx_f_16power_generators_10SolarPanel_day_solar_azimuth(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year, int __pyx_skip_dispatch) {
+  PyArrayObject *__pyx_v_arr = 0;
+  double __pyx_v_s_declination;
+  int __pyx_v_i;
+  double __pyx_v_h_angle;
+  double __pyx_v_s_altitude;
+  __Pyx_LocalBuf_ND __pyx_pybuffernd_arr;
+  __Pyx_Buffer __pyx_pybuffer_arr;
+  PyArrayObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  PyObject *__pyx_t_4 = NULL;
+  PyObject *__pyx_t_5 = NULL;
+  PyObject *__pyx_t_6 = NULL;
+  PyArrayObject *__pyx_t_7 = NULL;
+  int __pyx_t_8;
+  Py_ssize_t __pyx_t_9;
+  int __pyx_t_10;
+  __Pyx_RefNannySetupContext("day_solar_azimuth", 0);
+  __pyx_pybuffer_arr.pybuffer.buf = NULL;
+  __pyx_pybuffer_arr.refcount = 0;
+  __pyx_pybuffernd_arr.data = NULL;
+  __pyx_pybuffernd_arr.rcbuffer = &__pyx_pybuffer_arr;
+  /* Check if called by wrapper */
+  if (unlikely(__pyx_skip_dispatch)) ;
+  /* Check if overridden in Python */
+  else if (unlikely(Py_TYPE(((PyObject *)__pyx_v_self))->tp_dictoffset != 0)) {
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_day_solar_azimuth); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+    __Pyx_GOTREF(__pyx_t_1);
+    if (!PyCFunction_Check(__pyx_t_1) || (PyCFunction_GET_FUNCTION(__pyx_t_1) != (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_11day_solar_azimuth)) {
+      __Pyx_XDECREF(((PyObject *)__pyx_r));
+      __pyx_t_3 = __Pyx_PyInt_From_int(__pyx_v_day_of_year); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 148, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_3);
+      __Pyx_INCREF(__pyx_t_1);
+      __pyx_t_4 = __pyx_t_1; __pyx_t_5 = NULL;
+      if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_4))) {
+        __pyx_t_5 = PyMethod_GET_SELF(__pyx_t_4);
+        if (likely(__pyx_t_5)) {
+          PyObject* function = PyMethod_GET_FUNCTION(__pyx_t_4);
+          __Pyx_INCREF(__pyx_t_5);
+          __Pyx_INCREF(function);
+          __Pyx_DECREF_SET(__pyx_t_4, function);
+        }
+      }
+      if (!__pyx_t_5) {
+        __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        __Pyx_GOTREF(__pyx_t_2);
+      } else {
+        #if CYTHON_FAST_PYCALL
+        if (PyFunction_Check(__pyx_t_4)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
+          __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        } else
+        #endif
+        #if CYTHON_FAST_PYCCALL
+        if (__Pyx_PyFastCFunction_Check(__pyx_t_4)) {
+          PyObject *__pyx_temp[2] = {__pyx_t_5, __pyx_t_3};
+          __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_4, __pyx_temp+1-1, 1+1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+          __Pyx_XDECREF(__pyx_t_5); __pyx_t_5 = 0;
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
+        } else
+        #endif
+        {
+          __pyx_t_6 = PyTuple_New(1+1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 148, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_6);
+          __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_5); __pyx_t_5 = NULL;
+          __Pyx_GIVEREF(__pyx_t_3);
+          PyTuple_SET_ITEM(__pyx_t_6, 0+1, __pyx_t_3);
+          __pyx_t_3 = 0;
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_6, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 148, __pyx_L1_error)
+          __Pyx_GOTREF(__pyx_t_2);
+          __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+        }
+      }
+      __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
+      if (!(likely(((__pyx_t_2) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_2, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 148, __pyx_L1_error)
+      __pyx_r = ((PyArrayObject *)__pyx_t_2);
+      __pyx_t_2 = 0;
+      __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+      goto __pyx_L0;
+    }
+    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  }
+
+  /* "power_generators.pyx":149
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)             # <<<<<<<<<<<<<<
+ *         cdef double s_declination = solar_declination(day_of_year)
+ *         cdef int i
+ */
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_zeros); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+  if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 149, __pyx_L1_error)
+  __pyx_t_7 = ((PyArrayObject *)__pyx_t_1);
+  {
+    __Pyx_BufFmt_StackElem __pyx_stack[1];
+    if (unlikely(__Pyx_GetBufferAndValidate(&__pyx_pybuffernd_arr.rcbuffer->pybuffer, (PyObject*)__pyx_t_7, &__Pyx_TypeInfo_double, PyBUF_FORMAT| PyBUF_STRIDES| PyBUF_WRITABLE, 1, 0, __pyx_stack) == -1)) {
+      __pyx_v_arr = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None); __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf = NULL;
+      __PYX_ERR(0, 149, __pyx_L1_error)
+    } else {__pyx_pybuffernd_arr.diminfo[0].strides = __pyx_pybuffernd_arr.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_arr.diminfo[0].shape = __pyx_pybuffernd_arr.rcbuffer->pybuffer.shape[0];
+    }
+  }
+  __pyx_t_7 = 0;
+  __pyx_v_arr = ((PyArrayObject *)__pyx_t_1);
+  __pyx_t_1 = 0;
+
+  /* "power_generators.pyx":150
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+ *         cdef double s_declination = solar_declination(day_of_year)             # <<<<<<<<<<<<<<
+ *         cdef int i
+ * 
+ */
+  __pyx_v_s_declination = __pyx_f_16power_generators_solar_declination(__pyx_v_day_of_year);
+
+  /* "power_generators.pyx":153
+ *         cdef int i
+ * 
+ *         for i in range(288):             # <<<<<<<<<<<<<<
+ *             h_angle = hour_angle(300*i)
+ *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+ */
+  for (__pyx_t_8 = 0; __pyx_t_8 < 0x120; __pyx_t_8+=1) {
+    __pyx_v_i = __pyx_t_8;
+
+    /* "power_generators.pyx":154
+ * 
+ *         for i in range(288):
+ *             h_angle = hour_angle(300*i)             # <<<<<<<<<<<<<<
+ *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+ *             arr[i] = solar_azimuth(self._latitude, s_declination, h_angle, s_altitude)
+ */
+    __pyx_v_h_angle = __pyx_f_16power_generators_hour_angle((0x12C * __pyx_v_i));
+
+    /* "power_generators.pyx":155
+ *         for i in range(288):
+ *             h_angle = hour_angle(300*i)
+ *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)             # <<<<<<<<<<<<<<
+ *             arr[i] = solar_azimuth(self._latitude, s_declination, h_angle, s_altitude)
+ * 
+ */
+    __pyx_v_s_altitude = __pyx_f_16power_generators_solar_altitude((0x12C * __pyx_v_i), __pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle);
+
+    /* "power_generators.pyx":156
+ *             h_angle = hour_angle(300*i)
+ *             s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+ *             arr[i] = solar_azimuth(self._latitude, s_declination, h_angle, s_altitude)             # <<<<<<<<<<<<<<
+ * 
+ *         return arr
+ */
+    __pyx_t_9 = __pyx_v_i;
+    __pyx_t_10 = -1;
+    if (__pyx_t_9 < 0) {
+      __pyx_t_9 += __pyx_pybuffernd_arr.diminfo[0].shape;
+      if (unlikely(__pyx_t_9 < 0)) __pyx_t_10 = 0;
+    } else if (unlikely(__pyx_t_9 >= __pyx_pybuffernd_arr.diminfo[0].shape)) __pyx_t_10 = 0;
+    if (unlikely(__pyx_t_10 != -1)) {
+      __Pyx_RaiseBufferIndexError(__pyx_t_10);
+      __PYX_ERR(0, 156, __pyx_L1_error)
+    }
+    *__Pyx_BufPtrStrided1d(double *, __pyx_pybuffernd_arr.rcbuffer->pybuffer.buf, __pyx_t_9, __pyx_pybuffernd_arr.diminfo[0].strides) = __pyx_f_16power_generators_solar_azimuth(__pyx_v_self->_latitude, __pyx_v_s_declination, __pyx_v_h_angle, __pyx_v_s_altitude);
+  }
+
+  /* "power_generators.pyx":158
+ *             arr[i] = solar_azimuth(self._latitude, s_declination, h_angle, s_altitude)
+ * 
+ *         return arr             # <<<<<<<<<<<<<<
+ * 
+ * 
+ */
+  __Pyx_XDECREF(((PyObject *)__pyx_r));
+  __Pyx_INCREF(((PyObject *)__pyx_v_arr));
+  __pyx_r = ((PyArrayObject *)__pyx_v_arr);
+  goto __pyx_L0;
+
+  /* "power_generators.pyx":148
+ *         return arr
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):             # <<<<<<<<<<<<<<
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+ *         cdef double s_declination = solar_declination(day_of_year)
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_XDECREF(__pyx_t_4);
+  __Pyx_XDECREF(__pyx_t_5);
+  __Pyx_XDECREF(__pyx_t_6);
+  { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
+    __Pyx_PyThreadState_declare
+    __Pyx_PyThreadState_assign
+    __Pyx_ErrFetch(&__pyx_type, &__pyx_value, &__pyx_tb);
+    __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __Pyx_ErrRestore(__pyx_type, __pyx_value, __pyx_tb);}
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_solar_azimuth", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
+  goto __pyx_L2;
+  __pyx_L0:;
+  __Pyx_SafeReleaseBuffer(&__pyx_pybuffernd_arr.rcbuffer->pybuffer);
+  __pyx_L2:;
+  __Pyx_XDECREF((PyObject *)__pyx_v_arr);
+  __Pyx_XGIVEREF((PyObject *)__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* Python wrapper */
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_11day_solar_azimuth(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_11day_solar_azimuth(PyObject *__pyx_v_self, PyObject *__pyx_arg_day_of_year) {
+  int __pyx_v_day_of_year;
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("day_solar_azimuth (wrapper)", 0);
+  assert(__pyx_arg_day_of_year); {
+    __pyx_v_day_of_year = __Pyx_PyInt_As_int(__pyx_arg_day_of_year); if (unlikely((__pyx_v_day_of_year == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 148, __pyx_L3_error)
+  }
+  goto __pyx_L4_argument_unpacking_done;
+  __pyx_L3_error:;
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_solar_azimuth", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_RefNannyFinishContext();
+  return NULL;
+  __pyx_L4_argument_unpacking_done:;
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_10day_solar_azimuth(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), ((int)__pyx_v_day_of_year));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_10day_solar_azimuth(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, int __pyx_v_day_of_year) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  __Pyx_RefNannySetupContext("day_solar_azimuth", 0);
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = ((PyObject *)__pyx_f_16power_generators_10SolarPanel_day_solar_azimuth(__pyx_v_self, __pyx_v_day_of_year, 1)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 148, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_r = __pyx_t_1;
+  __pyx_t_1 = 0;
+  goto __pyx_L0;
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_AddTraceback("power_generators.SolarPanel.day_solar_azimuth", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 /* "(tree fragment)":1
  * def __reduce_cython__(self):             # <<<<<<<<<<<<<<
  *     cdef bint use_setstate
@@ -4682,19 +5380,19 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_4day_power_production(
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_7__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_13__reduce_cython__(PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *unused) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__reduce_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_6__reduce_cython__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_12__reduce_cython__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_6__reduce_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_12__reduce_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self) {
   int __pyx_v_use_setstate;
   PyObject *__pyx_v_state = NULL;
   PyObject *__pyx_v__dict = NULL;
@@ -4948,19 +5646,19 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_6__reduce_cython__(str
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
-static PyObject *__pyx_pw_16power_generators_10SolarPanel_9__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state); /*proto*/
+static PyObject *__pyx_pw_16power_generators_10SolarPanel_15__setstate_cython__(PyObject *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__setstate_cython__ (wrapper)", 0);
-  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_8__setstate_cython__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
+  __pyx_r = __pyx_pf_16power_generators_10SolarPanel_14__setstate_cython__(((struct __pyx_obj_16power_generators_SolarPanel *)__pyx_v_self), ((PyObject *)__pyx_v___pyx_state));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_16power_generators_10SolarPanel_8__setstate_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
+static PyObject *__pyx_pf_16power_generators_10SolarPanel_14__setstate_cython__(struct __pyx_obj_16power_generators_SolarPanel *__pyx_v_self, PyObject *__pyx_v___pyx_state) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -4996,11 +5694,11 @@ static PyObject *__pyx_pf_16power_generators_10SolarPanel_8__setstate_cython__(s
   return __pyx_r;
 }
 
-/* "power_generators.pyx":139
+/* "power_generators.pyx":161
  * 
  * 
  * cdef double solar_declination(int day_of_year):             # <<<<<<<<<<<<<<
- *     return -0.409105177 * cos(0.017214206 * (day_of_year + 10))
+ *     return 0.40927970959267024 * sin(0.01721420632103996*(284+day_of_year))
  * 
  */
 
@@ -5009,21 +5707,21 @@ static double __pyx_f_16power_generators_solar_declination(int __pyx_v_day_of_ye
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("solar_declination", 0);
 
-  /* "power_generators.pyx":140
+  /* "power_generators.pyx":162
  * 
  * cdef double solar_declination(int day_of_year):
- *     return -0.409105177 * cos(0.017214206 * (day_of_year + 10))             # <<<<<<<<<<<<<<
+ *     return 0.40927970959267024 * sin(0.01721420632103996*(284+day_of_year))             # <<<<<<<<<<<<<<
  * 
  * 
  */
-  __pyx_r = (-0.409105177 * cos((0.017214206 * (__pyx_v_day_of_year + 10))));
+  __pyx_r = (0.40927970959267024 * sin((0.01721420632103996 * (0x11C + __pyx_v_day_of_year))));
   goto __pyx_L0;
 
-  /* "power_generators.pyx":139
+  /* "power_generators.pyx":161
  * 
  * 
  * cdef double solar_declination(int day_of_year):             # <<<<<<<<<<<<<<
- *     return -0.409105177 * cos(0.017214206 * (day_of_year + 10))
+ *     return 0.40927970959267024 * sin(0.01721420632103996*(284+day_of_year))
  * 
  */
 
@@ -5033,7 +5731,7 @@ static double __pyx_f_16power_generators_solar_declination(int __pyx_v_day_of_ye
   return __pyx_r;
 }
 
-/* "power_generators.pyx":143
+/* "power_generators.pyx":165
  * 
  * 
  * cdef double hour_angle(int second_of_the_day):             # <<<<<<<<<<<<<<
@@ -5046,7 +5744,7 @@ static double __pyx_f_16power_generators_hour_angle(int __pyx_v_second_of_the_da
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("hour_angle", 0);
 
-  /* "power_generators.pyx":144
+  /* "power_generators.pyx":166
  * 
  * cdef double hour_angle(int second_of_the_day):
  *     return pi / 43200 * (second_of_the_day - 43200)             # <<<<<<<<<<<<<<
@@ -5056,7 +5754,7 @@ static double __pyx_f_16power_generators_hour_angle(int __pyx_v_second_of_the_da
   __pyx_r = ((M_PI / 43200.0) * (__pyx_v_second_of_the_day - 0xA8C0));
   goto __pyx_L0;
 
-  /* "power_generators.pyx":143
+  /* "power_generators.pyx":165
  * 
  * 
  * cdef double hour_angle(int second_of_the_day):             # <<<<<<<<<<<<<<
@@ -5070,7 +5768,7 @@ static double __pyx_f_16power_generators_hour_angle(int __pyx_v_second_of_the_da
   return __pyx_r;
 }
 
-/* "power_generators.pyx":147
+/* "power_generators.pyx":169
  * 
  * 
  * cdef double solar_altitude(double second_of_the_day, double latitude, double solar_declination, double hour_angle):             # <<<<<<<<<<<<<<
@@ -5083,7 +5781,7 @@ static double __pyx_f_16power_generators_solar_altitude(CYTHON_UNUSED double __p
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("solar_altitude", 0);
 
-  /* "power_generators.pyx":148
+  /* "power_generators.pyx":170
  * 
  * cdef double solar_altitude(double second_of_the_day, double latitude, double solar_declination, double hour_angle):
  *     return asin(             # <<<<<<<<<<<<<<
@@ -5093,7 +5791,7 @@ static double __pyx_f_16power_generators_solar_altitude(CYTHON_UNUSED double __p
   __pyx_r = asin((((cos(__pyx_v_solar_declination) * cos(__pyx_v_latitude)) * cos(__pyx_v_hour_angle)) + (sin(__pyx_v_solar_declination) * sin(__pyx_v_latitude))));
   goto __pyx_L0;
 
-  /* "power_generators.pyx":147
+  /* "power_generators.pyx":169
  * 
  * 
  * cdef double solar_altitude(double second_of_the_day, double latitude, double solar_declination, double hour_angle):             # <<<<<<<<<<<<<<
@@ -5107,7 +5805,7 @@ static double __pyx_f_16power_generators_solar_altitude(CYTHON_UNUSED double __p
   return __pyx_r;
 }
 
-/* "power_generators.pyx":154
+/* "power_generators.pyx":176
  * 
  * 
  * cdef double solar_azimuth(double latitude, double solar_declination, double hour_angle, double solar_altitude):             # <<<<<<<<<<<<<<
@@ -5122,20 +5820,21 @@ static double __pyx_f_16power_generators_solar_azimuth(CYTHON_UNUSED double __py
   double __pyx_t_2;
   __Pyx_RefNannySetupContext("solar_azimuth", 0);
 
-  /* "power_generators.pyx":156
+  /* "power_generators.pyx":178
  * cdef double solar_azimuth(double latitude, double solar_declination, double hour_angle, double solar_altitude):
  *     return asin(
  *         cos(solar_declination) * sin(hour_angle) / cos(solar_altitude)             # <<<<<<<<<<<<<<
  *     )
+ * 
  */
   __pyx_t_1 = (cos(__pyx_v_solar_declination) * sin(__pyx_v_hour_angle));
   __pyx_t_2 = cos(__pyx_v_solar_altitude);
   if (unlikely(__pyx_t_2 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 156, __pyx_L1_error)
+    __PYX_ERR(0, 178, __pyx_L1_error)
   }
 
-  /* "power_generators.pyx":155
+  /* "power_generators.pyx":177
  * 
  * cdef double solar_azimuth(double latitude, double solar_declination, double hour_angle, double solar_altitude):
  *     return asin(             # <<<<<<<<<<<<<<
@@ -5145,7 +5844,7 @@ static double __pyx_f_16power_generators_solar_azimuth(CYTHON_UNUSED double __py
   __pyx_r = asin((__pyx_t_1 / __pyx_t_2));
   goto __pyx_L0;
 
-  /* "power_generators.pyx":154
+  /* "power_generators.pyx":176
  * 
  * 
  * cdef double solar_azimuth(double latitude, double solar_declination, double hour_angle, double solar_altitude):             # <<<<<<<<<<<<<<
@@ -6359,7 +7058,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__12, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 235, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 235, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6415,7 +7114,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  * 
  *             info.buf = PyArray_DATA(self)
  */
-    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__13, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 239, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 239, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -6724,7 +7423,7 @@ static int __pyx_pf_5numpy_7ndarray___getbuffer__(PyArrayObject *__pyx_v_self, P
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__14, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 276, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 276, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -7613,7 +8312,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__15, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 823, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 823, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -7681,7 +8380,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__16, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 827, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_ValueError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(2, 827, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_Raise(__pyx_t_3, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
@@ -7790,7 +8489,7 @@ static CYTHON_INLINE char *__pyx_f_5numpy__util_dtypestring(PyArray_Descr *__pyx
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__17, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 847, __pyx_L1_error)
+        __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_RuntimeError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(2, 847, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_Raise(__pyx_t_4, 0, 0, 0);
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
@@ -8470,7 +9169,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__18, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1013, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1013, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -8599,7 +9298,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__19, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1019, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__21, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1019, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -8725,7 +9424,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__20, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1025, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__22, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 1025, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -8912,10 +9611,13 @@ static PyObject *__pyx_getprop_16power_generators_10SolarPanel_latitude(PyObject
 }
 
 static PyMethodDef __pyx_methods_16power_generators_SolarPanel[] = {
-  {"power_production", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_3power_production, METH_VARARGS|METH_KEYWORDS, 0},
-  {"day_power_production", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_5day_power_production, METH_VARARGS|METH_KEYWORDS, 0},
-  {"__reduce_cython__", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_7__reduce_cython__, METH_NOARGS, 0},
-  {"__setstate_cython__", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_9__setstate_cython__, METH_O, 0},
+  {"day_incident_angle", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_3day_incident_angle, METH_O, 0},
+  {"power_production", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_5power_production, METH_VARARGS|METH_KEYWORDS, 0},
+  {"day_power_production", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_7day_power_production, METH_VARARGS|METH_KEYWORDS, 0},
+  {"day_solar_altitude", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_9day_solar_altitude, METH_O, 0},
+  {"day_solar_azimuth", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_11day_solar_azimuth, METH_O, 0},
+  {"__reduce_cython__", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_13__reduce_cython__, METH_NOARGS, 0},
+  {"__setstate_cython__", (PyCFunction)__pyx_pw_16power_generators_10SolarPanel_15__setstate_cython__, METH_O, 0},
   {0, 0, 0, 0}
 };
 
@@ -9045,8 +9747,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_area, __pyx_k_area, sizeof(__pyx_k_area), 0, 0, 1, 1},
   {&__pyx_n_s_azimuth, __pyx_k_azimuth, sizeof(__pyx_k_azimuth), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
+  {&__pyx_n_s_day_incident_angle, __pyx_k_day_incident_angle, sizeof(__pyx_k_day_incident_angle), 0, 0, 1, 1},
   {&__pyx_n_s_day_of_year, __pyx_k_day_of_year, sizeof(__pyx_k_day_of_year), 0, 0, 1, 1},
   {&__pyx_n_s_day_power_production, __pyx_k_day_power_production, sizeof(__pyx_k_day_power_production), 0, 0, 1, 1},
+  {&__pyx_n_s_day_solar_altitude, __pyx_k_day_solar_altitude, sizeof(__pyx_k_day_solar_altitude), 0, 0, 1, 1},
+  {&__pyx_n_s_day_solar_azimuth, __pyx_k_day_solar_azimuth, sizeof(__pyx_k_day_solar_azimuth), 0, 0, 1, 1},
   {&__pyx_n_s_dict, __pyx_k_dict, sizeof(__pyx_k_dict), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
   {&__pyx_n_s_house, __pyx_k_house, sizeof(__pyx_k_house), 0, 0, 1, 1},
@@ -9212,23 +9917,45 @@ static int __Pyx_InitCachedConstants(void) {
  *         cdef double s_declination = solar_declination(day_of_year)
  *         cdef double s_altitude = solar_altitude(t, self._latitude, s_declination, h_angle)
  *         cdef cnp.ndarray res_arr = np.zeros(288)             # <<<<<<<<<<<<<<
- * 
  *         return acos(cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._azimuth)
+ *                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle))
  */
   __pyx_tuple__10 = PyTuple_Pack(1, __pyx_int_288); if (unlikely(!__pyx_tuple__10)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__10);
   __Pyx_GIVEREF(__pyx_tuple__10);
 
-  /* "power_generators.pyx":113
+  /* "power_generators.pyx":112
  *         cdef double h_angle
  *         cdef double s_declination = solar_declination(day_of_year)
- *         cdef cnp.ndarray res_arr = np.zeros(288)             # <<<<<<<<<<<<<<
+ *         cdef cnp.ndarray[double, ndim=1] res_arr = np.zeros(288)             # <<<<<<<<<<<<<<
  *         cdef int i
  * 
  */
-  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_int_288); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(1, __pyx_int_288); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 112, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
+
+  /* "power_generators.pyx":139
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):
+ *         cdef double s_declination = solar_declination(day_of_year)
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)             # <<<<<<<<<<<<<<
+ *         cdef int i
+ * 
+ */
+  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_int_288); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 139, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__12);
+  __Pyx_GIVEREF(__pyx_tuple__12);
+
+  /* "power_generators.pyx":149
+ * 
+ *     cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):
+ *         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)             # <<<<<<<<<<<<<<
+ *         cdef double s_declination = solar_declination(day_of_year)
+ *         cdef int i
+ */
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_int_288); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 149, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__13);
+  __Pyx_GIVEREF(__pyx_tuple__13);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":235
  *             if ((flags & pybuf.PyBUF_C_CONTIGUOUS == pybuf.PyBUF_C_CONTIGUOUS)
@@ -9237,9 +9964,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
  */
-  __pyx_tuple__12 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(2, 235, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__12);
-  __Pyx_GIVEREF(__pyx_tuple__12);
+  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_C_contiguous); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(2, 235, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__14);
+  __Pyx_GIVEREF(__pyx_tuple__14);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":239
  *             if ((flags & pybuf.PyBUF_F_CONTIGUOUS == pybuf.PyBUF_F_CONTIGUOUS)
@@ -9248,9 +9975,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             info.buf = PyArray_DATA(self)
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(2, 239, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__13);
-  __Pyx_GIVEREF(__pyx_tuple__13);
+  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_ndarray_is_not_Fortran_contiguou); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(2, 239, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__15);
+  __Pyx_GIVEREF(__pyx_tuple__15);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":276
  *                 if ((descr.byteorder == c'>' and little_endian) or
@@ -9259,9 +9986,9 @@ static int __Pyx_InitCachedConstants(void) {
  *                 if   t == NPY_BYTE:        f = "b"
  *                 elif t == NPY_UBYTE:       f = "B"
  */
-  __pyx_tuple__14 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__14)) __PYX_ERR(2, 276, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__14);
-  __Pyx_GIVEREF(__pyx_tuple__14);
+  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(2, 276, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__16);
+  __Pyx_GIVEREF(__pyx_tuple__16);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":823
  * 
@@ -9270,9 +9997,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *         if ((child.byteorder == c'>' and little_endian) or
  */
-  __pyx_tuple__15 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__15)) __PYX_ERR(2, 823, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__15);
-  __Pyx_GIVEREF(__pyx_tuple__15);
+  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(2, 823, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__17);
+  __Pyx_GIVEREF(__pyx_tuple__17);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":827
  *         if ((child.byteorder == c'>' and little_endian) or
@@ -9281,9 +10008,9 @@ static int __Pyx_InitCachedConstants(void) {
  *             # One could encode it in the format string and have Cython
  *             # complain instead, BUT: < and > in format strings also imply
  */
-  __pyx_tuple__16 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__16)) __PYX_ERR(2, 827, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__16);
-  __Pyx_GIVEREF(__pyx_tuple__16);
+  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_u_Non_native_byte_order_not_suppor); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(2, 827, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__18);
+  __Pyx_GIVEREF(__pyx_tuple__18);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":847
  *             t = child.type_num
@@ -9292,9 +10019,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  *             # Until ticket #99 is fixed, use integers to avoid warnings
  */
-  __pyx_tuple__17 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__17)) __PYX_ERR(2, 847, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__17);
-  __Pyx_GIVEREF(__pyx_tuple__17);
+  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_u_Format_string_allocated_too_shor_2); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(2, 847, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__19);
+  __Pyx_GIVEREF(__pyx_tuple__19);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1013
  *         _import_array()
@@ -9303,9 +10030,9 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__18 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__18)) __PYX_ERR(2, 1013, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__18);
-  __Pyx_GIVEREF(__pyx_tuple__18);
+  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(2, 1013, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__20);
+  __Pyx_GIVEREF(__pyx_tuple__20);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1019
  *         _import_umath()
@@ -9314,32 +10041,32 @@ static int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__19 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__19)) __PYX_ERR(2, 1019, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__19);
-  __Pyx_GIVEREF(__pyx_tuple__19);
+  __pyx_tuple__21 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(2, 1019, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__21);
+  __Pyx_GIVEREF(__pyx_tuple__21);
 
   /* "../../../../../../Library/Frameworks/Python.framework/Versions/3.6/lib/python3.6/site-packages/Cython/Includes/numpy/__init__.pxd":1025
  *         _import_umath()
  *     except Exception:
  *         raise ImportError("numpy.core.umath failed to import")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__20 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__20)) __PYX_ERR(2, 1025, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__20);
-  __Pyx_GIVEREF(__pyx_tuple__20);
+  __pyx_tuple__22 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__22)) __PYX_ERR(2, 1025, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__22);
+  __Pyx_GIVEREF(__pyx_tuple__22);
 
   /* "(tree fragment)":1
  * def __pyx_unpickle_Windmill(__pyx_type, long __pyx_checksum, __pyx_state):             # <<<<<<<<<<<<<<
  *     if __pyx_checksum != 0xbc7ba62:
  *         from pickle import PickleError as __pyx_PickleError
  */
-  __pyx_tuple__21 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__21)) __PYX_ERR(1, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__21);
-  __Pyx_GIVEREF(__pyx_tuple__21);
-  __pyx_codeobj__22 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__21, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Windmill, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__22)) __PYX_ERR(1, 1, __pyx_L1_error)
   __pyx_tuple__23 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__23)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__23);
   __Pyx_GIVEREF(__pyx_tuple__23);
-  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_SolarPanel, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_codeobj__24 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__23, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_Windmill, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__24)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __pyx_tuple__25 = PyTuple_Pack(5, __pyx_n_s_pyx_type, __pyx_n_s_pyx_checksum, __pyx_n_s_pyx_state, __pyx_n_s_pyx_PickleError, __pyx_n_s_pyx_result); if (unlikely(!__pyx_tuple__25)) __PYX_ERR(1, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__25);
+  __Pyx_GIVEREF(__pyx_tuple__25);
+  __pyx_codeobj__26 = (PyObject*)__Pyx_PyCode_New(3, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__25, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_stringsource, __pyx_n_s_pyx_unpickle_SolarPanel, 1, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__26)) __PYX_ERR(1, 1, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -9507,9 +10234,11 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
   __pyx_ptype_16power_generators_Windmill = &__pyx_type_16power_generators_Windmill;
   __pyx_vtabptr_16power_generators_SolarPanel = &__pyx_vtable_16power_generators_SolarPanel;
   __pyx_vtable_16power_generators_SolarPanel.incident_angle = (double (*)(struct __pyx_obj_16power_generators_SolarPanel *, int, int))__pyx_f_16power_generators_10SolarPanel_incident_angle;
-  __pyx_vtable_16power_generators_SolarPanel.day_incident_angle = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, int))__pyx_f_16power_generators_10SolarPanel_day_incident_angle;
+  __pyx_vtable_16power_generators_SolarPanel.day_incident_angle = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, int, int __pyx_skip_dispatch))__pyx_f_16power_generators_10SolarPanel_day_incident_angle;
   __pyx_vtable_16power_generators_SolarPanel.power_production = (double (*)(struct __pyx_obj_16power_generators_SolarPanel *, PyObject *, int, int, int __pyx_skip_dispatch))__pyx_f_16power_generators_10SolarPanel_power_production;
   __pyx_vtable_16power_generators_SolarPanel.day_power_production = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, PyArrayObject *, int, int __pyx_skip_dispatch))__pyx_f_16power_generators_10SolarPanel_day_power_production;
+  __pyx_vtable_16power_generators_SolarPanel.day_solar_altitude = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, int, int __pyx_skip_dispatch))__pyx_f_16power_generators_10SolarPanel_day_solar_altitude;
+  __pyx_vtable_16power_generators_SolarPanel.day_solar_azimuth = (PyArrayObject *(*)(struct __pyx_obj_16power_generators_SolarPanel *, int, int __pyx_skip_dispatch))__pyx_f_16power_generators_10SolarPanel_day_solar_azimuth;
   if (PyType_Ready(&__pyx_type_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
   __pyx_type_16power_generators_SolarPanel.tp_print = 0;
   if (__Pyx_SetVtable(__pyx_type_16power_generators_SolarPanel.tp_dict, __pyx_vtabptr_16power_generators_SolarPanel) < 0) __PYX_ERR(0, 57, __pyx_L1_error)
@@ -9540,7 +10269,7 @@ static int __pyx_pymod_exec_power_generators(PyObject *__pyx_pyinit_module)
  * cimport numpy as cnp
  * import numpy as np             # <<<<<<<<<<<<<<
  * cimport numpy as cnp
- * from libc.math cimport sin, cos, asin, acos, pi, pow
+ * from libc.math cimport sin, cos, asin, acos, pi, pow, fmax
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -10930,56 +11659,8 @@ static CYTHON_INLINE PyObject *__Pyx_GetAttr3(PyObject *o, PyObject *n, PyObject
     return r;
 }
 
-/* SetItemInt */
-      static int __Pyx_SetItemInt_Generic(PyObject *o, PyObject *j, PyObject *v) {
-    int r;
-    if (!j) return -1;
-    r = PyObject_SetItem(o, j, v);
-    Py_DECREF(j);
-    return r;
-}
-static CYTHON_INLINE int __Pyx_SetItemInt_Fast(PyObject *o, Py_ssize_t i, PyObject *v, int is_list,
-                                               CYTHON_NCP_UNUSED int wraparound, CYTHON_NCP_UNUSED int boundscheck) {
-#if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS && CYTHON_USE_TYPE_SLOTS
-    if (is_list || PyList_CheckExact(o)) {
-        Py_ssize_t n = (!wraparound) ? i : ((likely(i >= 0)) ? i : i + PyList_GET_SIZE(o));
-        if ((!boundscheck) || likely((n >= 0) & (n < PyList_GET_SIZE(o)))) {
-            PyObject* old = PyList_GET_ITEM(o, n);
-            Py_INCREF(v);
-            PyList_SET_ITEM(o, n, v);
-            Py_DECREF(old);
-            return 1;
-        }
-    } else {
-        PySequenceMethods *m = Py_TYPE(o)->tp_as_sequence;
-        if (likely(m && m->sq_ass_item)) {
-            if (wraparound && unlikely(i < 0) && likely(m->sq_length)) {
-                Py_ssize_t l = m->sq_length(o);
-                if (likely(l >= 0)) {
-                    i += l;
-                } else {
-                    if (!PyErr_ExceptionMatches(PyExc_OverflowError))
-                        return -1;
-                    PyErr_Clear();
-                }
-            }
-            return m->sq_ass_item(o, i, v);
-        }
-    }
-#else
-#if CYTHON_COMPILING_IN_PYPY
-    if (is_list || (PySequence_Check(o) && !PyDict_Check(o))) {
-#else
-    if (is_list || PySequence_Check(o)) {
-#endif
-        return PySequence_SetItem(o, i, v);
-    }
-#endif
-    return __Pyx_SetItemInt_Generic(o, PyInt_FromSsize_t(i), v);
-}
-
 /* Import */
-        static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
+      static PyObject *__Pyx_Import(PyObject *name, PyObject *from_list, int level) {
     PyObject *empty_list = 0;
     PyObject *module = 0;
     PyObject *global_dict = 0;
@@ -11044,7 +11725,7 @@ bad:
 }
 
 /* ImportFrom */
-        static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
+      static PyObject* __Pyx_ImportFrom(PyObject* module, PyObject* name) {
     PyObject* value = __Pyx_PyObject_GetAttrStr(module, name);
     if (unlikely(!value) && PyErr_ExceptionMatches(PyExc_AttributeError)) {
         PyErr_Format(PyExc_ImportError,
@@ -11058,7 +11739,7 @@ bad:
 }
 
 /* GetItemInt */
-        static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
+      static PyObject *__Pyx_GetItemInt_Generic(PyObject *o, PyObject* j) {
     PyObject *r;
     if (!j) return NULL;
     r = PyObject_GetItem(o, j);
@@ -11145,7 +11826,7 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
 }
 
 /* HasAttr */
-        static CYTHON_INLINE int __Pyx_HasAttr(PyObject *o, PyObject *n) {
+      static CYTHON_INLINE int __Pyx_HasAttr(PyObject *o, PyObject *n) {
     PyObject *r;
     if (unlikely(!__Pyx_PyBaseString_Check(n))) {
         PyErr_SetString(PyExc_TypeError,
@@ -11163,25 +11844,25 @@ static CYTHON_INLINE PyObject *__Pyx_GetItemInt_Fast(PyObject *o, Py_ssize_t i, 
 }
 
 /* RaiseTooManyValuesToUnpack */
-        static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
+      static CYTHON_INLINE void __Pyx_RaiseTooManyValuesError(Py_ssize_t expected) {
     PyErr_Format(PyExc_ValueError,
                  "too many values to unpack (expected %" CYTHON_FORMAT_SSIZE_T "d)", expected);
 }
 
 /* RaiseNeedMoreValuesToUnpack */
-        static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
+      static CYTHON_INLINE void __Pyx_RaiseNeedMoreValuesError(Py_ssize_t index) {
     PyErr_Format(PyExc_ValueError,
                  "need more than %" CYTHON_FORMAT_SSIZE_T "d value%.1s to unpack",
                  index, (index == 1) ? "" : "s");
 }
 
 /* RaiseNoneIterError */
-        static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
+      static CYTHON_INLINE void __Pyx_RaiseNoneNotIterableError(void) {
     PyErr_SetString(PyExc_TypeError, "'NoneType' object is not iterable");
 }
 
 /* SaveResetException */
-        #if CYTHON_FAST_THREAD_STATE
+      #if CYTHON_FAST_THREAD_STATE
 static CYTHON_INLINE void __Pyx__ExceptionSave(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
     #if PY_VERSION_HEX >= 0x030700A2
     *type = tstate->exc_state.exc_type;
@@ -11220,7 +11901,7 @@ static CYTHON_INLINE void __Pyx__ExceptionReset(PyThreadState *tstate, PyObject 
 #endif
 
 /* GetException */
-        #if CYTHON_FAST_THREAD_STATE
+      #if CYTHON_FAST_THREAD_STATE
 static int __Pyx__GetException(PyThreadState *tstate, PyObject **type, PyObject **value, PyObject **tb) {
 #else
 static int __Pyx_GetException(PyObject **type, PyObject **value, PyObject **tb) {
@@ -11290,7 +11971,7 @@ bad:
 }
 
 /* SetVTable */
-          static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
+        static int __Pyx_SetVtable(PyObject *dict, void *vtable) {
 #if PY_VERSION_HEX >= 0x02070000
     PyObject *ob = PyCapsule_New(vtable, 0, 0);
 #else
@@ -11308,7 +11989,7 @@ bad:
 }
 
 /* SetupReduce */
-          static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
+        static int __Pyx_setup_reduce_is_named(PyObject* meth, PyObject* name) {
   int ret;
   PyObject *name_attr;
   name_attr = __Pyx_PyObject_GetAttrStr(meth, __pyx_n_s_name);
@@ -11384,7 +12065,7 @@ GOOD:
 }
 
 /* CLineInTraceback */
-          #ifndef CYTHON_CLINE_IN_TRACEBACK
+        #ifndef CYTHON_CLINE_IN_TRACEBACK
 static int __Pyx_CLineForTraceback(CYTHON_UNUSED PyThreadState *tstate, int c_line) {
     PyObject *use_cline;
     PyObject *ptype, *pvalue, *ptraceback;
@@ -11421,7 +12102,7 @@ static int __Pyx_CLineForTraceback(CYTHON_UNUSED PyThreadState *tstate, int c_li
 #endif
 
 /* CodeObjectCache */
-          static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
+        static int __pyx_bisect_code_objects(__Pyx_CodeObjectCacheEntry* entries, int count, int code_line) {
     int start = 0, mid = 0, end = count - 1;
     if (end >= 0 && code_line > entries[end].code_line) {
         return count;
@@ -11501,7 +12182,7 @@ static void __pyx_insert_code_object(int code_line, PyCodeObject* code_object) {
 }
 
 /* AddTraceback */
-          #include "compile.h"
+        #include "compile.h"
 #include "frameobject.h"
 #include "traceback.h"
 static PyCodeObject* __Pyx_CreateCodeObjectForTraceback(
@@ -11586,7 +12267,7 @@ bad:
 }
 
 /* CIntToPy */
-          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -11617,7 +12298,7 @@ bad:
 }
 
 /* CIntFromPyVerify */
-          #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
+        #define __PYX_VERIFY_RETURN_INT(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 0)
 #define __PYX_VERIFY_RETURN_INT_EXC(target_type, func_type, func_value)\
     __PYX__VERIFY_RETURN_INT(target_type, func_type, func_value, 1)
@@ -11660,8 +12341,8 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 
-          /* CIntToPy */
-          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
+        /* CIntToPy */
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -11692,7 +12373,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 }
 
 /* Declarations */
-          #if CYTHON_CCOMPLEX
+        #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
     static CYTHON_INLINE __pyx_t_float_complex __pyx_t_float_complex_from_parts(float x, float y) {
       return ::std::complex< float >(x, y);
@@ -11712,7 +12393,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 /* Arithmetic */
-          #if CYTHON_CCOMPLEX
+        #if CYTHON_CCOMPLEX
 #else
     static CYTHON_INLINE int __Pyx_c_eq_float(__pyx_t_float_complex a, __pyx_t_float_complex b) {
        return (a.real == b.real) && (a.imag == b.imag);
@@ -11847,7 +12528,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 /* Declarations */
-          #if CYTHON_CCOMPLEX
+        #if CYTHON_CCOMPLEX
   #ifdef __cplusplus
     static CYTHON_INLINE __pyx_t_double_complex __pyx_t_double_complex_from_parts(double x, double y) {
       return ::std::complex< double >(x, y);
@@ -11867,7 +12548,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 /* Arithmetic */
-          #if CYTHON_CCOMPLEX
+        #if CYTHON_CCOMPLEX
 #else
     static CYTHON_INLINE int __Pyx_c_eq_double(__pyx_t_double_complex a, __pyx_t_double_complex b) {
        return (a.real == b.real) && (a.imag == b.imag);
@@ -12002,7 +12683,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 #endif
 
 /* CIntToPy */
-          static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value) {
+        static CYTHON_INLINE PyObject* __Pyx_PyInt_From_enum__NPY_TYPES(enum NPY_TYPES value) {
     const enum NPY_TYPES neg_one = (enum NPY_TYPES) -1, const_zero = (enum NPY_TYPES) 0;
     const int is_unsigned = neg_one > const_zero;
     if (is_unsigned) {
@@ -12033,7 +12714,7 @@ static void __Pyx_ReleaseBuffer(Py_buffer *view) {
 }
 
 /* CIntFromPy */
-          static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
+        static CYTHON_INLINE int __Pyx_PyInt_As_int(PyObject *x) {
     const int neg_one = (int) -1, const_zero = (int) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -12222,7 +12903,7 @@ raise_neg_overflow:
 }
 
 /* CIntFromPy */
-          static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
+        static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *x) {
     const long neg_one = (long) -1, const_zero = (long) 0;
     const int is_unsigned = neg_one > const_zero;
 #if PY_MAJOR_VERSION < 3
@@ -12411,7 +13092,7 @@ raise_neg_overflow:
 }
 
 /* FastTypeChecks */
-          #if CYTHON_COMPILING_IN_CPYTHON
+        #if CYTHON_COMPILING_IN_CPYTHON
 static int __Pyx_InBases(PyTypeObject *a, PyTypeObject *b) {
     while (a) {
         a = a->tp_base;
@@ -12483,7 +13164,7 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 #endif
 
 /* CheckBinaryVersion */
-          static int __Pyx_check_binary_version(void) {
+        static int __Pyx_check_binary_version(void) {
     char ctversion[4], rtversion[4];
     PyOS_snprintf(ctversion, 4, "%d.%d", PY_MAJOR_VERSION, PY_MINOR_VERSION);
     PyOS_snprintf(rtversion, 4, "%s", Py_GetVersion());
@@ -12499,7 +13180,7 @@ static CYTHON_INLINE int __Pyx_PyErr_GivenExceptionMatches2(PyObject *err, PyObj
 }
 
 /* ModuleImport */
-          #ifndef __PYX_HAVE_RT_ImportModule
+        #ifndef __PYX_HAVE_RT_ImportModule
 #define __PYX_HAVE_RT_ImportModule
 static PyObject *__Pyx_ImportModule(const char *name) {
     PyObject *py_name = 0;
@@ -12517,7 +13198,7 @@ bad:
 #endif
 
 /* TypeImport */
-          #ifndef __PYX_HAVE_RT_ImportType
+        #ifndef __PYX_HAVE_RT_ImportType
 #define __PYX_HAVE_RT_ImportType
 static PyTypeObject *__Pyx_ImportType(const char *module_name, const char *class_name,
     size_t size, int strict)
@@ -12582,7 +13263,7 @@ bad:
 #endif
 
 /* InitStrings */
-          static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
+        static int __Pyx_InitStrings(__Pyx_StringTabEntry *t) {
     while (t->p) {
         #if PY_MAJOR_VERSION < 3
         if (t->is_unicode) {

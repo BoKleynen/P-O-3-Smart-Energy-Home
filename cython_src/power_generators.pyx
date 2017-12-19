@@ -1,7 +1,7 @@
 cimport numpy as cnp
 import numpy as np
 cimport numpy as cnp
-from libc.math cimport sin, cos, asin, acos, pi, pow
+from libc.math cimport sin, cos, asin, acos, pi, pow, fmax
 
 
 cdef class Windmill:
@@ -105,7 +105,7 @@ cdef class SolarPanel:
         return acos(cos(s_altitude) * cos(solar_azimuth(self._latitude, s_declination, h_angle, s_altitude) - self._azimuth)
                 * sin(self._tilt_angle) + sin(s_altitude) * cos(self._tilt_angle))
 
-    cdef cnp.ndarray[double, ndim=1] day_incident_angle(self, int day_of_year):
+    cpdef cnp.ndarray[double, ndim=1] day_incident_angle(self, int day_of_year):
         cdef double s_altitude
         cdef double h_angle
         cdef double s_declination = solar_declination(day_of_year)
@@ -128,14 +128,38 @@ cdef class SolarPanel:
     cpdef cnp.ndarray[double, ndim=1] day_power_production(self, cnp.ndarray[double, ndim=1] irradiance_arr, int day_of_year):
         cdef int i
         cdef cnp.ndarray[double, ndim=1] cos_incident_angle = self.day_incident_angle(day_of_year)
+
         for i in range(288):
-            cos_incident_angle[i] = max(cos(cos_incident_angle[i]), 0)
+            cos_incident_angle[i] = fmax(cos(cos_incident_angle[i]), 0)
 
         return (self._nb_solar_panel * self._peak_power/(1000 * self._area)) * irradiance_arr * cos_incident_angle
 
+    cpdef cnp.ndarray[double, ndim=1] day_solar_altitude(self, int day_of_year):
+        cdef double s_declination = solar_declination(day_of_year)
+        cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+        cdef int i
+
+        for i in range(288):
+            h_angle = hour_angle(300*i)
+            arr[i] = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+
+        return arr
+
+    cpdef cnp.ndarray[double, ndim=1] day_solar_azimuth(self, int day_of_year):
+        cdef cnp.ndarray[double, ndim=1] arr = np.zeros(288)
+        cdef double s_declination = solar_declination(day_of_year)
+        cdef int i
+
+        for i in range(288):
+            h_angle = hour_angle(300*i)
+            s_altitude = solar_altitude(300*i, self._latitude, s_declination, h_angle)
+            arr[i] = solar_azimuth(self._latitude, s_declination, h_angle, s_altitude)
+
+        return arr
+
 
 cdef double solar_declination(int day_of_year):
-    return -0.409105177 * cos(0.017214206 * (day_of_year + 10))
+    return 0.40927970959267024 * sin(0.01721420632103996*(284+day_of_year))
 
 
 cdef double hour_angle(int second_of_the_day):
@@ -153,3 +177,4 @@ cdef double solar_azimuth(double latitude, double solar_declination, double hour
     return asin(
         cos(solar_declination) * sin(hour_angle) / cos(solar_altitude)
     )
+
