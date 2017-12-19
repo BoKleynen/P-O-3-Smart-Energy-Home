@@ -68,8 +68,8 @@ class Simulation:
                               + math.fsum(map(lambda bat: bat.price, self.house.battery_tp))
 
         if self.house.has_electrical_car():
-            electrical_car = ElectricalCar(86100, 2016, 2016, None, None)
-            original_car = PetrolCar(50000,) # TODO: add parameters
+            electrical_car = ElectricalCar(84100, 2016, 2016, 2016, 21.9, 75)
+            original_car = PetrolCar(67276, 2016, 2016, 7.6, 66, 176, "gasoline", "euro 6", 3.498)
             purchase_difference += electrical_car.price() - electrical_car.subsidy() - original_car.price() - original_car.biv()
 
             year_cost_difference += original_car.costs() - electrical_car.costs()

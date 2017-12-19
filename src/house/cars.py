@@ -118,12 +118,7 @@ class ElectricalCar(Car):
 
     def costs(self):
         yearly_driven_km = 15500
-        if self.curr_year > self.year:
-            return self.vkb() * (self.curr_year() - self.year)
-        elif self.curr_year == self.year:
-            return self.subsidy + self.biv() + self.vkb() * (self.curr_year() - self.year)
-        else:
-            raise Exception("self.curr_year must be equal or greater than self.year.")
+        return self.vkb() * (self.curr_year() - self.year)
 
 
 class PetrolCar(Car):
@@ -250,10 +245,4 @@ class PetrolCar(Car):
     def costs(self):
         fuel_price = 1.55
         yearly_driven_km = 15500
-        if self.curr_year > self.year:
-            return self.vkb()*(self.curr_year()-self.year) + self.fuel_consumption()/100*fuel_price*yearly_driven_km
-        elif self.curr_year == self.year:
-            return self.subsidy() + self.biv() + self.vkb()*(self.curr_year()-self.year) + \
-                   self.fuel_consumption()/100*fuel_price*yearly_driven_km
-        else:
-            raise Exception("self.curr_year must be equal or greater than self.year.")
+        return self.vkb()*(self.curr_year()-self.year) + self.fuel_consumption()/100*fuel_price*yearly_driven_km

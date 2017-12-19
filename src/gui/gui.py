@@ -33,11 +33,6 @@ def slider_sun_panel(option):
         nb_sun_panel.place(x=55, y=80)
 
 
-def slider_electric_car(option):
-    global nb_car
-    nb_car.place(x=530, y=80)
-
-
 def show_wind_turbine_and_battery(option):
     global battery1
 
@@ -95,7 +90,7 @@ def start_simulation():
     nb_sun_panels = nb_sun_panel.get()
     windmill_battery = variable_wind_turbine_and_battery.get()
     cars = variable_electric_car.get()
-    nb_cars = nb_car.get()
+    nb_cars = 1
     house = variable_house.get()
 
     fridge = ContinuousLoad(90)
@@ -118,17 +113,17 @@ def start_simulation():
     oven = TimedLoad(2500, time(hour=17, minute=30), 900, pd.DateOffset())
 
     if cars == "elektrische wagen":
-        car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
+        car = nb_cars*(ElectricalCar(84100, 2017, 2017, 2017, 21.9, 75, 75),)
         car_battery = CarBattery(75, 16500)
     elif cars == "brandstofwagen":
-        car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro) 6", 3.498),)
+        car = nb_cars*(PetrolCar(67276, 2017, 2017, 2017, 7.6, 66, 176, "gasoline", "euro 6", 3.498),)
         car_battery = None
     else:
         raise Exception("you have to make a chose.1")
 
     if sun_panel == "zonnepanelen":
         if house == "zuid georiënteerd":
-            solar_panel = (SolarPanel(285.0, 0.64, pi, 0.87, 1.540539, nb_sun_panels),)
+            solar_panel = (SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, nb_sun_panels),)
         elif house == "oost-west-georiënteerd":
             if nb_sun_panels != 1:
                 solar_panel = (SolarPanel(285.0, 0.17, -pi/2, 0.87, 1.540539, int(nb_sun_panels/2)),
@@ -161,13 +156,15 @@ def start_simulation():
                                                         pd.Timestamp("2016-05-24 23:55:00")), 2)
     cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24 00:00:00"),
                                                      pd.Timestamp("2016-05-24 23:55:00")), 2)
-    create_output_screen(house, cost_optimised, cost_normal, solar_panel[0] if house.has_solar_panel() else None,
-                         windmill[0] if house.has_windmill() else None)
+    #payback_period = simulation.simulate_payback_period()
+    create_output_screen(house, cost_optimised, cost_normal, solar_panel=solar_panel if house.has_solar_panel() else None,
+                         windmill=windmill[0] if house.has_windmill() else None, payback_period=0)
 
 
-def create_output_screen(house, amount_optimised, amount_normal, solar_panel, windmill):
+def create_output_screen(house, amount_optimised, amount_normal, solar_panel, windmill, payback_period):
     amount_optimised = str(amount_optimised)
     amount_normal = str(amount_normal)
+    payback_period = str(payback_period)
 
     # Make output window
     output = Tk()
@@ -186,22 +183,30 @@ def create_output_screen(house, amount_optimised, amount_normal, solar_panel, wi
     w1 = Label(output, text="De simulatie is uitgevoerd voor de volgende dag: 24 mei 2016 \n"
                             "Te betalen bedrag aan elektriciteit met optimalisatie: €"+amount_optimised,
                background="white", font=("Ariel", 15))
-    w3 = Label(output, text="Te betalen bedrag aan elektriciteit zonder optimalisatie: €"+amount_normal,
+    w2 = Label(output, text="Te betalen bedrag aan elektriciteit zonder optimalisatie: €"+amount_normal,
                background="white", font=("Ariel", 15))
+    w3 = Label(output, text="Terugverdientijd: €"+payback_period, background="white", font=("Ariel", 15))
     w1.pack()
+    w2.pack()
     w3.pack()
 
     # Show graphs
     start = pd.Timestamp("2016-05-24 00:00:00")
     end = pd.Timestamp("2016-05-24 23:55:00")
+    # end = pd.Timestamp("2017-04-21 23:55:00")
     times = pd.date_range(start, end, freq="300S")
     house._is_optimised = True
 
     if solar_panel is not None:
         irradiance_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\Irradiance.csv",
                                     header=0, index_col="Date/Time", dtype={"watts-per-meter-sq": float}, parse_dates=["Date/Time"])
-        data_production_solar_panel = [solar_panel.power_production(t, irradiance_df.loc[t].values[0])
-                                       for t in pd.date_range(start, end, freq="300S")]
+        if len(solar_panel) == 2:
+            data_production_solar_panel = [solar_panel[0].power_production(t, irradiance_df.loc[t].values[0]) +
+                                           solar_panel[1].power_production(t, irradiance_df.loc[t].values[0])
+                                           for t in pd.date_range(start, end, freq="300S")]
+        elif len(solar_panel) == 1:
+            data_production_solar_panel = [solar_panel[0].power_production(t, irradiance_df.loc[t].values[0])
+                                           for t in pd.date_range(start, end, freq="300S")]
     if windmill is not None:
         wind_speed_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\wind_speed.csv",
                                     header=0, index_col="Date/Time", dtype={"meters-per-second": float}, parse_dates=["Date/Time"])
@@ -218,9 +223,11 @@ def create_output_screen(house, amount_optimised, amount_normal, solar_panel, wi
         if solar_panel is not None:
             a.plot_date(times, data_production_solar_panel, color="blue", linestyle="solid", linewidth=2, marker=None)
         a.xaxis.set_major_formatter(DateFormatter("%H: %M"))
+        # a.xaxis.set_major_formatter(DateFormatter("%d/%m/%y"))
         a.set_title("elektriciteitsproductie door windmolen (rood) en zonnepanelen (blauw)", fontsize=16)
         a.set_ylabel("vermogen [W]", fontsize=14)
         a.set_xlabel("tijd [uur: minuten]", fontsize=14)
+        # a.set_xlabel("tijd [dag/maand/jaar]", fontsize=14)
     b = fig.add_subplot(122)
     b.plot_date(times, data_consumption, color="blue", linestyle="solid", linewidth=2, marker=None)
     b.xaxis.set_major_formatter(DateFormatter("%H:%M"))
@@ -300,7 +307,7 @@ wind_turbine_and_battery_menu.place(x=270, y=50)
 variable_electric_car = StringVar(root)
 variable_electric_car.set("maak uw keuze")
 electric_car_menu = OptionMenu(root, variable_electric_car, "elektrische wagen", "brandstofwagen",
-                               command=combine_func(show_car, slider_electric_car))
+                               command=show_car)
 electric_car_menu.configure(width=35, relief=SOLID, background="white", activebackground="white",
                             highlightbackground="white")
 electric_car_menu.place(x=530, y=50)
@@ -314,9 +321,6 @@ house_menu.place(x=790, y=50)
 # Make sliders to select number of sun panels and cars
 nb_sun_panel = Scale(root, from_=1, to=20, orient=HORIZONTAL, background="white", borderwidth=1,
                      sliderrelief=FLAT, troughcolor="black", highlightbackground="white")
-
-nb_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,
-               troughcolor="black", highlightbackground="white")
 
 # Create a button to start the simulation
 button = Button(root, text='Start simulatie', width=25, height=5, relief=SOLID, background="white",
