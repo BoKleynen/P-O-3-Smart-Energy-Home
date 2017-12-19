@@ -4,7 +4,6 @@ from house.production.wind_mill import *
 from house.production.solar_panel import *
 from house.loads import *
 from house.battery import *
-from simulation.simulation import *
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
@@ -168,7 +167,7 @@ def create_output_screen(house, amount_optimised, amount_normal, solar_panel, wi
 
     # Make output window
     output = Tk()
-    output.title("Results of the simulation")
+    output.title("Results of the simulation_scenarios")
     output.configure(background="white")
 
     output.attributes("-fullscreen", True)
@@ -315,7 +314,7 @@ nb_sun_panel = Scale(root, from_=1, to=20, orient=HORIZONTAL, background="white"
 nb_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,
                troughcolor="black", highlightbackground="white")
 
-# Create a button to start the simulation
+# Create a button to start the simulation_scenarios
 button = Button(root, text='Start simulatie', width=25, height=5, relief=SOLID, background="white",
                 activebackground="white", command=start_simulation)
 button.place(x=screen_width/2-90, y=screen_height-100)

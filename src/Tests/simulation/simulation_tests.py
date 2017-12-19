@@ -1,7 +1,7 @@
 import pandas as pd
 from house import House
-from simulation.simulation import Simulation
-from datetime import datetime, time
+from simulation_scenarios import Simulation
+from datetime import datetime
 from loads import ContinuousLoad, TimedLoad, StaggeredLoad
 from power_generators import SolarPanel, Windmill
 
