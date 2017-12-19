@@ -4,9 +4,6 @@ from house.production.wind_mill import *
 from house.production.solar_panel import *
 from house.loads import *
 from house.battery import *
-from house.house import *
-from house.battery import *
-from house.cars import *
 from simulation.simulation import *
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg

@@ -2,10 +2,9 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from house.production.solar_panel import SolarPanel
-from house.house import House
+from house import House
 from math import pi
 from time import time
-from util.solar_angles import incident_angle
 
 start_time = time()
 

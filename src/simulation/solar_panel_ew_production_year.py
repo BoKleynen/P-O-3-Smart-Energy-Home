@@ -1,12 +1,8 @@
 from house.production.solar_panel import SolarPanel
-from house.house import House
+from house import House
 from math import pi
 import pandas as pd
-import datetime
-import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import matplotlib.cbook as cbook
 
 irradiance_df = pd.read_csv(filepath_or_buffer="../../data/Irradiance.csv",
                             header=0,
