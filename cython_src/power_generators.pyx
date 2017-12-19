@@ -1,4 +1,3 @@
-cimport numpy as cnp
 import numpy as np
 cimport numpy as cnp
 from libc.math cimport sin, cos, asin, acos, pi, pow, fmax

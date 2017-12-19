@@ -2,14 +2,14 @@ import math
 import pandas as pd
 import numpy as np
 from typing import Iterable, List, Tuple
-from datetime import date, time
+from datetime import date
 from power_generators import SolarPanel, Windmill
 from loads import ContinuousLoad, TimedLoad, StaggeredLoad
+from battery import Battery, CarBattery
 
 
 class House:
-    def __init__(self, load_it: Iterable, solar_panel_tp=(),
-                 windmill_tp=(), battery_tp=(), car_battery=None,
+    def __init__(self, load_it: Iterable, solar_panel_tp=(), windmill_tp=(), battery_tp=(), car_battery=None,
                  timestamp=pd.Timestamp("2016-05-24 00:00")):
 
         self._continuous_load_list = [load for load in load_it if isinstance(load, ContinuousLoad)]
@@ -47,9 +47,9 @@ class House:
     def windmill_tp(self) -> Tuple[Windmill]:
         return self._windmill_tp
 
-    # @property
-    # def battery_tp(self) -> Tuple[Battery]:
-    #     return self._battery_tp
+    @property
+    def battery_tp(self) -> Tuple[Battery]:
+        return self._battery_tp
 
     @property
     def is_large_installation(self) -> bool:
@@ -77,8 +77,8 @@ class House:
     def has_solar_panel(self) -> bool:
         return len(self.solar_panel_tp) != 0
 
-    # def has_battery(self) -> bool:
-    #     return len(self.battery_tp) != 0
+    def has_battery(self) -> bool:
+        return len(self.battery_tp) != 0
 
     def has_electrical_car(self) -> bool:
         return self._electrical_car_battery is not None

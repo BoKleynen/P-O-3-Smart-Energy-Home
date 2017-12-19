@@ -1,3 +1,5 @@
+cimport numpy as cnp
+import numpy as np
 from libc.math cimport fmin, fmax
 
 
@@ -57,6 +59,15 @@ cdef class Battery:
 
             else:
                 return (self._capacity-self._stored_energy) / 300
+
+    cpdef cnp.ndarray[double, ndim=1] day_power(self, cnp.ndarray[double, ndim=1] power_arr):
+        cdef cnp.ndarray[double, ndim=1] arr = np.zeros(power_arr.shape[0])
+        cdef int i
+
+        for i in range(power_arr.shape[0]):
+            arr[i] = self.power(power_arr[i])
+
+        return arr
 
 
 cdef class CarBattery(Battery):
