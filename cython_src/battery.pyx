@@ -63,9 +63,12 @@ cdef class Battery:
     cpdef cnp.ndarray[double, ndim=1] day_power(self, cnp.ndarray[double, ndim=1] power_arr):
         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(power_arr.shape[0])
         cdef int i
+        cdef double power
 
         for i in range(power_arr.shape[0]):
-            arr[i] = self.power(power_arr[i])
+            power = self.power(power_arr[i])
+            arr[i] = power
+            self._stored_energy = self._stored_energy - 300*power
 
         return arr
 

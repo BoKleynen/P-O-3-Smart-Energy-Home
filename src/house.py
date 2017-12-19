@@ -151,6 +151,13 @@ class House:
         for i in range(start_time//300, (start_time + load.cycle_duration) // 300):
             arr[i] += load.power_consumption
 
+        if self.has_battery():
+            init_battery_lst = []
+
+            for battery in self.battery_tp:
+                init_battery_lst.append(battery.stored_energy)
+                arr += battery.day_power(arr*battery.max_power/self._total_battery_power)
+
         if self._is_large_installation:
             for i in range(288):
                 cost += self.large_installation_electricity_cost(300 * i, power_arr[i])
@@ -201,6 +208,9 @@ class House:
         power_arr = self.optimised_staggered_load_power() + self.timed_load_power() + self.continuous_load_power() \
                     - self.power_production(irradiance, wind_speed)
 
+        for battery in self.battery_tp:
+            power_arr += battery.day_power(power_arr*battery.max_power/self._total_battery_power)
+
         cost = 0.0
         if self._is_large_installation:
             for i in range(288):
@@ -215,6 +225,10 @@ class House:
         power_arr = self.original_staggered_load_power() + self.timed_load_power() + self.continuous_load_power() \
                     - self.power_production(irradiance, wind_speed)
         cost = 0.0
+
+        for battery in self.battery_tp:
+            power_arr += battery.day_power(power_arr*battery.max_power/self._total_battery_power)
+
         if self._is_large_installation:
             for i in range(288):
                 cost += self.large_installation_electricity_cost(300*i, power_arr[i])
