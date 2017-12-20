@@ -182,6 +182,7 @@ class House:
 
             for i in range((86400-load.cycle_duration)//300):
                 cost = self.cost_function(load, 300*i, power_consumption_arr)
+                print("cost", self.cost_function(load, 300*i, power_consumption_arr), "min_cost", min_cost)
 
                 if cost < min_cost:
                     min_cost = cost

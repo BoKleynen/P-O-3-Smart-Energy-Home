@@ -7,6 +7,9 @@ from cython_src.battery import *
 from cython_src.power_generators import SolarPanel, Windmill
 from cython_src.loads import ContinuousLoad, TimedLoad, StaggeredLoad
 from cython_src.battery import Battery
+from cars import *
+from house import *
+from simulation import *
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
@@ -117,7 +120,7 @@ def start_simulation():
 
     if cars == "elektrische wagen":
         car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
-        car_battery = CarBattery(75, 16500)
+        car_battery = CarBattery(75, 16500, 0, 15500/365)
     elif cars == "brandstofwagen":
         car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro) 6", 3.498),)
         car_battery = None
@@ -142,7 +145,7 @@ def start_simulation():
 
     if windmill_battery == "windmolen en thuisbatterij":
         windmill = (Windmill(9.448223734, 2.5, 12.75190283),)
-        battery = (Battery(13.5, 5),)
+        battery = (Battery(13.5, 5, 0),)
     elif windmill_battery == "geen windmolen en geen thuisbatterij":
         windmill = ()
         battery = ()
@@ -155,10 +158,10 @@ def start_simulation():
                   timestamp=pd.Timestamp("2016-05-24 00:00"))
 
     simulation = Simulation(house)
-    cost_optimised = round(simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"),
-                                                        pd.Timestamp("2016-05-24 23:55:00")), 2)
-    cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24 00:00:00"),
-                                                     pd.Timestamp("2016-05-24 23:55:00")), 2)
+    cost_optimised = round(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(),
+                                                        pd.Timestamp("2016-05-25").date()), 2)
+    cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24").date(),
+                                                     pd.Timestamp("2016-05-25").date()), 2)
     create_output_screen(house, cost_optimised, cost_normal, solar_panel[0] if house.has_solar_panel() else None,
                          windmill[0] if house.has_windmill() else None)
 
