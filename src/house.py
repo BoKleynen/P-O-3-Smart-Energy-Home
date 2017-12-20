@@ -168,7 +168,6 @@ class House:
         else:
             cost = power_arr.sum() * 2.000016e-05
 
-
         return cost
 
     def optimise(self, irradiance, wind_speed_df):
@@ -243,4 +242,4 @@ class House:
         return cost
 
     def advance_day(self):
-        self._timestamp + pd.DateOffset()
+        self._timestamp += pd.DateOffset()
