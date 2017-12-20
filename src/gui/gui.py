@@ -95,7 +95,7 @@ def start_simulation():
     cars = variable_electric_car.get()
     nb_cars = nb_car.get()
     house = variable_house.get()
-
+    
     fridge = ContinuousLoad(90)
     freezer = ContinuousLoad(90)
     led_tv = TimedLoad(60, 73800, 3600, 1)
