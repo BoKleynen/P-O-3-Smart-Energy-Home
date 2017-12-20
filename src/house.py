@@ -22,9 +22,8 @@ class House:
         self._total_battery_power = math.fsum(map(lambda battery: battery.max_power, battery_tp))
         self._total_battery_capacity = math.fsum(map(lambda battery: battery.capacity, battery_tp))
         self._electrical_car_battery = car_battery
-        # self._is_large_installation = math.fsum(map(lambda sp: sp.peak_power, self.solar_panel_tp)) \
-        #     + math.fsum(map(lambda wm: wm.peak_power(), self.windmill_tp)) >= 10000
-        self._is_large_installation = True
+        self._is_large_installation = math.fsum(map(lambda sp: sp.peak_power, self.solar_panel_tp)) \
+            + math.fsum(map(lambda wm: wm.peak_power(), self.windmill_tp)) >= 10000
         self._timestamp = timestamp
         self._is_optimised = False
 
