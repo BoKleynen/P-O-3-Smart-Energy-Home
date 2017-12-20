@@ -58,7 +58,7 @@ cdef class Battery:
                 return power
 
             else:
-                return (self._capacity-self._stored_energy) / 300
+                return -(self._capacity-self._stored_energy) / 300
 
     cpdef cnp.ndarray[double, ndim=1] day_power(self, cnp.ndarray[double, ndim=1] power_arr):
         cdef cnp.ndarray[double, ndim=1] arr = np.zeros(power_arr.shape[0])
