@@ -179,7 +179,6 @@ class House:
 
         for load in sorted_load_lst:
             min_cost = math.inf
-            min_t_start = 0
 
             for i in range((86400-load.cycle_duration)//300):
                 cost = self.cost_function(load, 300*i, power_consumption_arr)
@@ -220,6 +219,8 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
+
+        print([load.start_time for load in self.staggered_load_list])
 
         return cost
 

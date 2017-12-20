@@ -19,6 +19,7 @@ class Simulation:
                                          dtype={"meters-per-second": float},
                                          parse_dates=["Date/Time"]
                                          )
+        self.init_battery_lst = [battery.stored_energy for battery in self.house.battery_tp]
 
     def setup(self, start):
         for load in self.house.timed_load_list:
@@ -26,6 +27,9 @@ class Simulation:
 
         for load in self.house.staggered_load_list:
             load.execution_date = start
+
+        for i in range(len(self.init_battery_lst)):
+            self.house.battery_tp[i].stored_energy = self.init_battery_lst[i]
 
         self.house.timestamp = pd.Timestamp(start)
 
