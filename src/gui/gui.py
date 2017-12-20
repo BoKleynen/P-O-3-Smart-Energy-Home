@@ -1,9 +1,10 @@
 from tkinter import *
 from math import pi
-from house.production.wind_mill import *
-from house.production.solar_panel import *
-from house.loads import *
-from house.battery import *
+import pyximport
+pyximport.install()
+from cython_src.power_generators import *
+from cython_src.loads import *
+from cython_src.battery import *
 
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
