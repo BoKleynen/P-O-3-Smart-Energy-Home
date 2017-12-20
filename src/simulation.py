@@ -1,6 +1,6 @@
 import pandas as pd
-import math
 from house import House
+from datetime import date
 
 
 class Simulation:
@@ -73,3 +73,12 @@ class Simulation:
             self.house.advance_day()
 
         return total_cost
+
+    def simulate_payback_period(self, invest_cost):
+        original_house = House([] + self.house.continuous_load_list + self.house.timed_load_list + self.house.staggered_load_list)
+        original_simulation = Simulation(original_house)
+        original_cost = 12/11*original_simulation.simulate_original(date(2016, 5, 24), date(2017, 4, 21))
+
+        optimal_cost = 12/11*self.simulate_original(date(2016, 5, 24), date(2017, 4, 21))
+
+        return invest_cost/(original_cost-optimal_cost)
