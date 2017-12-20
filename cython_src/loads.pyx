@@ -59,7 +59,7 @@ cdef class CyclicalLoad(Load):
 
     @start_time.setter
     def start_time(self, start_time: int):
-        self._start_time = start_time
+        self._start_time = start_time//300 * 300
 
     @property
     def cycle_duration(self) -> int:
@@ -88,7 +88,7 @@ cdef class StaggeredLoad(CyclicalLoad):
     cdef int _original_start_time
 
     def __init__(self, double power_consumption, int original_start_time, int cycle_duration, int ex_delta):
-        super().__init__(power_consumption, 0, cycle_duration, ex_delta)
+        super().__init__(power_consumption, original_start_time, cycle_duration, ex_delta)
 
         self._original_start_time = original_start_time
 

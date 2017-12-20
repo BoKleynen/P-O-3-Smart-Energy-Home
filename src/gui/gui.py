@@ -1,10 +1,9 @@
+import pandas as pd
 from tkinter import *
 from math import pi
-from house.production.wind_mill import *
-from house.production.solar_panel import *
-from house.loads import *
-from house.battery import *
-
+from power_generators import SolarPanel, Windmill
+from loads import ContinuousLoad, TimedLoad, StaggeredLoad
+from battery import Battery
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter

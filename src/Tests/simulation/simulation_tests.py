@@ -27,10 +27,12 @@ windmill = Windmill(9.448223734, 2.5, 12.75190283)
 
 house = House(loads,
               solar_panel_tp=(solar_panel,),
-              battery_tp=(battery,))
+              windmill_tp=(windmill,),
+              battery_tp=(battery,)
+              )
 
 simulation = Simulation(house)
 
-print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24 00:00:00"), pd.Timestamp("2016-05-24 23:55:00"))))
-print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24 00:00:00"), pd.Timestamp("2016-05-24 23:55:00"))))
+print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
+print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
 print(datetime.now() - start_t)

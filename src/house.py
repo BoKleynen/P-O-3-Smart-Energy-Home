@@ -186,9 +186,8 @@ class House:
 
                 if cost < min_cost:
                     min_cost = cost
-                    min_t_start = i
+                    load.start_time = 300 * i
 
-            load.start_time = 300 * min_t_start
             power_consumption_arr += load.day_power_consumption()
 
         self._is_optimised = True
