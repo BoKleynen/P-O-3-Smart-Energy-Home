@@ -1,7 +1,5 @@
 from tkinter import *
 from math import pi
-import pyximport
-pyximport.install()
 from cython_src.power_generators import *
 from cython_src.loads import *
 from cython_src.battery import *
