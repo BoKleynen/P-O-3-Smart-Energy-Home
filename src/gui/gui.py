@@ -1,4 +1,4 @@
-import pandas as pd
+import numpy as np
 from tkinter import *
 from math import pi
 from cython_src.power_generators import *
@@ -30,13 +30,10 @@ def slider_sun_panel(option):
 
     if option == "geen zonnepanelen":
         nb_sun_panel.place_forget()
+        house_menu.place_forget()
     else:
-        nb_sun_panel.place(x=55, y=80)
-
-
-def slider_electric_car(option):
-    global nb_car
-    nb_car.place(x=530, y=80)
+        nb_sun_panel.place(x=55, y=110)
+        house_menu.place(x=10, y=80)
 
 
 def show_wind_turbine_and_battery(option):
@@ -96,9 +93,9 @@ def start_simulation():
     nb_sun_panels = nb_sun_panel.get()
     windmill_battery = variable_wind_turbine_and_battery.get()
     cars = variable_electric_car.get()
-    nb_cars = nb_car.get()
+    nb_cars = 1
     house = variable_house.get()
-    
+
     fridge = ContinuousLoad(90)
     freezer = ContinuousLoad(90)
     led_tv = TimedLoad(60, 73800, 3600, 1)
@@ -119,10 +116,10 @@ def start_simulation():
     heat_pump_boiler = StaggeredLoad(700, 0, 16200, 1)
 
     if cars == "elektrische wagen":
-        car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
+        car = nb_cars*(ElectricalCar(84100, 2017, 2017, 2017, 0, 21.9, 75, 75),)
         car_battery = CarBattery(75, 16500, 0, 15500/365)
     elif cars == "brandstofwagen":
-        car = nb_cars*(PetrolCar(67276, 2017, 2017, 7.6, 66, 176, "gasoline", "euro) 6", 3.498),)
+        car = nb_cars*(PetrolCar(67276, 2017, 2017, 2017, 7.6, 66, 176, "gasoline", "euro) 6", 3.498),)
         car_battery = None
     else:
         raise Exception("you have to make a chose.1")
@@ -162,8 +159,9 @@ def start_simulation():
                                                         pd.Timestamp("2016-05-25").date()), 2)
     cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24").date(),
                                                      pd.Timestamp("2016-05-25").date()), 2)
-    create_output_screen(house, cost_optimised, cost_normal, solar_panel[0] if house.has_solar_panel() else None,
-                         windmill[0] if house.has_windmill() else None)
+
+    create_output_screen(house, cost_optimised, cost_normal, solar_panel if house.has_solar_panel() else None,
+                         windmill if house.has_windmill() else None)
 
 
 def create_output_screen(house, amount_optimised, amount_normal, solar_panel, windmill):
@@ -195,37 +193,45 @@ def create_output_screen(house, amount_optimised, amount_normal, solar_panel, wi
     # Show graphs
     start = pd.Timestamp("2016-05-24 00:00:00")
     end = pd.Timestamp("2016-05-24 23:55:00")
-    times = pd.date_range(start, end, freq="300S")
+    date = pd.date_range(start, end, freq="300S")
     house._is_optimised = True
 
     if solar_panel is not None:
-        irradiance_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\Irradiance.csv",
-                                    header=0, index_col="Date/Time", dtype={"watts-per-meter-sq": float}, parse_dates=["Date/Time"])
-        data_production_solar_panel = [solar_panel.power_production(t, irradiance_df.loc[t].values[0])
-                                       for t in pd.date_range(start, end, freq="300S")]
-    if windmill is not None:
-        wind_speed_df = pd.read_csv(filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\wind_speed.csv",
-                                    header=0, index_col="Date/Time", dtype={"meters-per-second": float}, parse_dates=["Date/Time"])
-        data_production_windmill = [windmill.power_production(wind_speed_df.loc[t].values[0])
-                                    for t in pd.date_range(start, end, freq="300S")]
+        irradiance_df = pd.read_csv(
+            filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\Irradiance.csv",
+            header=0, index_col="Date/Time", dtype={"watts-per-meter-sq": float}, parse_dates=["Date/Time"])
+        irradiance = irradiance_df.loc[pd.Timestamp(start.date()):pd.Timestamp(start.date()) +
+                                                                  pd.DateOffset(hours=23, minutes=55)]["watts-per-meter-sq"].values
 
-    data_consumption = [house.optimised_staggered_load_power(t) for t in times]
+    if windmill is not None:
+        wind_speed_df = pd.read_csv(
+            filepath_or_buffer="C:\\Users\\Lander\\Documents\\KULeuven\\2e bachelor\\semester 1\\P&O 3\\P-O-3-Smart-Energy-Home\\data\\wind_speed.csv",
+            header=0, index_col="Date/Time", dtype={"meters-per-second": float}, parse_dates=["Date/Time"])
+        wind_speed = wind_speed_df.loc[pd.Timestamp(start.date()):pd.Timestamp(start.date()) +
+                     pd.DateOffset(hours=23, minutes=55)]["meters-per-second"].values
+
+    data_consumption = house.optimised_staggered_load_power()
 
     fig = Figure(figsize=(15, 8))
     if windmill is not None or solar_panel is not None:
         a = fig.add_subplot(121)
         if windmill is not None:
-            a.plot_date(times, data_production_windmill, color="red", linestyle="solid", linewidth=2, marker=None)
+            a.plot_date(date, windmill[0].day_power_production(wind_speed), color="red", linestyle="solid", linewidth=2, marker=None)
         if solar_panel is not None:
-            a.plot_date(times, data_production_solar_panel, color="blue", linestyle="solid", linewidth=2, marker=None)
+            if len(solar_panel) == 1:
+                a.plot_date(date, solar_panel[0].day_power_production(irradiance, 144),
+                            color="blue", linestyle="solid", linewidth=2, marker=None)
+            else:
+                a.plot_date(date, solar_panel[0].day_power_production(irradiance, 144)+solar_panel[1].day_power_production(irradiance, 144),
+                            color="blue", linestyle="solid", linewidth=2, marker=None)
         a.xaxis.set_major_formatter(DateFormatter("%H: %M"))
-        a.set_title("elektriciteitsproductie door windmolen (rood) en zonnepanelen (blauw)", fontsize=16)
+        a.set_title("elektriciteitsproductie door windmolen (rood) \n en zonnepanelen (blauw)", fontsize=16)
         a.set_ylabel("vermogen [W]", fontsize=14)
         a.set_xlabel("tijd [uur: minuten]", fontsize=14)
     b = fig.add_subplot(122)
-    b.plot_date(times, data_consumption, color="blue", linestyle="solid", linewidth=2, marker=None)
+    b.plot_date(date, data_consumption, color="blue", linestyle="solid", linewidth=2, marker=None)
     b.xaxis.set_major_formatter(DateFormatter("%H:%M"))
-    b.set_title("elektriciteitsverbruik", fontsize=16)
+    b.set_title("elektriciteitsverbruik van de verplaatsbare lasten", fontsize=16)
     b.set_ylabel("vermogen [W]", fontsize=14)
     b.set_xlabel("tijd [uur:min]", fontsize=14)
 
@@ -301,7 +307,7 @@ wind_turbine_and_battery_menu.place(x=270, y=50)
 variable_electric_car = StringVar(root)
 variable_electric_car.set("maak uw keuze")
 electric_car_menu = OptionMenu(root, variable_electric_car, "elektrische wagen", "brandstofwagen",
-                               command=combine_func(show_car, slider_electric_car))
+                               command=show_car)
 electric_car_menu.configure(width=35, relief=SOLID, background="white", activebackground="white",
                             highlightbackground="white")
 electric_car_menu.place(x=530, y=50)
@@ -310,14 +316,11 @@ variable_house = StringVar(root)
 variable_house.set("maak uw keuze")
 house_menu = OptionMenu(root, variable_house, "oost-west-georiënteerd", "zuid georiënteerd", command=show_house)
 house_menu.configure(width=35, relief=SOLID, background="white", activebackground="white", highlightbackground="white")
-house_menu.place(x=790, y=50)
+
 
 # Make sliders to select number of sun panels and cars
 nb_sun_panel = Scale(root, from_=1, to=20, orient=HORIZONTAL, background="white", borderwidth=1,
                      sliderrelief=FLAT, troughcolor="black", highlightbackground="white")
-
-nb_car = Scale(root, from_=1, to=3, orient=HORIZONTAL, background="white", borderwidth=1, sliderrelief=FLAT,
-               troughcolor="black", highlightbackground="white")
 
 # Create a button to start the simulation_scenarios
 button = Button(root, text='Start simulatie', width=25, height=5, relief=SOLID, background="white",
