@@ -5,7 +5,7 @@ from simulation import Simulation
 from datetime import datetime
 from loads import ContinuousLoad, TimedLoad, StaggeredLoad
 from power_generators import SolarPanel, Windmill
-from battery import Battery
+from battery import Battery, CarBattery
 
 start_t = datetime.now()
 
@@ -27,24 +27,23 @@ dishwasher = StaggeredLoad(900, 5200, 9600, 1)
 washing_machine = StaggeredLoad(1000, 75600, 4800, 1)
 tumble_dryer = StaggeredLoad(2600, 75600, 5400, 1)
 boiler = StaggeredLoad(2000, 0, 16200, 1)
-# swimming_pool_pump = StaggeredLoad(1100, 0, 43200, 1)
 heat_pump_boiler = StaggeredLoad(700, 0, 16200, 1)
 
 solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 20)
 windmill = Windmill(9.448223734, 2.5, 12.75190283)
 battery = Battery(4.86e+7, 5000, 0)
 
+car_battery = CarBattery(2.7e+8, 16500, 0, 39420000)
+
 loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, tumble_dryer, led_lamps, central_heating_1, central_heating_2, computer, microwave, hairdryer, hood, boiler, heat_pump_boiler, oven]
-# loads = [tumble_dryer]
 house = House(loads,
               solar_panel_tp=(solar_panel,),
               windmill_tp=(windmill,),
-              battery_tp=(battery,)
-              )
+              battery_tp=(battery,),
+              car_battery=car_battery)
 simulation = Simulation(house)
 
-print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
-print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
+print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
+print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
 print(datetime.now() - start_t)
-
 plt.show()

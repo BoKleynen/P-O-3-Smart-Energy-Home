@@ -1,6 +1,6 @@
 cimport numpy as cnp
 import numpy as np
-from libc.math cimport fmin, fmax
+from libc.math cimport fmin, fmax, ceil
 
 
 cdef class Battery:
@@ -97,7 +97,45 @@ cdef class CarBattery(Battery):
 
         else:
             if self._stored_energy - 300 * fmax(power, -self._max_power) <= self._capacity:
-                return fmax(power, -self._max_power)
+                return -fmax(power, -self._max_power)
 
             else:
                 return (self._capacity-self._stored_energy) / 300
+
+    cpdef cnp.ndarray[double, ndim=1] day_power(self, cnp.ndarray[double, ndim=1] power_arr):
+        cdef cnp.ndarray[double, ndim=1] arr = np.zeros(power_arr.shape[0])
+        cdef int i
+        cdef double power
+        cdef int nb_intervals = 0
+
+        if self._stored_energy < self._daily_required_energy:
+            nb_intervals = <int>ceil((self._daily_required_energy-self._stored_energy)/self._max_power/300)
+
+        # 00:00 until 08:00
+        for i in range(96-nb_intervals):
+            power = self.power(power_arr[i])
+            arr[i] = power
+            self.stored_energy += 300*power
+
+        # force charging the car
+        for i in range(96-nb_intervals, 96):
+            arr[i] = self._max_power
+            self.stored_energy += 300 * self._max_power
+            if self._stored_energy > self._daily_required_energy:
+                break
+
+        for i in range(96-nb_intervals+i, 96):
+            power = self.power(power_arr[i])
+            arr[i] = power
+            self.stored_energy += 300*power
+
+        # 08:00 until 18:00: car is not at home --> use 90% of the daily required energy
+        self._stored_energy *= 0.1
+
+        # 18:00 until 23:59
+        for i in range(216, 288):
+            power = self.power(power_arr[i])
+            arr[i] = power
+            self.stored_energy += 300*power
+
+        return arr

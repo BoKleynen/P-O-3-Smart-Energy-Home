@@ -21,6 +21,9 @@ class Simulation:
                                          )
         self.init_battery_lst = [battery.stored_energy for battery in self.house.battery_tp]
 
+        if self.house.has_electrical_car():
+            self.init_car_battery_charge = self.house._electrical_car_battery.stored_energy
+
     def setup(self, start):
         for load in self.house.timed_load_list:
             load.execution_date = start
@@ -30,6 +33,9 @@ class Simulation:
 
         for i in range(len(self.init_battery_lst)):
             self.house.battery_tp[i].stored_energy = self.init_battery_lst[i]
+
+        if self.house.has_electrical_car():
+            self.house._electrical_car_battery.stored_energy = self.init_car_battery_charge
 
         self.house.timestamp = pd.Timestamp(start)
 

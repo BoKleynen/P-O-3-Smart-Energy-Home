@@ -152,6 +152,11 @@ class House:
         for i in range(start_time//300, (start_time + load.cycle_duration) // 300):
             arr[i] += load.power_consumption
 
+        if self.has_electrical_car():
+            init_car_batter_energy = self._electrical_car_battery.stored_energy
+            arr += self._electrical_car_battery.day_power(arr)
+            self._electrical_car_battery.stored_energy = init_car_batter_energy
+
         if self.has_battery():
             init_battery_lst = []
 
@@ -207,9 +212,12 @@ class House:
     def optimised_day_cost(self, irradiance, wind_speed):
         power_arr = self.optimised_staggered_load_power() + self.timed_load_power() + self.continuous_load_power() \
                     - self.power_production(irradiance, wind_speed)
+
+        if self.has_electrical_car():
+            power_arr += self._electrical_car_battery.day_power(power_arr)
+
         for battery in self.battery_tp:
-            arr = battery.day_power(power_arr*battery.max_power/self._total_battery_power)
-            power_arr -= arr
+            power_arr -= battery.day_power(power_arr*battery.max_power/self._total_battery_power)
 
         cost = 0.0
         if self._is_large_installation:
@@ -225,6 +233,9 @@ class House:
         power_arr = self.original_staggered_load_power() + self.timed_load_power() + self.continuous_load_power() \
                     - self.power_production(irradiance, wind_speed)
         cost = 0.0
+
+        if self.has_electrical_car():
+            power_arr += self._electrical_car_battery.day_power(power_arr)
 
         for battery in self.battery_tp:
             power_arr -= battery.day_power(power_arr*battery.max_power/self._total_battery_power)
