@@ -43,7 +43,8 @@ house = House(loads,
               car_battery=car_battery)
 simulation = Simulation(house)
 
-print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
-print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
+# print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
+# print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
+print(simulation.simulate_payback_period(40000))
 print(datetime.now() - start_t)
 plt.show()
