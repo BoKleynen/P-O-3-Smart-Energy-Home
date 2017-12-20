@@ -100,3 +100,7 @@ cdef class StaggeredLoad(CyclicalLoad):
             arr[i] += self._power_consumption
 
         return arr
+
+    @property
+    def original_start_time(self):
+        return self._original_start_time

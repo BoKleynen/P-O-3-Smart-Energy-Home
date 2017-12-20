@@ -137,7 +137,8 @@ class House:
     def power_production(self, irradiance_arr, wind_speed_arr) -> np.ndarray:
         return self.solar_power_production(irradiance_arr) + self.wind_power_production(wind_speed_arr)
 
-    def day_load_power(self, load, start_time):
+    @staticmethod
+    def day_load_power(load, start_time):
         arr = np.zeros(288)
 
         for i in range(start_time//300, (start_time+load.cycle_duration)//300):
@@ -157,14 +158,14 @@ class House:
 
             for battery in self.battery_tp:
                 init_battery_lst.append(battery.stored_energy)
-                arr -= battery.day_power(arr*battery.max_power/self._total_battery_power)
+                arr -= battery.day_power(arr*(battery.max_power/self._total_battery_power))
 
             for i in range(len(init_battery_lst)):
                 self.battery_tp[i].stored_energy = init_battery_lst[i]
 
         if self._is_large_installation:
             for i in range(288):
-                cost += self.large_installation_electricity_cost(300 * i, power_arr[i])
+                cost += self.large_installation_electricity_cost(300 * i, arr[i])
 
         else:
             cost = power_arr.sum() * 2.000016e-05
@@ -177,9 +178,8 @@ class House:
                                  reverse=True)
         power_consumption_arr = self.continuous_load_power() + self.timed_load_power() \
                                 - self.power_production(irradiance, wind_speed_df)
-
         for load in sorted_load_lst:
-            min_cost = math.inf
+            min_cost = self.cost_function(load, load.original_start_time, power_consumption_arr)
 
             for i in range((86400-load.cycle_duration)//300):
                 cost = self.cost_function(load, 300*i, power_consumption_arr)
@@ -189,7 +189,6 @@ class House:
                     load.start_time = 300 * i
 
             power_consumption_arr += load.day_power_consumption()
-
         self._is_optimised = True
 
     def large_installation_electricity_cost(self, t, power):
@@ -220,7 +219,7 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
-
+        # plt.plot(power_arr)
         return cost
 
     def original_day_cost(self, irradiance, wind_speed):
@@ -237,7 +236,7 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
-
+        # plt.plot(power_arr)
         return cost
 
     def advance_day(self):
