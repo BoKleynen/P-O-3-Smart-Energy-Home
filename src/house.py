@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Iterable, List, Tuple
-from datetime import date
+from datetime import date, timedelta
 from power_generators import SolarPanel, Windmill
 from loads import ContinuousLoad, TimedLoad, StaggeredLoad
 from battery import Battery, CarBattery
@@ -179,7 +179,7 @@ class House:
         power_consumption_arr = self.continuous_load_power() + self.timed_load_power() \
                                 - self.power_production(irradiance, wind_speed_df)
         for load in sorted_load_lst:
-            min_cost = self.cost_function(load, load.original_start_time, power_consumption_arr)
+            min_cost = math.inf
 
             for i in range((86400-load.cycle_duration)//300):
                 cost = self.cost_function(load, 300*i, power_consumption_arr)
@@ -219,7 +219,7 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
-        # plt.plot(power_arr)
+
         return cost
 
     def original_day_cost(self, irradiance, wind_speed):
@@ -236,8 +236,14 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
-        # plt.plot(power_arr)
+
         return cost
 
     def advance_day(self):
         self._timestamp += pd.DateOffset()
+
+        for load in self.timed_load_list:
+            load.execution_date += timedelta(days=load.execution_delta)
+
+        for load in self.staggered_load_list:
+            load.execution_date += timedelta(days=load.execution_delta)
