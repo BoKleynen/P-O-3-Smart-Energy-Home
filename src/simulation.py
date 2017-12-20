@@ -79,6 +79,6 @@ class Simulation:
         original_simulation = Simulation(original_house)
         original_cost = 12/11*original_simulation.simulate_original(date(2016, 5, 24), date(2017, 4, 21))
 
-        optimal_cost = 12/11*self.simulate_original(date(2016, 5, 24), date(2017, 4, 21))
+        optimal_cost = 12/11*self.simulate_optimise(date(2016, 5, 24), date(2017, 4, 21))
 
         return invest_cost/(original_cost-optimal_cost)
