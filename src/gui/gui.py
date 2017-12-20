@@ -1,16 +1,12 @@
 import pandas as pd
 from tkinter import *
 from math import pi
-<<<<<<< HEAD
 from cython_src.power_generators import *
 from cython_src.loads import *
 from cython_src.battery import *
-
-=======
-from power_generators import SolarPanel, Windmill
-from loads import ContinuousLoad, TimedLoad, StaggeredLoad
-from battery import Battery
->>>>>>> ndarray
+from cython_src.power_generators import SolarPanel, Windmill
+from cython_src.loads import ContinuousLoad, TimedLoad, StaggeredLoad
+from cython_src.battery import Battery
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
@@ -102,22 +98,22 @@ def start_simulation():
 
     fridge = ContinuousLoad(90)
     freezer = ContinuousLoad(90)
-    led_tv = TimedLoad(60, 20*3600+30*60, 3600, 1)
-    stove = TimedLoad(5250, 17*3600+30*60, 900, 1)
-    dishwasher = StaggeredLoad(900, 7*3600, 9600, 1)
-    washing_machine = StaggeredLoad(1000, time(hour=21), 4800, time_delta=pd.DateOffset())
-    tumble_dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
-    led_lamps = TimedLoad(240, time(hour=20), 18000, pd.DateOffset())
-    central_heating_1 = TimedLoad(2400, time(hour=6, minute=30), 9000, time_delta=pd.DateOffset())
-    central_heating_2 = TimedLoad(2400, time(hour=18), 9000, time_delta=pd.DateOffset())
-    computer = TimedLoad(800, time(hour=21), 7200, pd.DateOffset())
-    microwave = TimedLoad(1500, time(hour=18), 600, pd.DateOffset())
-    hairdryer = TimedLoad(300, time(hour=7, minute=30), 600, pd.DateOffset())
-    hood = TimedLoad(150, time(hour=17, minute=30), 900, pd.DateOffset())
-    boiler = StaggeredLoad(2000, time(hour=0), 16200, time_delta=pd.DateOffset())
-    swimming_pool_pump = StaggeredLoad(1100, time(hour=0), 43200, time_delta=pd.DateOffset())
-    heat_pump_boiler = StaggeredLoad(700, time(hour=0), 16200, time_delta=pd.DateOffset())
-    oven = TimedLoad(2500, time(hour=17, minute=30), 900, pd.DateOffset())
+    led_tv = TimedLoad(60, 73800, 3600, 1)
+    stove = TimedLoad(5250, 63000, 900, 1)
+    led_lamps = TimedLoad(240, 72000, 14400, 1)
+    central_heating_1 = TimedLoad(2400, 23400, 9000, 1)
+    central_heating_2 = TimedLoad(2400, 64800, 9000, 1)
+    computer = TimedLoad(800, 75600, 7200, 1)
+    microwave = TimedLoad(1500, 64800, 600, 1)
+    hairdryer = TimedLoad(300, 27000, 600, 1)
+    hood = TimedLoad(150, 63000, 900, 1)
+    oven = TimedLoad(2500, 63000, 900, 1)
+    dishwasher = StaggeredLoad(900, 5200, 9600, 1)
+    washing_machine = StaggeredLoad(1000, 75600, 4800, 1)
+    tumble_dryer = StaggeredLoad(2600, 75600, 5400, 1)
+    boiler = StaggeredLoad(2000, 0, 16200, 1)
+    swimming_pool_pump = StaggeredLoad(1100, 0, 43200, 1)
+    heat_pump_boiler = StaggeredLoad(700, 0, 16200, 1)
 
     if cars == "elektrische wagen":
         car = nb_cars*(ElectricalCar(84100, 2017, 2017, 0, 21.9, 75, 75),)
