@@ -95,6 +95,7 @@ def start_simulation():
     cars = variable_electric_car.get()
     nb_cars = 1
     house = variable_house.get()
+    payback_period_calc = variable_payback_period.get()
 
     fridge = ContinuousLoad(90)
     freezer = ContinuousLoad(90)
@@ -117,7 +118,7 @@ def start_simulation():
 
     if cars == "elektrische wagen":
         car = nb_cars*(ElectricalCar(84100, 2017, 2017, 2017, 0, 21.9, 75, 75),)
-        car_battery = CarBattery(75, 16500, 0, 15500/365)
+        car_battery = CarBattery(270000000, 16500, 0, (78840000/100) * (15500/365))
     elif cars == "brandstofwagen":
         car = nb_cars*(PetrolCar(67276, 2017, 2017, 2017, 7.6, 66, 176, "gasoline", "euro) 6", 3.498),)
         car_battery = None
@@ -142,7 +143,7 @@ def start_simulation():
 
     if windmill_battery == "windmolen en thuisbatterij":
         windmill = (Windmill(9.448223734, 2.5, 12.75190283),)
-        battery = (Battery(13.5, 5, 0),)
+        battery = (Battery(48600000, 5, 0),)
     elif windmill_battery == "geen windmolen en geen thuisbatterij":
         windmill = ()
         battery = ()
@@ -159,14 +160,19 @@ def start_simulation():
                                                         pd.Timestamp("2016-05-25").date()), 2)
     cost_normal = round(simulation.simulate_original(pd.Timestamp("2016-05-24").date(),
                                                      pd.Timestamp("2016-05-25").date()), 2)
+    if payback_period_calc == "terugverdientijd berekenen":
+        payback_period = simulation.simulate_payback_period(nb_sun_panels*319.00 +
+                                                            9360.00+7880 if windmill_battery == "windmolen en thuisbatterij" else 0)
 
     create_output_screen(house, cost_optimised, cost_normal, solar_panel if house.has_solar_panel() else None,
-                         windmill if house.has_windmill() else None)
+                         windmill if house.has_windmill() else None,
+                         payback_period if payback_period_calc == "terugverdientijd berekenen" else None)
 
 
-def create_output_screen(house, amount_optimised, amount_normal, solar_panel, windmill):
+def create_output_screen(house, amount_optimised, amount_normal, solar_panel, windmill, payback_period):
     amount_optimised = str(amount_optimised)
     amount_normal = str(amount_normal)
+    payback_period = str(payback_period)
 
     # Make output window
     output = Tk()
@@ -185,6 +191,10 @@ def create_output_screen(house, amount_optimised, amount_normal, solar_panel, wi
     w1 = Label(output, text="De simulatie is uitgevoerd voor de volgende dag: 24 mei 2016 \n"
                             "Te betalen bedrag aan elektriciteit met optimalisatie: €"+amount_optimised,
                background="white", font=("Ariel", 15))
+    if payback_period != "None":
+        w2 = Label(output, text="De terugverdientijd voor het gesimuleerde huis: "+round(payback_period, 2)+" jaar",
+                   background="white", font=("Ariel", 15))
+        w2.pack()
     w3 = Label(output, text="Te betalen bedrag aan elektriciteit zonder optimalisatie: €"+amount_normal,
                background="white", font=("Ariel", 15))
     w1.pack()
@@ -316,6 +326,14 @@ variable_house = StringVar(root)
 variable_house.set("maak uw keuze")
 house_menu = OptionMenu(root, variable_house, "oost-west-georiënteerd", "zuid georiënteerd", command=show_house)
 house_menu.configure(width=35, relief=SOLID, background="white", activebackground="white", highlightbackground="white")
+
+variable_payback_period = StringVar(root)
+variable_payback_period.set("maak uw keuze")
+payback_period_menu = OptionMenu(root, variable_payback_period, "terugverdientijd berekenen",
+                                 "geen terugverdientijd berekenen")
+payback_period_menu.configure(width=32, relief=SOLID, background="white", activebackground="white",
+                              highlightbackground="white")
+payback_period_menu.place(x=790, y=50)
 
 
 # Make sliders to select number of sun panels and cars
