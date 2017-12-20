@@ -1,7 +1,5 @@
 from tkinter import *
 from math import pi
-import pyximport
-pyximport.install()
 from cython_src.power_generators import *
 from cython_src.loads import *
 from cython_src.battery import *
@@ -97,9 +95,9 @@ def start_simulation():
 
     fridge = ContinuousLoad(90)
     freezer = ContinuousLoad(90)
-    led_tv = TimedLoad(60, time(hour=20, minute=30), 3600, pd.DateOffset())
-    stove = TimedLoad(5250, time(hour=17, minute=30), 900, pd.DateOffset())
-    dishwasher = StaggeredLoad(900, time(hour=7), 9600, time_delta=pd.DateOffset())
+    led_tv = TimedLoad(60, 20*3600+30*60, 3600, 1)
+    stove = TimedLoad(5250, 17*3600+30*60, 900, 1)
+    dishwasher = StaggeredLoad(900, 7*3600, 9600, 1)
     washing_machine = StaggeredLoad(1000, time(hour=21), 4800, time_delta=pd.DateOffset())
     tumble_dryer = StaggeredLoad(2600, time(hour=21), 5400, time_delta=pd.DateOffset())
     led_lamps = TimedLoad(240, time(hour=20), 18000, pd.DateOffset())
