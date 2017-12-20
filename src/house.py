@@ -158,6 +158,9 @@ class House:
                 init_battery_lst.append(battery.stored_energy)
                 arr += battery.day_power(arr*battery.max_power/self._total_battery_power)
 
+            for i in range(len(init_battery_lst)):
+                self.battery_tp[i].stored_energy = init_battery_lst[i]
+
         if self._is_large_installation:
             for i in range(288):
                 cost += self.large_installation_electricity_cost(300 * i, power_arr[i])
@@ -183,9 +186,8 @@ class House:
 
                 if cost < min_cost:
                     min_cost = cost
-                    min_t_start = i
+                    load.start_time = 300 * i
 
-            load.start_time = 300 * min_t_start
             power_consumption_arr += load.day_power_consumption()
 
         self._is_optimised = True
@@ -239,4 +241,4 @@ class House:
         return cost
 
     def advance_day(self):
-        self._timestamp + pd.DateOffset()
+        self._timestamp += pd.DateOffset()

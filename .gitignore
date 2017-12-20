@@ -4,3 +4,5 @@
 *.so
 build/
 /cython_src/setup.py
+
+src/__pycache__/

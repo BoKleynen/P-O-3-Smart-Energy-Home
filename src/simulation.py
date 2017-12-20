@@ -20,43 +20,47 @@ class Simulation:
                                          parse_dates=["Date/Time"]
                                          )
 
-    def setup(self, start: pd.Timestamp):
+    def setup(self, start):
         for load in self.house.timed_load_list:
-            load.execution_date = start.date()
+            load.execution_date = start
 
         for load in self.house.staggered_load_list:
-            load.execution_date = start.date()
+            load.execution_date = start
 
-        self.house.timestamp = start
+        self.house.timestamp = pd.Timestamp(start)
 
-    def simulate_optimise(self, start: pd.Timestamp, end: pd.Timestamp):
+    def simulate_optimise(self, start, end):
         self.setup(start)
         total_cost = 0
 
-        date = self.house.date
-        irradiance = self.irradiance_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)]["watts-per-meter-sq"].values
-        wind_speed = self.wind_speed_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)]["meters-per-second"].values
-        self.house.optimise(irradiance, wind_speed)
-        total_cost += self.house.optimised_day_cost(irradiance, wind_speed)
-        self.house.advance_day()
-
-        # while self.house.timestamp < end:
-        #     irradiance = None
-        #     wind_speed = None
-        #     self.house.optimise(irradiance, wind_speed)
-        #     total_cost += self.house.optimised_day_cost(irradiance, wind_speed)
-        #     self.house.advance_day()
+        while self.house.date < end:
+            date = self.house.date
+            irradiance = \
+            self.irradiance_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)][
+                "watts-per-meter-sq"].values
+            wind_speed = \
+            self.wind_speed_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)][
+                "meters-per-second"].values
+            self.house.optimise(irradiance, wind_speed)
+            total_cost += self.house.optimised_day_cost(irradiance, wind_speed)
+            self.house.advance_day()
 
         return total_cost
 
-    def simulate_original(self, start: pd.Timestamp, end: pd.Timestamp):
+    def simulate_original(self, start, end):
         self.setup(start)
         total_cost = 0
-        date = self.house.date
-        irradiance = self.irradiance_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)]["watts-per-meter-sq"].values
-        wind_speed = self.wind_speed_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)]["meters-per-second"].values
-        total_cost += self.house.original_day_cost(irradiance, wind_speed)
-        self.house.advance_day()
+
+        while self.house.date < end:
+            date = self.house.date
+            irradiance = \
+            self.irradiance_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)][
+                "watts-per-meter-sq"].values
+            wind_speed = \
+            self.wind_speed_df.loc[pd.Timestamp(date):pd.Timestamp(date) + pd.DateOffset(hours=23, minutes=55)][
+                "meters-per-second"].values
+            total_cost += self.house.original_day_cost(irradiance, wind_speed)
+            self.house.advance_day()
 
         # if use_own_energy:
         #     while self.house.timestamp < end:

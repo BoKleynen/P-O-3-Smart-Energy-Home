@@ -1,9 +1,16 @@
+import pandas as pd
 from tkinter import *
 from math import pi
+<<<<<<< HEAD
 from cython_src.power_generators import *
 from cython_src.loads import *
 from cython_src.battery import *
 
+=======
+from power_generators import SolarPanel, Windmill
+from loads import ContinuousLoad, TimedLoad, StaggeredLoad
+from battery import Battery
+>>>>>>> ndarray
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
