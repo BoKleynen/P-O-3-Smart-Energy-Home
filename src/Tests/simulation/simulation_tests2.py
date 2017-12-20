@@ -39,12 +39,13 @@ loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, tumble_dry
 house = House(loads,
               solar_panel_tp=(solar_panel,),
               windmill_tp=(windmill,),
-              battery_tp=(battery,),
-              car_battery=car_battery)
+              # battery_tp=(battery,),
+              # car_battery=car_battery
+              )
 simulation = Simulation(house)
 
-print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
-print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-06-24").date())))
-# print(simulation.simulate_payback_period(40000))
+print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
+print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
+# print(simulation.simulate_payback_period(1000))
 print(datetime.now() - start_t)
 plt.show()

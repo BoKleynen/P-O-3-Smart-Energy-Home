@@ -227,6 +227,9 @@ class House:
         else:
             cost = power_arr.sum() * 2.000016e-05
 
+        plt.plot(self.optimised_staggered_load_power(), color="b")
+        plt.plot(self.power_production(irradiance, wind_speed), color="#FFD750")
+
         return cost
 
     def original_day_cost(self, irradiance, wind_speed):
@@ -246,6 +249,8 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
+
+        plt.plot(self.original_staggered_load_power(), color="red")
 
         return cost
 

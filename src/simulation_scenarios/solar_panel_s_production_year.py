@@ -1,10 +1,8 @@
-from house.production.solar_panel import SolarPanel
+from power_generators import SolarPanel
 import pandas as pd
-import datetime
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import matplotlib.cbook as cbook
+from house import House
 
 irradiance_df = pd.read_csv(filepath_or_buffer="../../data/Irradiance.csv",
                             header=0,
@@ -18,10 +16,21 @@ solar_panel = SolarPanel(285.0, 0.64, 0, 0.87, 1.540539, 20)
 start = pd.Timestamp("2016-05-24 00:00:00")
 end = pd.Timestamp("2017-04-21 23:55:00")
 date = pd.date_range(start, end, freq="300S")
-power = [solar_panel.power_production(t, irradiance_df.loc[t].values[0]) for t in date]
+
+house = House([], (solar_panel,))
+house.timestamp = start
+irradiance = irradiance_df.loc[pd.Timestamp(house.date):pd.Timestamp(house.date) + pd.DateOffset(hours=23, minutes=55)][
+    "watts-per-meter-sq"].values
+power = house.power_production(irradiance, None)
+house.advance_day()
+
+while house.date < end.date():
+    irradiance = irradiance_df.loc[pd.Timestamp(house.date):pd.Timestamp(house.date) + pd.DateOffset(hours=23, minutes=55)]["watts-per-meter-sq"].values
+    power = np.concatenate((power, house.power_production(irradiance, None)))
+    house.advance_day()
 
 date = [t.to_pydatetime() for t in date]
-plt.plot(date, power)
+plt.plot(power)
 plt.xlabel("Date")
 plt.ylabel("Power[W]")
 

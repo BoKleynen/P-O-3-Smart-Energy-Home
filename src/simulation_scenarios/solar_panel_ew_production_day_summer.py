@@ -21,7 +21,6 @@ date = pd.date_range(start, end, freq="300S")
 irradiance = irradiance_df.loc[pd.Timestamp(start.date()):pd.Timestamp(start.date()) + pd.DateOffset(hours=23, minutes=55)]["watts-per-meter-sq"].values
 power = house.power_production(irradiance, None)
 
-# date = [t.to_pydatetime() for t in pd.date_range(start, end, freq="300S")]
 plt.plot(power)
 plt.xlabel("Date")
 plt.ylabel("Power[W]")
