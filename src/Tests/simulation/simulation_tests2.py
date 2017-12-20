@@ -1,4 +1,5 @@
 import pandas as pd
+import matplotlib.pyplot as plt
 from house import House
 from simulation import Simulation
 from datetime import datetime
@@ -37,7 +38,7 @@ loads = [fridge, freezer, led_tv, stove, dishwasher, washing_machine, tumble_dry
          central_heating_2, computer, microwave, hairdryer, hood, boiler, heat_pump_boiler, oven]
 house = House(loads,
               solar_panel_tp=(solar_panel,),
-              windmill_tp=(windmill,),
+              # windmill_tp=(windmill,),
               battery_tp=(battery,)
               )
 simulation = Simulation(house)
@@ -45,3 +46,5 @@ simulation = Simulation(house)
 print("original: " + str(simulation.simulate_original(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
 print("optimised: " + str(simulation.simulate_optimise(pd.Timestamp("2016-05-24").date(), pd.Timestamp("2016-05-25").date())))
 print(datetime.now() - start_t)
+
+plt.show()

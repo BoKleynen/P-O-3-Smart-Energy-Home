@@ -66,15 +66,4 @@ class Simulation:
             total_cost += self.house.original_day_cost(irradiance, wind_speed)
             self.house.advance_day()
 
-        # if use_own_energy:
-        #     while self.house.timestamp < end:
-        #         irradiance = None
-        #         wind_speed = None
-        #         total_cost += self.house.original_day_cost(irradiance, wind_speed)
-        #         self.house.advance_day()
-        #
-        # else:
-        #     new_sim = Simulation(house=House(self.house.staggered_load_list + self.house.timed_load_list + self.house.continuous_load_list))
-        #     return new_sim.simulate_original()
-
         return total_cost
