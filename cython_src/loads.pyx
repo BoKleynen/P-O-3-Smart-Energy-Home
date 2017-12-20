@@ -34,7 +34,6 @@ cdef class CyclicalLoad(Load):
     def __init__(self, double power_consumption, int start_time, int cycle_duration, int ex_delta):
         super().__init__(power_consumption)
 
-
         self._ex_year = 1
         self._ex_month = 1
         self._ex_day = 1
