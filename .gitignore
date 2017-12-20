@@ -1,6 +1,8 @@
 
 \.idea/
-src/house/__pycache__/
-src/house/production/__pycache__/
-
+*.c
+*.so
 build/
+/cython_src/setup.py
+
+src/__pycache__/
