@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 from typing import Iterable, List, Tuple
 from datetime import date
-from power_generators import SolarPanel, Windmill
-from loads import ContinuousLoad, TimedLoad, StaggeredLoad
-from battery import Battery, CarBattery
+from cython_src.power_generators import SolarPanel, Windmill
+from cython_src.loads import ContinuousLoad, TimedLoad, StaggeredLoad
+from cython_src.battery import Battery, CarBattery
 
 
 class House:
