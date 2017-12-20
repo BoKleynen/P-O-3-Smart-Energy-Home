@@ -3,10 +3,10 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 from typing import Iterable, List, Tuple
-from datetime import date
-from cython_src.power_generators import SolarPanel, Windmill
-from cython_src.loads import ContinuousLoad, TimedLoad, StaggeredLoad
-from cython_src.battery import Battery, CarBattery
+from datetime import date, timedelta
+from power_generators import SolarPanel, Windmill
+from loads import ContinuousLoad, TimedLoad, StaggeredLoad
+from battery import Battery, CarBattery
 
 
 class House:
@@ -22,9 +22,8 @@ class House:
         self._total_battery_power = math.fsum(map(lambda battery: battery.max_power, battery_tp))
         self._total_battery_capacity = math.fsum(map(lambda battery: battery.capacity, battery_tp))
         self._electrical_car_battery = car_battery
-        # self._is_large_installation = math.fsum(map(lambda sp: sp.peak_power, self.solar_panel_tp)) \
-        #     + math.fsum(map(lambda wm: wm.peak_power(), self.windmill_tp)) >= 10000
-        self._is_large_installation = True
+        self._is_large_installation = math.fsum(map(lambda sp: sp.peak_power, self.solar_panel_tp)) \
+            + math.fsum(map(lambda wm: wm.peak_power(), self.windmill_tp)) >= 10000
         self._timestamp = timestamp
         self._is_optimised = False
 
@@ -153,6 +152,11 @@ class House:
         for i in range(start_time//300, (start_time + load.cycle_duration) // 300):
             arr[i] += load.power_consumption
 
+        if self.has_electrical_car():
+            init_car_batter_energy = self._electrical_car_battery.stored_energy
+            arr += self._electrical_car_battery.day_power(arr)
+            self._electrical_car_battery.stored_energy = init_car_batter_energy
+
         if self.has_battery():
             init_battery_lst = []
 
@@ -179,7 +183,7 @@ class House:
         power_consumption_arr = self.continuous_load_power() + self.timed_load_power() \
                                 - self.power_production(irradiance, wind_speed_df)
         for load in sorted_load_lst:
-            min_cost = self.cost_function(load, load.original_start_time, power_consumption_arr)
+            min_cost = math.inf
 
             for i in range((86400-load.cycle_duration)//300):
                 cost = self.cost_function(load, 300*i, power_consumption_arr)
@@ -209,9 +213,12 @@ class House:
     def optimised_day_cost(self, irradiance, wind_speed):
         power_arr = self.optimised_staggered_load_power() + self.timed_load_power() + self.continuous_load_power() \
                     - self.power_production(irradiance, wind_speed)
+
+        if self.has_electrical_car():
+            power_arr += self._electrical_car_battery.day_power(power_arr)
+
         for battery in self.battery_tp:
-            arr = battery.day_power(power_arr*battery.max_power/self._total_battery_power)
-            power_arr -= arr
+            power_arr -= battery.day_power(power_arr*battery.max_power/self._total_battery_power)
 
         cost = 0.0
         if self._is_large_installation:
@@ -220,13 +227,16 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
-        # plt.plot(power_arr)
+
         return cost
 
     def original_day_cost(self, irradiance, wind_speed):
         power_arr = self.original_staggered_load_power() + self.timed_load_power() + self.continuous_load_power() \
                     - self.power_production(irradiance, wind_speed)
         cost = 0.0
+
+        if self.has_electrical_car():
+            power_arr += self._electrical_car_battery.day_power(power_arr)
 
         for battery in self.battery_tp:
             power_arr -= battery.day_power(power_arr*battery.max_power/self._total_battery_power)
@@ -237,8 +247,14 @@ class House:
 
         else:
             cost = power_arr.sum() * 2.000016e-05
-        # plt.plot(power_arr)
+
         return cost
 
     def advance_day(self):
         self._timestamp += pd.DateOffset()
+
+        for load in self.timed_load_list:
+            load.execution_date += timedelta(days=load.execution_delta)
+
+        for load in self.staggered_load_list:
+            load.execution_date += timedelta(days=load.execution_delta)
